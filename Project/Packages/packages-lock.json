@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "a9e27c03d411d2fca01cc7410c24c97cd77cb539"
+      "hash": "f74aace058f4ee7d3aa5bcc89cc98dbfb2a02892"
     },
     "com.miguel.core": {
       "version": "https://github.com/Miguel-Barreiro/CoreProjects.git",
@@ -194,7 +194,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.39",
+      "version": "3.0.40",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -270,7 +270,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.recorder": {
-      "version": "5.1.4",
+      "version": "5.1.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
