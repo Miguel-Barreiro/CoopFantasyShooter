@@ -9,7 +9,7 @@ using Core.Model.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.Utils
+namespace Utils
 {
     //taken from https://bitbucket.org/snippets/Bjarkeck/keRbr4
     public class ScriptableObjectCreator : OdinMenuEditorWindow

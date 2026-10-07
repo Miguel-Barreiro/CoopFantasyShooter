@@ -1,17 +1,26 @@
 using Core.Initialization;
 using Core.Model.ModelSystems;
 using Core.Zenject.Source.Main;
+using Game;
+using Game.Input;
+using UnityEngine;
 
 namespace Scenes.Play
 {
 	public sealed class GameplayBootstrap : SceneBootstrap
 	{
+
+		[SerializeField] private LocalMultiplayerInputManager LocalMultiplayerInputManager;
+		[SerializeField] private Camera Camera;
+		
 		private GameplayInstaller _installer;
 
 		public override SystemsInstallerBase GetLogicInstaller()
 		{
 			if(_installer == null)
-				_installer = new GameplayInstaller(Container);
+				_installer = new GameplayInstaller(Container, 
+													LocalMultiplayerInputManager, 
+													Camera);
 
 			return _installer;
 		}
@@ -19,8 +28,15 @@ namespace Scenes.Play
 	
 	public sealed class GameplayInstaller : SystemsInstallerBase
 	{
-		public GameplayInstaller(DiContainer container) : base(container)
+		private readonly LocalMultiplayerInputManager LocalMultiplayerInputManager;
+		private readonly Camera Camera;
+
+		public GameplayInstaller(DiContainer container,
+								LocalMultiplayerInputManager localMultiplayerInputManager, Camera camera) 
+			: base(container)
 		{
+			LocalMultiplayerInputManager = localMultiplayerInputManager;
+			Camera = camera;
 		}
 
 		public override void SetupConfigurations()
@@ -30,6 +46,10 @@ namespace Scenes.Play
 
 		protected override void InstallSystems()
 		{
+			BindInstance(Camera);
+			
+			BindInstance(new GameLogic());
+			BindInstance(LocalMultiplayerInputManager);
 			
 		}
 
