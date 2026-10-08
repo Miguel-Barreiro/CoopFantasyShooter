@@ -16,7 +16,7 @@ namespace Global
 		[SerializeField] private float _PlayerSpeed = 1;
 		public float PlayerSpeed => _PlayerSpeed * _PlayerSpeedMult;
 
-		[Range(1, 10)]
+		[Range(1, 100)]
 		[SerializeField] private float _PlayerSpeedMult = 1;
 		// public float PlayerSpeedMult => _PlayerSpeedMult;
 

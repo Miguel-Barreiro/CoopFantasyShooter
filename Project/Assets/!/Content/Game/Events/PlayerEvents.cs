@@ -44,6 +44,34 @@ namespace Game.Events
 	}
 	
 	
+	public sealed class RotatePlayerEvent : Event<RotatePlayerEvent>
+	{
+		[Inject] private readonly PlayerContainer PlayerContainer = null!;
+		[Inject] private readonly BasicCompContainer<DynamicWorldEntityData> DynamicWorldEntityContainer = null!;
+
+		public int PlayerNumber = -1;
+		public Vector2 NewLookDirection { get; set; } = Vector2.zero;
+		
+		public override void Execute()
+		{
+			if(PlayerNumber < 0)
+				return;
+
+			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
+			if(playerId == EntId.Invalid)
+			{
+				Debug.Log($"Player {PlayerNumber} not found, cannot rotate.");
+				return;
+			}
+			
+			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
+			playerData.LookDirection = NewLookDirection;
+			
+			// Debug.Log($"Input ROTATE (player{PlayerNumber} [{playerId}]) with value {RotationValue}");
+		}
+
+	}
+	
 	public sealed class MovePlayerEvent : Event<MovePlayerEvent>
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
