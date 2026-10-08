@@ -1,3 +1,4 @@
+using Com.LuisPedroFonseca.ProCamera2D;
 using Core.Model;
 using Core.View;
 using Game.Player;
@@ -11,6 +12,8 @@ namespace Game
 	{
 		[Inject] private readonly GameConfig GameConfig = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly ProCamera2D ProCamera2D = null!;
+
 
 		
 		public const uint MAX_PLAYERS = 4;
@@ -20,18 +23,17 @@ namespace Game
 		{
 			EntId playerId = new PlayerEntity(newPlayerNumber).ID;
 			
-			
-			AddView(playerId, GameConfig.PlayerPrefab.gameObject);
+			EntityViewAtributes view = AddView(playerId, GameConfig.PlayerPrefab.gameObject);
+			ProCamera2D.AddCameraTarget(view.GameObject.transform);
 			
 			
 			return playerId;
 		}
 
 		
-		protected void AddView(EntId entityId, GameObject prefab)
+		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab)
 		{
-			ViewEntitiesContainer.Spawn(prefab, entityId);
-
+			return ViewEntitiesContainer.Spawn(prefab, entityId);
 		}
 
 	}

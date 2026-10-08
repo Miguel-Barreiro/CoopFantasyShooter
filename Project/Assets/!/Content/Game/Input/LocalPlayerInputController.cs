@@ -14,9 +14,6 @@ namespace Game.Input
 	[RequireComponent(typeof(PlayerInput))]
 	public sealed class LocalPlayerInputController : MonoBehaviour
 	{
-
-		[Inject] private readonly EventQueue EventQueue = null!;
-
 		
 		private const string PLAYER_MAP = "Player";
 
@@ -66,6 +63,11 @@ namespace Game.Input
 
 		private void OnMove(InputAction.CallbackContext context)
 		{
+			Vector2 direction = context.ReadValue<Vector2>();
+			
+			MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
+			movePlayerEvent.PlayerNumber = PlayerIndex;
+			movePlayerEvent.Direction = direction;
 		}
 
 		private void OnLook(InputAction.CallbackContext context)
@@ -106,7 +108,7 @@ namespace Game.Input
 
 		private void OnDeviceRegained(PlayerInput playerInput)
 		{
-			RecoverPlayerInputEvent recoverPlayerInputEvent = EventQueue.Execute<RecoverPlayerInputEvent>();
+			RecoverPlayerInputEvent recoverPlayerInputEvent = EventQueue.Trigger<RecoverPlayerInputEvent>();
 			recoverPlayerInputEvent.PlayerNumber = playerInput.playerIndex;
 
 			Debug.Log($"RECOVER INPUT: {playerInput.playerIndex}");

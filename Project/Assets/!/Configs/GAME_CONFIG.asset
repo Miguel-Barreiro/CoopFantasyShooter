@@ -15,3 +15,6 @@ MonoBehaviour:
   Id: vgm2eUsyIyL
   name: Game Config
   _PlayerPrefab: {fileID: 6741403014341927057, guid: d5319177ed0dee245bf9cb6976e00f37, type: 3}
+  _PlayerSpeed: 7
+  _PlayerSpeedMult: 1
+  _LocalMultiplayerInputManagerPrefab: {fileID: 2737989418302026533, guid: af47f19e96075e944bee85e9501410c2, type: 3}

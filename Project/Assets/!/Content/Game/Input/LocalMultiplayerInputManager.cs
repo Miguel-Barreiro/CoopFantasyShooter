@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Events;
+using Core.Initialization;
 using Game.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,6 +18,8 @@ namespace Game.Input
 	{
 		
 		[Inject] private readonly EventQueue EventQueue = null!;
+		[Inject] private readonly ObjectBuilder ObjectBuilder = null!;
+
 		
 
 		private readonly List<LocalPlayerInputController> _players = new List<LocalPlayerInputController>();
@@ -44,8 +47,10 @@ namespace Game.Input
 		private void OnPlayerJoined(PlayerInput playerInput)
 		{
 			if (playerInput.TryGetComponent(out LocalPlayerInputController controller))
+			{
 				_players.Add(controller);
-			
+				ObjectBuilder.Inject(controller);
+			}
 			
 			RecoverPlayerInputEvent recoverPlayerInputEvent = EventQueue.Execute<RecoverPlayerInputEvent>();
 			recoverPlayerInputEvent.PlayerNumber = playerInput.playerIndex;

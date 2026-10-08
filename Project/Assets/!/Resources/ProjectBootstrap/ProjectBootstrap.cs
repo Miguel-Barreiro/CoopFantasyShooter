@@ -112,6 +112,11 @@ namespace Global.Logic
             // UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
             Application.targetFrameRate = 60;
         }
+
+        protected override void AddDebugOptions()
+        {
+            
+        }
         public override void ResetComponentContainers(DataContainersController dataContainersController) { }
         
     }

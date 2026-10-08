@@ -22,7 +22,7 @@ namespace Game.Bootstrap
 		}
 	}
 
-	public class PreloadInstaller : SystemsInstallerBase
+	public sealed class PreloadInstaller : SystemsInstallerBase
 	{
 		
 		public PreloadInstaller(DiContainer container) : base(container)
@@ -38,6 +38,10 @@ namespace Game.Bootstrap
 		protected override void InstallSystems()
 		{
 			 BindInstance(new PreloadViewController());
+		}
+
+		protected override void AddDebugOptions()
+		{
 		}
 
 		public override void ResetComponentContainers(DataContainersController dataController)
