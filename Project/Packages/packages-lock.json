@@ -7,15 +7,29 @@
       "dependencies": {},
       "hash": "f74aace058f4ee7d3aa5bcc89cc98dbfb2a02892"
     },
+    "com.mibdev.fullscreen-editor": {
+      "version": "file:com.mibdev.fullscreen-editor",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.miguel.core": {
       "version": "https://github.com/Miguel-Barreiro/CoreProjects.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.cysharp.unitask": "2.5.4",
-        "com.unity.nuget.newtonsoft-json": "3.2.1 "
+        "com.unity.nuget.newtonsoft-json": "3.2.1 ",
+        "com.miguel.xnode": "1.8.6"
       },
-      "hash": "45b12c56752b689b9d1c3d0966beabccf3ce4854"
+      "hash": "4031254907cc96fd945eedc3d870abe1a5da7293"
+    },
+    "com.miguel.xnode": {
+      "version": "https://github.com/Miguel-Barreiro/xNode.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d7ff28975aca395df018f41c8c32c67202974e65"
     },
     "com.unity.2d.animation": {
       "version": "13.0.4",
@@ -402,6 +416,12 @@
         "com.unity.modules.subsystems": "1.0.0"
       }
     },
+    "com.unity.modules.ai": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.modules.androidjni": {
       "version": "1.0.0",
       "depth": 0,
@@ -425,6 +445,14 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.unity.modules.cloth": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      }
     },
     "com.unity.modules.director": {
       "version": "1.0.0",
@@ -594,6 +622,16 @@
         "com.unity.modules.uielements": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.modules.video": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
       }
     },
     "com.unity.modules.wind": {

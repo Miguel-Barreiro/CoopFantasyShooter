@@ -14,11 +14,7 @@ namespace Global
 
 		[Range(0, 10)]
 		[SerializeField] private float _PlayerSpeed = 1;
-		public float PlayerSpeed => _PlayerSpeed * _PlayerSpeedMult;
-
-		[Range(1, 100)]
-		[SerializeField] private float _PlayerSpeedMult = 1;
-		// public float PlayerSpeedMult => _PlayerSpeedMult;
+		public float PlayerSpeed => _PlayerSpeed * 400f;
 
 
 		[SerializeField] private LocalMultiplayerInputManager _LocalMultiplayerInputManagerPrefab;

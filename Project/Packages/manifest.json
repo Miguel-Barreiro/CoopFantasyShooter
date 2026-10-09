@@ -2,6 +2,7 @@
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.miguel.core": "https://github.com/Miguel-Barreiro/CoreProjects.git",
+    "com.miguel.xnode": "https://github.com/Miguel-Barreiro/xNode.git",
     "com.unity.device-simulator.devices": "1.0.1",
     "com.unity.feature.2d": "2.0.2",
     "com.unity.ide.rider": "3.0.40",
@@ -19,10 +20,12 @@
     "com.unity.visualscripting": "1.9.9",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
     "com.unity.modules.director": "1.0.0",
     "com.unity.modules.imageconversion": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
@@ -42,6 +45,7 @@
     "com.unity.modules.unitywebrequesttexture": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0",
     "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
     "com.unity.modules.wind": "1.0.0"
   }
 }
