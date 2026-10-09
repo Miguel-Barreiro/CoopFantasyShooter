@@ -33,9 +33,9 @@ namespace Game.Player
 	{
 		public EntId ID { get; set; }
 		public int PlayerNumber { get; set; }
-		public Vector2 MoveDirection { get; set; }
+		public Vector3 MoveDirection { get; set; }
 		public float MoveValue { get; set; }
-		public Vector2 LookDirection { get; set; }
+		public Vector3 LookDirection { get; set; }
 
 		public void Init()
 		{
@@ -98,15 +98,16 @@ namespace Game.Player
 				Rigidbody rigidbody = viewAtributes!.Get<Rigidbody>();
 				
 				float speed = GameConfig.PlayerSpeed * playerData.MoveValue * deltaTime;
-				Vector3 force = new Vector3(playerData.MoveDirection.x, 0f, playerData.MoveDirection.y) * speed;
+				Vector3 force = playerData.MoveDirection * speed;
+				// rigidbody.MovePosition(rigidbody.transform.position + force);
 				rigidbody.AddForce(force, ForceMode.Acceleration );
+
 				
-				Vector3 forward = new Vector3(playerData.LookDirection.x, 0f, playerData.LookDirection.y);
-				rigidbody.MoveRotation(Quaternion.LookRotation(forward));
 				// rigidbody.linearVelocity = force;
 				// rigidbody.Move(rigidbody.transform.position + force, rigidbody.transform.rotation);
 				// rigidbody.transform.SetPositionAndRotation(rigidbody.transform.position + force, rigidbody.transform.rotation);
 				// Debug.Log($"Moving Player {playerData.PlayerNumber} with direction {playerData.MoveDirection} and move value {speed}");
+				
 			}
 		}
 

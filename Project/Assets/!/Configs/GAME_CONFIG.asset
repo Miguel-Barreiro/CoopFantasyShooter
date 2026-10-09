@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameAssemblyDef::Global.GameConfig
   Id: vgm2eUsyIyL
   name: Game Config
-  _PlayerPrefab: {fileID: 6741403014341927057, guid: d5319177ed0dee245bf9cb6976e00f37, type: 3}
-  _PlayerSpeed: 4.56
-  _PlayerSpeedMult: 2
+  _PlayerPrefab: {fileID: 9126683855339754270, guid: 9da17d32931a82f4fb62f959e32dde0a, type: 3}
+  _PlayerSpeed: 6.29
   _LocalMultiplayerInputManagerPrefab: {fileID: 2737989418302026533, guid: af47f19e96075e944bee85e9501410c2, type: 3}

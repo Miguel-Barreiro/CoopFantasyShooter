@@ -65,7 +65,7 @@ namespace Game.Events
 			}
 			
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			playerData.LookDirection = NewLookDirection;
+			playerData.LookDirection = new Vector3(NewLookDirection.x, 0f, NewLookDirection.y).normalized;
 			
 			// Debug.Log($"Input ROTATE (player{PlayerNumber} [{playerId}]) with value {RotationValue}");
 		}
@@ -94,7 +94,7 @@ namespace Game.Events
 			
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
 
-			playerData.MoveDirection = Direction.normalized;
+			playerData.MoveDirection = new Vector3(Direction.x, 0f, Direction.y).normalized;
 			playerData.MoveValue = 1;
 			
 			// Debug.Log($"Input MOVE (player{PlayerNumber} [{playerId}]) with direction {Direction}");

@@ -73,6 +73,8 @@ namespace Game.Input
 		private void OnLook(InputAction.CallbackContext context)
 		{
 			Vector2 direction = context.ReadValue<Vector2>();
+			if(direction.magnitude < 0.1f)
+				return;
 			
 			RotatePlayerEvent movePlayerEvent = EventQueue.Trigger<RotatePlayerEvent>();
 			movePlayerEvent.PlayerNumber = PlayerIndex;
