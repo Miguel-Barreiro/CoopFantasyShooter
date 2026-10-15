@@ -5,6 +5,8 @@ using Core.Zenject.Source.Main;
 using Game;
 using Game.Input;
 using Game.Player;
+using Game.Spells;
+using Global;
 using UnityEngine;
 
 namespace Scenes.Play
@@ -14,6 +16,7 @@ namespace Scenes.Play
 
 		// [SerializeField] private LocalMultiplayerInputManager LocalMultiplayerInputManager;
 		[SerializeField] private Camera Camera;
+		[SerializeField] private GameplayConfig GameplayConfig;
 		
 		private GameplayInstaller _installer;
 
@@ -21,8 +24,8 @@ namespace Scenes.Play
 		{
 			if(_installer == null)
 				_installer = new GameplayInstaller(Container, 
-													// LocalMultiplayerInputManager, 
-													Camera);
+													Camera,
+													GameplayConfig);
 
 			return _installer;
 		}
@@ -32,19 +35,22 @@ namespace Scenes.Play
 	{
 		// private readonly LocalMultiplayerInputManager LocalMultiplayerInputManager;
 		private readonly Camera Camera;
+		private readonly GameplayConfig GameplayConfig;
 
 		public GameplayInstaller(DiContainer container,
 								// LocalMultiplayerInputManager localMultiplayerInputManager, 
-								Camera camera) 
+								Camera camera, GameplayConfig gameplayConfig) 
 			: base(container)
 		{
 			// LocalMultiplayerInputManager = localMultiplayerInputManager;
 			Camera = camera;
+			GameplayConfig = gameplayConfig;
 		}
+
 
 		public override void SetupConfigurations()
 		{
-			
+			BindInstance(GameplayConfig);
 		}
 
 		protected override void InstallSystems()
@@ -56,12 +62,22 @@ namespace Scenes.Play
 			BindInstance(new StartGameSystem());
 			BindInstance(new PlayerSystem());
 			BindInstance(new GameLogic());
+
+			BindInstance(new SpellSystem());
+			
+			
+			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
+			
 			// BindInstance(LocalMultiplayerInputManager);
 			
+			
+			//DEBUG
+			BindInstance(new DebugGameplaySystem());
 		}
 
 		protected override void AddDebugOptions()
 		{
+			
 		}
 
 		public override void ResetComponentContainers(DataContainersController dataController)

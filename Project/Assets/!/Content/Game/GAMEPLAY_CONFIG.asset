@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ae7c05953348c48cf001d03e1f7ce6, type: 3}
+  m_Name: GAMEPLAY_CONFIG
+  m_EditorClassIdentifier: GameAssemblyDef::Global.GameplayConfig
+  Id: iyHvPgKx3bd
+  name: GAMEPLAY_CONFIG
+  EnviromentAttributes:
+    _NavMeshPrefab: {fileID: 2949370897753341253, guid: 802f2eefdfe59f146947d8c144a51930, type: 3}
+  PlayerAttributes:
+    _PlayerPrefab: {fileID: 9126683855339754270, guid: 9da17d32931a82f4fb62f959e32dde0a, type: 3}
+    _PlayerSpeed: 4.77
+    _Size: 0.3
+  BasicSpellsAttributes:
+    _BulletPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}
+    _BulletSize: 0.1
+    _BulletSpeed: 92.7
+    _bulletSpellConfig: {fileID: 11400000, guid: d7f43d8fe56409f40b79148b7ee6b60a, type: 2}

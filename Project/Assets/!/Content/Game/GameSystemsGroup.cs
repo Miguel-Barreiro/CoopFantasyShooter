@@ -4,6 +4,7 @@ namespace Game
 {
 	public static class GameSystemsGroup
 	{
-		public static readonly SystemGroup GAME_LOGIC_SYSTEM = new SystemGroup();
+		public static readonly SystemGroup DEBUG_SYSTEM = new SystemGroup("DEBUG_SYSTEM");
+		public static readonly SystemGroup GAME_LOGIC_SYSTEM = new SystemGroup("GAME_LOGIC_SYSTEM");
 	}
 }

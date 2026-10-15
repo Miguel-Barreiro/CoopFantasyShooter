@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57463640d33b4b60bbbfd2bdd501fed3, type: 3}
+  m_Name: FireBullet_spell
+  m_EditorClassIdentifier: GameAssemblyDef::Game.Spells.SpellConfig
+  Id: tJ5uS4xLsrq
+  name: FireBullet_spell
+  _Stats:
+  - _statConfig: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
+    _value: 0.25
+    _overrideType: 0
+  - _statConfig: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
+    _value: 3.5
+    _overrideType: 0
+  - _statConfig: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
+    _value: 10
+    _overrideType: 0
+  - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
+    _value: 2
+    _overrideType: 0

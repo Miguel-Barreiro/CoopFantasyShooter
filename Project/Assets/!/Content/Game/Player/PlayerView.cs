@@ -1,17 +1,33 @@
+using Core.Model;
 using Core.View;
+using FixedPointy;
+using Game.Spells;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Game.Player
 {
+	[RequireComponent(typeof(Collider))]
 	[RequireComponent(typeof(Rigidbody))]
 	public sealed class PlayerView: EntityView
 	{
+		public Image HealthImage;
+		public Image CooldownImage;
+		public TMP_Text PlayerText;
+		public RectTransform UI;
 		public Rigidbody Rigidbody { get; private set; } = null!;
 		public Animator Animator { get => _animator; }
 		[SerializeField] private Animator _animator = null!;
 
+
+		[Inject] private readonly Camera Camera = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly StatsSystemRo StatsSystem = null!;
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
+		[Inject] private readonly BasicCompContainer<SpellData> SpellContainer = null!;
+
 
 		private readonly int SPEEDX = Animator.StringToHash("SpeedX");
 		private readonly int SPEEDZ = Animator.StringToHash("SpeedZ");
@@ -50,7 +66,36 @@ namespace Game.Player
 			_animator.SetFloat(SPEEDX, moveValueX);
 			
 			_moveDirection = moveDirection;
-			_animator.transform.rotation = Quaternion.LookRotation(playerData.LookDirection);
+			_animator.transform.rotation = Quaternion.Lerp(_animator.transform.rotation, 
+															Quaternion.LookRotation(playerData.LookDirection), 
+															Time.deltaTime * 5f);
+			ref SpellData spellData = ref SpellContainer.GetComponent(playerData.AttackSpellID);
+			switch (spellData.State)
+			{
+				case SpellData.SpellState.Recover:
+					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(playerData.AttackSpellID, GameStatsContainer.Cooldown);
+
+					CooldownImage.fillAmount = cooldownPercentage;
+					PlayerText.gameObject.SetActive(false);
+					CooldownImage.gameObject.SetActive(true);
+					break;
+				case SpellData.SpellState.Cast:
+				case SpellData.SpellState.Ready:
+					int ammo = (int) StatsSystem.GetStatDepletedValue(playerData.AttackSpellID, GameStatsContainer.CastingMultiplier);
+					int ammoTotal = (int) StatsSystem.GetStatValue(playerData.AttackSpellID, GameStatsContainer.CastingMultiplier);
+					PlayerText.gameObject.SetActive(true);
+					CooldownImage.gameObject.SetActive(false);
+					
+					PlayerText.color = Color.white;
+					string playerTextText = $"{ammo}/{ammoTotal}";
+					PlayerText.text = playerTextText;
+					break;
+				
+			}
+
+			HealthImage.fillAmount = (float) StatsSystem.GetStatDepletedPercentage(EntityID, GameStatsContainer.Health);
+			
+			UI.transform.LookAt(Camera.transform);
 		}
 
 		private void OnDrawGizmos()
@@ -74,6 +119,11 @@ namespace Game.Player
 			}
 		}
 
+		public void SetSize(float playerSize)
+		{
+			CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+			capsuleCollider.radius = playerSize;
+		}
 	}
 	
 }

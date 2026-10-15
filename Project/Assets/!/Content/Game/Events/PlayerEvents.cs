@@ -1,8 +1,8 @@
 using Core.Events;
 using Core.Model;
 using Core.View;
-using Game.Components;
 using Game.Player;
+using Game.Spells;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -44,10 +44,42 @@ namespace Game.Events
 	}
 	
 	
+	public sealed class ShootPlayerEvent : Event<ShootPlayerEvent>
+	{
+		[Inject] private readonly PlayerContainer PlayerContainer = null!;
+		// [Inject] private readonly GameLogic GameLogic = null!;
+		[Inject] private readonly SpellSystem SpellSystem = null!;
+
+
+
+		public int PlayerNumber = -1;
+		
+		public override void Execute()
+		{
+			if(PlayerNumber < 0)
+				return;
+
+			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
+			if(playerId == EntId.Invalid)
+			{
+				Debug.Log($"Player {PlayerNumber} not found, cannot shoot.");
+				return;
+			}
+
+			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
+			if(playerData.AttackSpellID == EntId.Invalid)
+			{
+				Debug.Log($"Player {PlayerNumber} does not have an attack spell, cannot shoot.");
+				return;
+			}
+			SpellSystem.TryCastSpell(playerData.AttackSpellID, playerId);
+		}
+	}
+	
+	
 	public sealed class RotatePlayerEvent : Event<RotatePlayerEvent>
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly BasicCompContainer<DynamicWorldEntityData> DynamicWorldEntityContainer = null!;
 
 		public int PlayerNumber = -1;
 		public Vector2 NewLookDirection { get; set; } = Vector2.zero;
@@ -75,7 +107,6 @@ namespace Game.Events
 	public sealed class MovePlayerEvent : Event<MovePlayerEvent>
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly BasicCompContainer<DynamicWorldEntityData> DynamicWorldEntityContainer = null!;
 
 		public int PlayerNumber = -1;
 		public Vector2 Direction = Vector2.zero;

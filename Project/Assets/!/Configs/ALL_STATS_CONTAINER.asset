@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54bf4b061ed4c2bb06c9f0c4277f7cf, type: 3}
   m_Name: ALL_STATS_CONTAINER
   m_EditorClassIdentifier: GameAssemblyDef::Game.GameStatsContainer
+  _CastingTime: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
+  _Cooldown: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
+  _CastingMultiplier: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
+  _Damage: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
+  _Health: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}

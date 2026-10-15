@@ -1,3 +1,4 @@
+using System;
 using Core.Events;
 using Game.Events;
 using UnityEngine;
@@ -18,12 +19,15 @@ namespace Game.Input
 		private const string PLAYER_MAP = "Player";
 
 		private PlayerInput _playerInput;
+		private InputAction _AttackPlayerInputAction;
+
 
 		public int PlayerIndex => _playerInput.playerIndex;
 
 		private void Awake()
 		{
 			_playerInput = GetComponent<PlayerInput>();
+			_AttackPlayerInputAction = _playerInput.actions["Attack"];
 		}
 
 		private void OnEnable()
@@ -31,6 +35,17 @@ namespace Game.Input
 			_playerInput.onActionTriggered += OnActionTriggered;
 			_playerInput.onDeviceLost += OnDeviceLost;
 			_playerInput.onDeviceRegained += OnDeviceRegained;
+			
+			_playerInput.actions["Move"].performed +=  OnMove;
+			_playerInput.actions["Look"].performed +=  OnLook;
+			_AttackPlayerInputAction.performed +=  OnAttack;
+			_playerInput.actions["Interact"].performed +=  OnInteract;
+			_playerInput.actions["Crouch"].performed +=  OnCrouch;
+			_playerInput.actions["Jump"].performed +=  OnJump;
+			_playerInput.actions["Previous"].performed +=  OnPrevious;
+			_playerInput.actions["Next"].performed +=  OnNext;
+			_playerInput.actions["Sprint"].performed +=  OnSprint;
+
 		}
 
 		private void OnDisable()
@@ -38,6 +53,26 @@ namespace Game.Input
 			_playerInput.onActionTriggered -= OnActionTriggered;
 			_playerInput.onDeviceLost -= OnDeviceLost;
 			_playerInput.onDeviceRegained -= OnDeviceRegained;
+			
+			_playerInput.actions["Move"].performed -=  OnMove;
+			_playerInput.actions["Look"].performed -=  OnLook;
+			_AttackPlayerInputAction.performed -=  OnAttack;
+			_playerInput.actions["Interact"].performed -=  OnInteract;
+			_playerInput.actions["Crouch"].performed -=  OnCrouch;
+			_playerInput.actions["Jump"].performed -=  OnJump;
+			_playerInput.actions["Previous"].performed -=  OnPrevious;
+			_playerInput.actions["Next"].performed -=  OnNext;
+			_playerInput.actions["Sprint"].performed -=  OnSprint;
+
+		}
+
+		private void Update()
+		{
+			if (_AttackPlayerInputAction.IsPressed())
+			{
+				ShootPlayerEvent shootPlayerEvent = EventQueue.Trigger<ShootPlayerEvent>();
+				shootPlayerEvent.PlayerNumber = PlayerIndex;
+			}
 		}
 
 		private void OnActionTriggered(InputAction.CallbackContext context)
@@ -45,20 +80,20 @@ namespace Game.Input
 			if (context.action.actionMap.name != PLAYER_MAP)
 				return;
 
-			Debug.Log($"Action triggered: {context.action.name}");
-			
-			switch (context.action.name)
-			{
-				case "Move": OnMove(context); break;
-				case "Look": OnLook(context); break;
-				case "Attack": OnAttack(context); break;
-				case "Interact": OnInteract(context); break;
-				case "Crouch": OnCrouch(context); break;
-				case "Jump": OnJump(context); break;
-				case "Previous": OnPrevious(context); break;
-				case "Next": OnNext(context); break;
-				case "Sprint": OnSprint(context); break;
-			}
+			// Debug.Log($"Action triggered: {context.action.name}");
+			//
+			// switch (context.action.name)
+			// {
+			// 	case "Move": OnMove(context); break;
+			// 	case "Look": OnLook(context); break;
+			// 	case "Attack": OnAttack(context); break;
+			// 	case "Interact": OnInteract(context); break;
+			// 	case "Crouch": OnCrouch(context); break;
+			// 	case "Jump": OnJump(context); break;
+			// 	case "Previous": OnPrevious(context); break;
+			// 	case "Next": OnNext(context); break;
+			// 	case "Sprint": OnSprint(context); break;
+			// }
 		}
 
 		private void OnMove(InputAction.CallbackContext context)
@@ -83,6 +118,8 @@ namespace Game.Input
 
 		private void OnAttack(InputAction.CallbackContext context)
 		{
+			ShootPlayerEvent shootPlayerEvent = EventQueue.Trigger<ShootPlayerEvent>();
+			shootPlayerEvent.PlayerNumber = PlayerIndex;
 		}
 
 		private void OnInteract(InputAction.CallbackContext context)

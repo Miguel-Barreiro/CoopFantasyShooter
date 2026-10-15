@@ -4,7 +4,6 @@ using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
-using Game.Components;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -13,7 +12,7 @@ namespace Game.Player
 {
 	
 	
-	public class PlayerEntity : Entity, IPlayer, IDynamicWorldEntity
+	public class PlayerEntity : Entity, IPlayer, IHierarchyEntity
 	{
 		[Inject] private readonly GameConfig GameConfig = null!;
 
@@ -32,26 +31,33 @@ namespace Game.Player
 	public struct PlayerData : IComponentData
 	{
 		public EntId ID { get; set; }
-		public int PlayerNumber { get; set; }
-		public Vector3 MoveDirection { get; set; }
-		public float MoveValue { get; set; }
-		public Vector3 LookDirection { get; set; }
+		public int PlayerNumber;
+		
+		//spells
+		public EntId AttackSpellID;
+		
+		
+		// Movement
+		public Vector3 MoveDirection;
+		public float MoveValue;
+		public Vector3 LookDirection;
 
 		public void Init()
 		{
 			PlayerNumber = -1;
 			MoveDirection = Vector2.zero;
 			MoveValue = 0f;
-			LookDirection = Vector2.zero;
+			LookDirection = Vector2.right;
+			
+			AttackSpellID = EntId.Invalid;
 		}
 	}
 
-	public interface IPlayer : Component<PlayerData>, 
-								IDynamicWorldEntity 
+	public interface IPlayer : Component<PlayerData>, IHierarchyEntity
 	{ }
 	
 	
-	public sealed class PlayerContainer : BasicCompContainer<PlayerData>
+	public sealed class PlayerContainer : BasicCompContainer<PlayerData>, OnCreateComponent<PlayerData>
 	{
 		protected Dictionary<int, EntId> PlayerIdByPlayerNumber = new Dictionary<int, EntId>();
 		
@@ -76,7 +82,14 @@ namespace Game.Player
 			}
 			return EntId.Invalid;
 		}
-		
+
+		public void OnCreateComponent(EntId newPlayerId)
+		{
+			Debug.Log($"PlayerContainer:  new Player({newPlayerId})");
+		}
+
+		public bool Active { get; set; } = true;
+		public SystemGroup Group { get; } = GameSystemsGroup.GAME_LOGIC_SYSTEM;
 	}
 
 
@@ -84,7 +97,7 @@ namespace Game.Player
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
-		[Inject] private readonly GameConfig GameConfig = null!;
+		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 
 
 
@@ -97,7 +110,7 @@ namespace Game.Player
 				EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerData.ID);
 				Rigidbody rigidbody = viewAtributes!.Get<Rigidbody>();
 				
-				float speed = GameConfig.PlayerSpeed * playerData.MoveValue * deltaTime;
+				float speed = GameplayConfig.PlayerAttributes.PlayerSpeed * playerData.MoveValue * deltaTime;
 				Vector3 force = playerData.MoveDirection * speed;
 				// rigidbody.MovePosition(rigidbody.transform.position + force);
 				rigidbody.AddForce(force, ForceMode.Acceleration );
