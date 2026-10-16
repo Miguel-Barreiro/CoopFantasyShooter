@@ -22,7 +22,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1 ",
         "com.miguel.xnode": "1.8.6"
       },
-      "hash": "4031254907cc96fd945eedc3d870abe1a5da7293"
+      "hash": "02eaae3f749550371d9f3e68c2e8176371d1a0e7"
     },
     "com.miguel.xnode": {
       "version": "https://github.com/Miguel-Barreiro/xNode.git",
@@ -139,6 +139,15 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.ai.navigation": {
+      "version": "2.0.16",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.ai": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.bindings.openimageio": {
       "version": "1.0.2",
       "depth": 1,
@@ -208,12 +217,10 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.40",
+      "version": "3.1.0",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.ext.nunit": "1.0.6"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {

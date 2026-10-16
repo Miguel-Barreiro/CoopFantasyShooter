@@ -3,9 +3,11 @@ using Core.Initialization;
 using Core.Model.ModelSystems;
 using Core.Zenject.Source.Main;
 using Game;
+using Game.Enemies;
 using Game.Input;
 using Game.Player;
 using Game.Spells;
+using Game.Spells.Bullet;
 using Global;
 using UnityEngine;
 
@@ -64,6 +66,7 @@ namespace Scenes.Play
 			BindInstance(new GameLogic());
 
 			BindInstance(new SpellSystem());
+			BindInstance(new BulletSystem());
 			
 			
 			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
@@ -80,9 +83,14 @@ namespace Scenes.Play
 			
 		}
 
+		
+		
 		public override void ResetComponentContainers(DataContainersController dataController)
 		{
-			
+			dataController.ResizeComponentsContainer<BulletData>(GameplayConfig.MaxBullets);
+			dataController.ResizeComponentsContainer<PlayerData>(GameplayConfig.MaxPlayers);
+			dataController.ResizeComponentsContainer<SpellData>(GameplayConfig.MaxSpells);
+			dataController.ResizeComponentsContainer<EnemyData>(GameplayConfig.MaxEnemies);
 		}
 	}
 }

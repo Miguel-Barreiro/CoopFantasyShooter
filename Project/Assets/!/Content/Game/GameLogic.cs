@@ -45,12 +45,13 @@ namespace Game
 								Vector3.up * 0.9f +
 								playerData.LookDirection.normalized * 
 								(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
-			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject);
+			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(playerData.LookDirection.normalized));
 			
 			Rigidbody rigidbody = view.Get<Rigidbody>();
-			rigidbody.MovePosition(position);
-			rigidbody.MoveRotation(Quaternion.LookRotation(playerData.LookDirection.normalized));
-			rigidbody.AddForce(playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed, ForceMode.VelocityChange);
+			// rigidbody.MovePosition(position);
+			// rigidbody.MoveRotation(Quaternion.LookRotation(playerData.LookDirection.normalized));
+			rigidbody.linearVelocity = playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed;
+			// rigidbody.AddForce(playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed, ForceMode.VelocityChange);
 
 			Fix damage = StatsSystem.GetStatValue(playerData.AttackSpellID, GameStatsContainer.Damage);
 			StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
@@ -71,6 +72,10 @@ namespace Game
 			return playerId;
 		}
 
+		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab, Vector3 position, Quaternion rotation)
+		{
+			return ViewEntitiesContainer.Spawn(prefab, entityId, position, rotation);
+		}
 		
 		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab)
 		{

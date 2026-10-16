@@ -12,6 +12,21 @@ namespace Global
 {
 	public class GameplayConfig : DataConfig
 	{
+		[SerializeField] private uint _maxBullets = 100;
+		public uint MaxBullets => _maxBullets;
+		
+		[SerializeField] private uint _maxEnemies = 100;
+		public uint MaxEnemies => _maxEnemies;
+	
+	
+		[SerializeField] private uint _maxPlayers = 4;
+		public uint MaxPlayers => _maxPlayers;
+		
+		[SerializeField] private uint _maxSpells = 100;
+		public uint MaxSpells => _maxSpells;
+
+		
+		
 		[SerializeField]
 		public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
 		[SerializeField]
@@ -58,7 +73,7 @@ namespace Global
 		[SerializeField] private PlayerView _PlayerPrefab;
 		public PlayerView PlayerPrefab => _PlayerPrefab;
 		
-		[Range(0, 10)]
+		[Range(0, 20)]
 		[SerializeField] private float _PlayerSpeed = 1;
 		public float PlayerSpeed => _PlayerSpeed * SPEED_MULT;
 		[Range(0, 2)]

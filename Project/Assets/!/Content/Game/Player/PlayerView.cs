@@ -13,6 +13,7 @@ namespace Game.Player
 	[RequireComponent(typeof(Rigidbody))]
 	public sealed class PlayerView: EntityView
 	{
+		
 		public Image HealthImage;
 		public Image CooldownImage;
 		public TMP_Text PlayerText;

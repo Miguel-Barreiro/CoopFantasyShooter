@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 6688029845449396030}
   - component: {fileID: 1097402767505042850}
   - component: {fileID: 7863242676612217391}
-  - component: {fileID: 4853263739034640988}
   - component: {fileID: 4445551662242658549}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FireBullet_fab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +49,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190594339630930961}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 73d1ac259c7f32a44927b4836c0f088e, type: 2}
   m_CullingMode: 0
@@ -91,27 +90,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &4853263739034640988
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190594339630930961}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4445551662242658549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +113,7 @@ GameObject:
   - component: {fileID: 6034224007300488929}
   - component: {fileID: 3994254801670497148}
   - component: {fileID: 6809831897802166176}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: YellowCenterProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +203,7 @@ GameObject:
   - component: {fileID: 3182782527505987595}
   - component: {fileID: 8374661933584242782}
   - component: {fileID: 1261890723774300406}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OutterGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +293,7 @@ GameObject:
   - component: {fileID: 2103000230645869886}
   - component: {fileID: 6311276006703562743}
   - component: {fileID: 871097802115400116}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FireSparkTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5171,7 +5149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4453318214233224964}
   - component: {fileID: 5220813005314407983}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5269,7 +5247,7 @@ GameObject:
   - component: {fileID: 2313393037088774233}
   - component: {fileID: 4198779604605822043}
   - component: {fileID: 1213312462200951826}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: InnerGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5358,7 +5336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 439661776975442955}
   - component: {fileID: 5250891219692128165}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5511,7 +5489,7 @@ GameObject:
   - component: {fileID: 5191857327545948429}
   - component: {fileID: 214168219563162881}
   - component: {fileID: 5252602803226819723}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BulletBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
