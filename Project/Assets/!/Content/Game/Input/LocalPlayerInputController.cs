@@ -20,6 +20,7 @@ namespace Game.Input
 
 		private PlayerInput _playerInput;
 		private InputAction _AttackPlayerInputAction;
+		private InputAction _playerMoveInputAction;
 
 
 		public int PlayerIndex => _playerInput.playerIndex;
@@ -28,6 +29,7 @@ namespace Game.Input
 		{
 			_playerInput = GetComponent<PlayerInput>();
 			_AttackPlayerInputAction = _playerInput.actions["Attack"];
+			_playerMoveInputAction = _playerInput.actions["Move"];
 		}
 
 		private void OnEnable()
@@ -36,7 +38,7 @@ namespace Game.Input
 			_playerInput.onDeviceLost += OnDeviceLost;
 			_playerInput.onDeviceRegained += OnDeviceRegained;
 			
-			_playerInput.actions["Move"].performed +=  OnMove;
+			_playerMoveInputAction.performed +=  OnMove;
 			_playerInput.actions["Look"].performed +=  OnLook;
 			_AttackPlayerInputAction.performed +=  OnAttack;
 			_playerInput.actions["Interact"].performed +=  OnInteract;
@@ -54,7 +56,8 @@ namespace Game.Input
 			_playerInput.onDeviceLost -= OnDeviceLost;
 			_playerInput.onDeviceRegained -= OnDeviceRegained;
 			
-			_playerInput.actions["Move"].performed -=  OnMove;
+			_playerMoveInputAction.performed -=  OnMove;
+
 			_playerInput.actions["Look"].performed -=  OnLook;
 			_AttackPlayerInputAction.performed -=  OnAttack;
 			_playerInput.actions["Interact"].performed -=  OnInteract;
@@ -73,6 +76,21 @@ namespace Game.Input
 				ShootPlayerEvent shootPlayerEvent = EventQueue.Trigger<ShootPlayerEvent>();
 				shootPlayerEvent.PlayerNumber = PlayerIndex;
 			}
+
+			Vector2 moveDirection = _playerMoveInputAction.ReadValue<Vector2>();
+			MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
+			Vector2 direction = moveDirection;
+			movePlayerEvent.PlayerNumber = PlayerIndex;
+			movePlayerEvent.Direction = direction;
+
+			if (moveDirection.magnitude < 0.2f)
+			{
+				movePlayerEvent.MoveValue = 0f;
+			} else
+			{
+				movePlayerEvent.MoveValue = 2f;
+			}
+
 		}
 
 		private void OnActionTriggered(InputAction.CallbackContext context)

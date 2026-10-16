@@ -17,3 +17,4 @@ MonoBehaviour:
   _CastingMultiplier: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
   _Damage: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
   _Health: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}
+  _Speed: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}

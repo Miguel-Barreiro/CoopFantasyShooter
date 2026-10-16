@@ -1,6 +1,7 @@
 using System;
 using Core.Model.Data;
 using FixedPointy;
+using Game.Enemies;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
@@ -33,6 +34,8 @@ namespace Global
 		public PlayerAttributes PlayerAttributes = new PlayerAttributes();
 		[SerializeField]
 		public BasicSpellsAttributes BasicSpellsAttributes = new BasicSpellsAttributes();
+		[SerializeField] 
+		public GamelogicAttributes GamelogicAttributes = new GamelogicAttributes();
 	}
 
 
@@ -62,6 +65,21 @@ namespace Global
 		public  SpellConfig BulletSpellConfig => _bulletSpellConfig;
 	}
 
+	[Serializable]
+	public sealed class GamelogicAttributes
+	{
+		[SerializeField]
+		[Range(1, 50)]
+		private float _EnemySpawnCooldown = 0.02f;
+		public float EnemySpawnCooldown => _EnemySpawnCooldown;
+
+		[SerializeField] private EnemyConfig _LowLevelEnemyConfig;
+		public EnemyConfig LowLevelEnemyConfig => _LowLevelEnemyConfig;
+
+		[SerializeField][Range(5, 35)] private float _EnemySpawnDistance = 20f;
+		public float EnemySpawnDistance => _EnemySpawnDistance;
+	}
+	
 
 	[Serializable]
 	public class PlayerAttributes

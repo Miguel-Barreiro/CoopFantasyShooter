@@ -110,7 +110,8 @@ namespace Game.Events
 
 		public int PlayerNumber = -1;
 		public Vector2 Direction = Vector2.zero;
-		
+		public float MoveValue = 0f;
+
 		public override void Execute()
 		{
 			if(PlayerNumber < 0)
@@ -126,7 +127,7 @@ namespace Game.Events
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
 
 			playerData.MoveDirection = new Vector3(Direction.x, 0f, Direction.y).normalized;
-			playerData.MoveValue = 1;
+			playerData.MoveValue = MoveValue;
 			
 			// Debug.Log($"Input MOVE (player{PlayerNumber} [{playerId}]) with direction {Direction}");
 		}

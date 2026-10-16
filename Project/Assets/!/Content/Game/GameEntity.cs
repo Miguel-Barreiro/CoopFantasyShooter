@@ -14,6 +14,8 @@ namespace Game
 		public EntId ID { get; set; }
 			
 		
+		public float NextLowEnemySpawnCooldown;
+		
 	
 		public void Init()
 		{

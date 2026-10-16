@@ -26,6 +26,10 @@ namespace Game
 		
 		[SerializeField] private StatConfig _Health;
 		public StatConfig Health => _Health;
+		
+		[SerializeField] private StatConfig _Speed;
+		public StatConfig Speed => _Speed;
+		
 
 	}
 }

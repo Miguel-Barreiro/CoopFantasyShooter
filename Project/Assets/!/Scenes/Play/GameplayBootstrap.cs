@@ -5,11 +5,14 @@ using Core.Zenject.Source.Main;
 using Game;
 using Game.Enemies;
 using Game.Input;
+using Game.Logic;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
 using Global;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Scenes.Play
 {
@@ -19,6 +22,8 @@ namespace Scenes.Play
 		// [SerializeField] private LocalMultiplayerInputManager LocalMultiplayerInputManager;
 		[SerializeField] private Camera Camera;
 		[SerializeField] private GameplayConfig GameplayConfig;
+		[SerializeField] private NavMeshSurface NavMeshSurface;
+		
 		
 		private GameplayInstaller _installer;
 
@@ -27,7 +32,8 @@ namespace Scenes.Play
 			if(_installer == null)
 				_installer = new GameplayInstaller(Container, 
 													Camera,
-													GameplayConfig);
+													GameplayConfig,
+													NavMeshSurface);
 
 			return _installer;
 		}
@@ -38,15 +44,16 @@ namespace Scenes.Play
 		// private readonly LocalMultiplayerInputManager LocalMultiplayerInputManager;
 		private readonly Camera Camera;
 		private readonly GameplayConfig GameplayConfig;
-
+		private readonly NavMeshSurface NavMeshSurface;
 		public GameplayInstaller(DiContainer container,
 								// LocalMultiplayerInputManager localMultiplayerInputManager, 
-								Camera camera, GameplayConfig gameplayConfig) 
+								Camera camera, GameplayConfig gameplayConfig, NavMeshSurface navMeshSurface) 
 			: base(container)
 		{
 			// LocalMultiplayerInputManager = localMultiplayerInputManager;
 			Camera = camera;
 			GameplayConfig = gameplayConfig;
+			NavMeshSurface = navMeshSurface;
 		}
 
 
@@ -68,11 +75,15 @@ namespace Scenes.Play
 			BindInstance(new SpellSystem());
 			BindInstance(new BulletSystem());
 			
+			BindInstance(new EnemySpawnerSystem());
+			BindInstance( new GameSetupSystem());
 			
 			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
 			
 			// BindInstance(LocalMultiplayerInputManager);
 			
+
+			BindInstance(NavMeshSurface);
 			
 			//DEBUG
 			BindInstance(new DebugGameplaySystem());

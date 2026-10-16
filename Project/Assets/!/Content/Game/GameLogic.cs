@@ -5,6 +5,7 @@ using Core.Model.Stats;
 using Core.Systems;
 using Core.View;
 using FixedPointy;
+using Game.Enemies;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
@@ -25,11 +26,20 @@ namespace Game
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
 
+		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
+		{
+			Vector3 spawnPosition = new Vector3(position.x, 0f, position.y);
+			EntId enemyId = new EnemyEntity().ID;
+			EntityViewAtributes view = AddView(enemyId, enemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity);
+			EnemyView enemyView = view.Get<EnemyView>();
+			// enemyView.SetSize(GameplayConfig.EnemyAttributes.Size);
 
-
+			
+			OverrideDefaultStats(enemyId, enemyConfig.Stats);
+			return enemyId;
+		}
 		
-		public const uint MAX_PLAYERS = 4;
-
+		
 
 		public EntId SpawnBullet(EntId playerId)
 		{
