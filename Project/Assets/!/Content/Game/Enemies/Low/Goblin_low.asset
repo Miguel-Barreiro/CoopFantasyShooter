@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Goblin_low
   _Stats:
   - _statConfig: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}
-    _value: 20
+    _value: 10
     _overrideType: 0
   - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
     _value: 2

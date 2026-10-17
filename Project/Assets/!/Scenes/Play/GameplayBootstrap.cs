@@ -78,6 +78,8 @@ namespace Scenes.Play
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance( new GameSetupSystem());
 			
+			BindInstance(new EnemySystem());
+			
 			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
 			
 			// BindInstance(LocalMultiplayerInputManager);

@@ -16,14 +16,14 @@ MonoBehaviour:
   name: FireBullet_spell
   _Stats:
   - _statConfig: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
-    _value: 0.25
+    _value: 0.2
     _overrideType: 0
   - _statConfig: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
-    _value: 3.5
+    _value: 3
     _overrideType: 0
   - _statConfig: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
     _value: 10
     _overrideType: 0
   - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
-    _value: 2
+    _value: 5
     _overrideType: 0
