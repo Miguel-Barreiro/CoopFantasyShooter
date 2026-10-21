@@ -1,6 +1,7 @@
 using Core.Events;
 using Core.Model;
 using Core.View;
+using FixedPointy;
 using Game.Player;
 using Game.Spells;
 using Global;
@@ -159,6 +160,21 @@ namespace Game.Events
 			Debug.Log($"Resetting Player {PlayerNumber}");
 		}
 	}
+	
+	public sealed class HitPlayerEvent : EntityEvent<HitPlayerEvent>
+	{
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		
+		// [Inject] private readonly PlayerContainer PlayerContainer = null!;
+		// [Inject] private readonly GameLogic GameLogic = null!;
 
+		public Fix Damage = 0f;
+		
+		public override void Execute()
+		{
+			StatsSystem.ChangeDepletedValue(EntityID, GameStatsContainer.Health, -Damage);
+		}
+	}
 	
 }

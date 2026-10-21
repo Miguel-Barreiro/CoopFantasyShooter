@@ -58,7 +58,15 @@ namespace Game.Logic
 					SpawnEnemyEvent spawnEnemyEvent = EntityEventQueue.Execute<SpawnEnemyEvent>(gameID);
 					spawnEnemyEvent.Position = spawnLocation;
 					spawnEnemyEvent.EnemyConfig = GameplayConfig.GamelogicAttributes.LowLevelEnemyConfig;
-
+					
+					// spawnEnemyEvent = EntityEventQueue.Execute<SpawnEnemyEvent>(gameID);
+					// spawnEnemyEvent.Position = spawnLocation;
+					// spawnEnemyEvent.EnemyConfig = GameplayConfig.GamelogicAttributes.LowLevelEnemyConfig;
+					//
+					// spawnEnemyEvent = EntityEventQueue.Execute<SpawnEnemyEvent>(gameID);
+					// spawnEnemyEvent.Position = spawnLocation;
+					// spawnEnemyEvent.EnemyConfig = GameplayConfig.GamelogicAttributes.LowLevelEnemyConfig;
+					
 					
 					StatsSystem.ResetDepletedValueToMax(gameID, GameStatsContainer.Cooldown);
 				}

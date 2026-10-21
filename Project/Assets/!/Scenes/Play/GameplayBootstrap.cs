@@ -3,6 +3,7 @@ using Core.Initialization;
 using Core.Model.ModelSystems;
 using Core.Zenject.Source.Main;
 using Game;
+using Game.BehaviourTree;
 using Game.Enemies;
 using Game.Input;
 using Game.Logic;
@@ -79,6 +80,8 @@ namespace Scenes.Play
 			BindInstance( new GameSetupSystem());
 			
 			BindInstance(new EnemySystem());
+			BindInstance(new BehaviourNodesContainer());
+			BindInstance(new BehaviourTreeSystem());
 			
 			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
 			
@@ -100,10 +103,20 @@ namespace Scenes.Play
 		
 		public override void ResetComponentContainers(DataContainersController dataController)
 		{
+
+			#region SPELLS
 			dataController.ResizeComponentsContainer<BulletData>(GameplayConfig.MaxBullets);
 			dataController.ResizeComponentsContainer<PlayerData>(GameplayConfig.MaxPlayers);
 			dataController.ResizeComponentsContainer<SpellData>(GameplayConfig.MaxSpells);
+			#endregion
+
+			
+			#region ENEMIES
 			dataController.ResizeComponentsContainer<EnemyData>(GameplayConfig.MaxEnemies);
+			dataController.ResizeComponentsContainer<BehaviourNodeData>(GameplayConfig.MaxEnemies);
+			dataController.ResizeComponentsContainer<BehaviourAgentData>(GameplayConfig.MaxEnemies);
+			#endregion
+
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Core.Model.Stats;
 using Core.Systems;
 using Core.View;
 using FixedPointy;
+using Game.BehaviourTree;
 using Game.Enemies;
 using Game.Player;
 using Game.Spells;
@@ -25,18 +26,33 @@ namespace Game
 		[Inject] private readonly IEntityHierarchySystem IEntityHierarchySystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
+		[Inject] private readonly BehaviourTreeContainer BehaviourTreeContainer = null!;
+
 
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
 		{
+			//TODO: we need to spawn enemies as premade clumps with potential positions premade.
+			//Also we need to pass in some special world positions in the area if possible
+			//to make interesting clumps of enemies. For now we will just spawn them in a random position around the player.
+			
 			Vector3 spawnPosition = new Vector3(position.x, 0f, position.y);
 			EntId enemyId = new EnemyEntity().ID;
 			EntityViewAtributes view = AddView(enemyId, enemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity);
 			EnemyView enemyView = view.Get<EnemyView>();
 			// enemyView.SetSize(GameplayConfig.EnemyAttributes.Size);
-
 			
+			AddBehaviourTree();
+
 			OverrideDefaultStats(enemyId, enemyConfig.Stats);
 			return enemyId;
+
+			void AddBehaviourTree()
+			{
+				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget);
+				findTargetNode.Cooldown = 0f;
+				ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
+				ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
+			}
 		}
 		
 		
@@ -78,6 +94,8 @@ namespace Game
 			PlayerView playerView = view.Get<PlayerView>();
 			playerView.SetSize(GameplayConfig.PlayerAttributes.Size);
 			ProCamera2D.AddCameraTarget(view.GameObject.transform);
+			
+			StatsSystem.SetBaseValue(playerId, GameStatsContainer.Health, GameplayConfig.PlayerAttributes.Health);
 			
 			return playerId;
 		}

@@ -4,6 +4,7 @@ using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
 using FixedPointy;
+using Game.BehaviourTree;
 using Unity.AI.Navigation;
 using UnityEngine.AI;
 using Zenject;
@@ -11,7 +12,8 @@ using Zenject;
 namespace Game.Enemies
 {
 	public sealed class EnemyEntity : Entity, 
-									IEnemy
+									IEnemy, 
+									IBehaviour
 	{
 		
 	}

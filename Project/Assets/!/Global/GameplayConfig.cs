@@ -26,18 +26,22 @@ namespace Global
 		[SerializeField] private uint _maxSpells = 100;
 		public uint MaxSpells => _maxSpells;
 
-		
-		
-		[SerializeField]
-		public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
-		[SerializeField]
-		public PlayerAttributes PlayerAttributes = new PlayerAttributes();
-		[SerializeField]
-		public BasicSpellsAttributes BasicSpellsAttributes = new BasicSpellsAttributes();
-		[SerializeField] 
-		public GamelogicAttributes GamelogicAttributes = new GamelogicAttributes();
+		[SerializeField] public EnemiesAttributes EnemiesAttributes = new EnemiesAttributes();
+		[SerializeField] public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
+		[SerializeField] public PlayerAttributes PlayerAttributes = new PlayerAttributes();
+		[SerializeField] public BasicSpellsAttributes BasicSpellsAttributes = new BasicSpellsAttributes();
+		[SerializeField] public GamelogicAttributes GamelogicAttributes = new GamelogicAttributes();
 	}
 
+	
+	[Serializable]
+	public class EnemiesAttributes
+	{
+		[SerializeField]
+		[Range(0.1f, 2f)]
+		private float _DistanceToAttack = 1f;
+		public float DistanceToAttack => _DistanceToAttack;
+	}
 
 	[Serializable]
 	public class EnviromentAttributes
@@ -97,5 +101,9 @@ namespace Global
 		[Range(0, 2)]
 		[SerializeField] private float _Size = 0.3f;
 		public float Size => _Size;
+		[SerializeField]
+		[Range(0, 200)]
+		private int _Health = 100;
+		public int Health => _Health;
 	}
 }

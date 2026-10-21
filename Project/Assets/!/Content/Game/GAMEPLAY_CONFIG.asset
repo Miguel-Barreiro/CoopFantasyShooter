@@ -18,6 +18,8 @@ MonoBehaviour:
   _maxEnemies: 100
   _maxPlayers: 4
   _maxSpells: 100
+  EnemiesAttributes:
+    _DistanceToAttack: 0.7
   EnviromentAttributes:
     _NavMeshPrefab: {fileID: 2949370897753341253, guid: 802f2eefdfe59f146947d8c144a51930, type: 3}
   PlayerAttributes:
@@ -26,10 +28,10 @@ MonoBehaviour:
     _Size: 0.3
   BasicSpellsAttributes:
     _BulletPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}
-    _BulletSize: 0.15
+    _BulletSize: 0.25
     _BulletSpeed: 70
     _bulletSpellConfig: {fileID: 11400000, guid: d7f43d8fe56409f40b79148b7ee6b60a, type: 2}
   GamelogicAttributes:
-    _EnemySpawnCooldown: 12
+    _EnemySpawnCooldown: 5
     _LowLevelEnemyConfig: {fileID: 11400000, guid: 7cbce3e295e451746b6a9d1a903a1198, type: 2}
-    _EnemySpawnDistance: 20
+    _EnemySpawnDistance: 9.37
