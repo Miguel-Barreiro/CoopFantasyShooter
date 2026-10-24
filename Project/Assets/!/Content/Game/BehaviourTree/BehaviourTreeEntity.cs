@@ -18,10 +18,15 @@ namespace Game.BehaviourTree
 		public EntId ID { get; set; }
 		
 		public EntId Target;
+		public EntId SupportTarget;
 
+		public float AttackFrameNorm;
+		
 		public void Init()
 		{
 			Target = EntId.Invalid;
+			SupportTarget = EntId.Invalid;
+			AttackFrameNorm = 0.5f;
 		}
 	}
 
@@ -141,6 +146,12 @@ namespace Game.BehaviourTree
 				uint currentNode = entityHeader.Indexes[0];
 				ref BehaviourNodeData mainNodeNodeData = ref BehaviourContainer.Components[currentNode];
 				EntId entityId = mainNodeNodeData.ID;
+				if (entityId == EntId.Invalid)
+				{
+					Debug.LogError($"BehaviourTreeSystem: Invalid entity ID for main node at index {i}. Skipping.");				
+					continue;
+				}
+
 				
 				ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(entityId);
 				
@@ -152,8 +163,6 @@ namespace Game.BehaviourTree
 				// BehaviourStatus behaviourStatus = ProcessNode(ref currentChildData);
 				
 				
-				
-				
 			}
 
 
@@ -161,6 +170,11 @@ namespace Game.BehaviourTree
 		public BehaviourStatus ProcessNode(EntId entityId, ref BehaviourNodeData childNodeData, 
 											ref BehaviourAgentData agentData, float deltaTime)
 		{
+			if (entityId == EntId.Invalid)
+			{
+				Debug.LogError($"BehaviourTreeSystem: Invalid entity ID for node({childNodeData.NodeType}). Skipping.");				
+				return BehaviourStatus.Failure;
+			}
 			return BehaviourNodesContainer.Nodes[childNodeData.NodeType].Process(entityId, ref childNodeData, ref agentData, deltaTime);
 		}
 

@@ -1,7 +1,8 @@
 fileFormatVersion: 2
-guid: 53cd66d468b758144b4c378423f07c5c
-PrefabImporter:
+guid: 997ad1a6803a8a845b8e316753c5911c
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 22100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,5 +11,5 @@ AssetOrigin:
   productId: 292803
   packageName: Low Poly Animated Fantasy Creatures
   packageVersion: 2.05
-  assetPath: Assets/polyperfect/Low Poly Animated Fantasy Creatures/_Prefabs/Creatures/goblin_thief_male.prefab
+  assetPath: Assets/polyperfect/Low Poly Animated Fantasy Creatures/Controllers/CTL_Goblin_Shaman_Female.overrideController
   uploadId: 821866

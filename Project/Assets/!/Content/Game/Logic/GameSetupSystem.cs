@@ -23,6 +23,10 @@ namespace Game.Logic
 			StatsSystem.SetBaseValue(gameEntity.ID, 
 									GameStatsContainer.Cooldown, 
 									GameplayConfig.GamelogicAttributes.EnemySpawnCooldown);
+			
+			StatsSystem.SetDepletedValue(gameEntity.ID, 
+									GameStatsContainer.Cooldown, 
+									3f);
 
 			Debug.Log("GAME START");
 		}

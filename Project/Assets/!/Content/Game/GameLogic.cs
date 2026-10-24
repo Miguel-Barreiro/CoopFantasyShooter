@@ -26,6 +26,7 @@ namespace Game
 		[Inject] private readonly IEntityHierarchySystem IEntityHierarchySystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
+		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
 		[Inject] private readonly BehaviourTreeContainer BehaviourTreeContainer = null!;
 
 
@@ -42,16 +43,45 @@ namespace Game
 			// enemyView.SetSize(GameplayConfig.EnemyAttributes.Size);
 			
 			AddBehaviourTree();
+			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyId);
+			agentData.AttackFrameNorm = enemyConfig.AttackFrameNormalizedTime;
 
 			OverrideDefaultStats(enemyId, enemyConfig.Stats);
 			return enemyId;
 
-			void AddBehaviourTree()
+			
+			
+			void AddGoblinPawnBehaviourTree()
 			{
 				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget);
 				findTargetNode.Cooldown = 0f;
 				ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
 				ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
+				
+			}
+			void AddGoblinShamanBehaviourTree()
+			{
+				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget);
+				findTargetNode.Cooldown = 0f;
+				// ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
+				ref BehaviourNodeData moveAwayFromTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveAwayFromTarget);
+				ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget);
+				findSupportTargetNode.Cooldown = 0f;
+				ref BehaviourNodeData castSupportSpell = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.CastSupportTarget);
+				// ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
+			}
+			
+			void AddBehaviourTree()
+			{
+				switch (enemyConfig.BehaviourType)
+				{
+					case EnemyBehaviourType.GoblinPawn:
+						AddGoblinPawnBehaviourTree();
+						break;
+					case EnemyBehaviourType.GoblinSupport:
+						AddGoblinShamanBehaviourTree();
+						break;
+				}
 			}
 		}
 		
@@ -145,7 +175,16 @@ namespace Game
 						break;
 					
 				}
-				StatsSystem.ResetDepletedValueToMax(newEntityID, statOverride.StatConfig);
+
+				switch (statOverride.depletedValueOverride)
+				{
+					case DepletedValueOverrideType.MaxValue:
+						StatsSystem.ResetDepletedValueToMax(newEntityID, statOverride.StatConfig);
+						break;
+					case DepletedValueOverrideType.MinValue:
+						StatsSystem.ResetDepletedValueToMin(newEntityID, statOverride.StatConfig);
+						break;
+				}
 			}
 		}
 	}

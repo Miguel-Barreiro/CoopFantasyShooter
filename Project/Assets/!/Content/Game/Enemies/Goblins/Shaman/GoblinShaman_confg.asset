@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e4b2fbfe2140538176ce7c3809cd80, type: 3}
+  m_Name: GoblinShaman_confg
+  m_EditorClassIdentifier: GameAssemblyDef::Game.Enemies.EnemyConfig
+  Id: rHUieGLXSnk
+  name: GoblinShaman_confg
+  _Stats:
+  - _statConfig: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}
+    _value: 20
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
+    _value: 30
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}
+    _value: 2.07
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
+    _value: 22
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
+    _value: 15
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: f405d0d507970da4c96156544e11a046, type: 2}
+    _value: 1
+    _overrideType: 0
+    _depletedValueOverride: 0
+  _EnemyPrefab: {fileID: 5536831061415052667, guid: 40e932b76624a574998a1dc7435e33af, type: 3}
+  _behaviourType: 2
+  _AttackFrameNormalizedTime: 0.5

@@ -30,6 +30,7 @@ namespace Game.Player
 		[Inject] private readonly BasicCompContainer<SpellData> SpellContainer = null!;
 
 
+		private readonly int DIE_ANIMATION = Animator.StringToHash("Die");
 		private readonly int SPEEDX = Animator.StringToHash("SpeedX");
 		private readonly int SPEEDZ = Animator.StringToHash("SpeedZ");
 
@@ -48,6 +49,17 @@ namespace Game.Player
 
 		private void Update()
 		{
+			UI.transform.LookAt(Camera.transform);
+			if(StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Health) <= 0f)
+			{
+				_animator.SetTrigger(DIE_ANIMATION);
+				string playerTextText = $"DEAD";
+				PlayerText.text = playerTextText;
+				PlayerText.gameObject.SetActive(true);
+				CooldownImage.gameObject.SetActive(false);
+				return;
+			}
+			
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(EntityID);
 
 			Vector3 lookDirection = playerData.LookDirection.normalized;
@@ -96,7 +108,6 @@ namespace Game.Player
 
 			HealthImage.fillAmount = (float) StatsSystem.GetStatDepletedPercentage(EntityID, GameStatsContainer.Health);
 			
-			UI.transform.LookAt(Camera.transform);
 		}
 
 		private void OnDrawGizmos()

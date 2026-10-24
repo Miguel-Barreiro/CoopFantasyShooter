@@ -2,6 +2,7 @@ using System;
 using Core.Model.Data;
 using FixedPointy;
 using Game.Enemies;
+using Game.Enemies.EnenmySpawners;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
@@ -39,8 +40,15 @@ namespace Global
 	{
 		[SerializeField]
 		[Range(0.1f, 2f)]
-		private float _DistanceToAttack = 1f;
-		public float DistanceToAttack => _DistanceToAttack;
+		private float _MinDistanceToTarget = 0.3f;
+		public float MinDistanceToTarget => _MinDistanceToTarget;
+		
+		[SerializeField]
+		[Range(3f, 25f)]
+		private float _SafeDistanceToTarget = 10f;
+		public float SafeDistanceToTarget => _SafeDistanceToTarget;
+
+		
 	}
 
 	[Serializable]
@@ -73,13 +81,17 @@ namespace Global
 	public sealed class GamelogicAttributes
 	{
 		[SerializeField]
-		[Range(1, 50)]
+		[Range(1, 350)]
 		private float _EnemySpawnCooldown = 0.02f;
 		public float EnemySpawnCooldown => _EnemySpawnCooldown;
 
 		[SerializeField] private EnemyConfig _LowLevelEnemyConfig;
 		public EnemyConfig LowLevelEnemyConfig => _LowLevelEnemyConfig;
 
+		[SerializeField] private EnemySpawnerConfig _LowLevelSpawnConfig;
+		public EnemySpawnerConfig LowLevelSpawnConfig => _LowLevelSpawnConfig;
+
+		
 		[SerializeField][Range(5, 35)] private float _EnemySpawnDistance = 20f;
 		public float EnemySpawnDistance => _EnemySpawnDistance;
 	}

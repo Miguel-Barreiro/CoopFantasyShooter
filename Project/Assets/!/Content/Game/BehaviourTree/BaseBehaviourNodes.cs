@@ -16,6 +16,9 @@ namespace Game.BehaviourTree
 		FindTarget = 2,
 		FirstInPriority = 3, 
 		AttackTarget = 4,
+		MoveAwayFromTarget = 5,
+		CastSupportTarget = 6,
+		FindSupportTarget = 7
 	}
 	
 	
@@ -27,13 +30,16 @@ namespace Game.BehaviourTree
 		{
 			Nodes = new Dictionary<NodeType, IBehaviourNode>()
 			{
-				{ NodeType.Sequence, new SequenceNode() },
-				{ NodeType.MoveToTarget, new MoveToTargetNode() },
-				{ NodeType.FindTarget, new ChoseTargetNode() },
-				{ NodeType.FirstInPriority, new PriorityNode() },
-				{ NodeType.AttackTarget, new SimpleAttackNode() }
-			};
-		}
+				{ NodeType.Sequence, new SequenceNode() },         					// 0
+				{ NodeType.MoveToTarget, new MoveToTargetNode() }, 					// 1
+				{ NodeType.FindTarget, new ChoseTargetNode() },    					// 2
+				{ NodeType.FirstInPriority, new PriorityNode() },  					// 3
+				{ NodeType.AttackTarget, new SimpleAttackNode() }, 					// 4
+				{ NodeType.MoveAwayFromTarget, new MoveAwayFromTargetNode() },      // 5
+				{ NodeType.CastSupportTarget, new SupportCastNode() },              // 6
+				{ NodeType.FindSupportTarget, new FindSupportTargetNode() }         // 7
+			};                                                                      
+		}                                                                           
 
 		public readonly Dictionary<NodeType, IBehaviourNode> Nodes;
 		
@@ -120,7 +126,13 @@ namespace Game.BehaviourTree
 			
 			while (nodeData.currentChild < nodeData.childrenCount)
 			{
-				ref BehaviourNodeData childNodeData = ref GetChild(ref header, nodeData.children[nodeData.currentChild]);
+				uint childOrder = nodeData.children[nodeData.currentChild];
+				if(childOrder == uint.MaxValue || childOrder == 0)
+				{
+					Debug.LogError($"Child order is invalid for entity {entityId}");
+					return BehaviourStatus.Failure;
+				}
+				ref BehaviourNodeData childNodeData = ref GetChild(ref header, childOrder);
 				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime);
 				switch (status)
 				{

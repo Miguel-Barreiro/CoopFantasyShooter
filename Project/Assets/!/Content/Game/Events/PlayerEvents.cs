@@ -1,4 +1,5 @@
 using Core.Events;
+using Core.Initialization;
 using Core.Model;
 using Core.View;
 using FixedPointy;
@@ -174,6 +175,34 @@ namespace Game.Events
 		public override void Execute()
 		{
 			StatsSystem.ChangeDepletedValue(EntityID, GameStatsContainer.Health, -Damage);
+		}
+	}
+
+	public sealed class OnAllPlayersDeadEvent : Event<OnAllPlayersDeadEvent>
+	{
+		[Inject] private readonly ScenesController ScenesController = null!;
+		
+		public override void Execute()
+		{
+			Debug.Log("All players are dead. Switching to main menu.");
+			ScenesController.SwitchScene(SceneNames.MAIN_MENU);
+		}
+	}
+	
+	
+	public sealed class OnPlayerDeathEvent : EntityEvent<OnPlayerDeathEvent>
+	{
+		[Inject] private readonly PlayerContainer PlayerContainer = null!;
+		[Inject] private readonly GameLogic GameLogic = null!;
+		[Inject] private readonly ScenesController ScenesController = null!;
+
+
+		public override void Execute()
+		{
+			// ScenesController.SwitchScene(SceneNames.MAIN_MENU);
+			// ref PlayerData playerData = ref PlayerContainer.GetComponent(EntityID);
+			// Debug.Log($"Player {playerData.PlayerNumber} has died.");
+			// GameLogic.RemovePlayer(playerData.PlayerNumber);
 		}
 	}
 	

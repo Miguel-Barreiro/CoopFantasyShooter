@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Core.Events;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
+using FixedPointy;
+using Game.Events;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -98,11 +101,15 @@ namespace Game.Player
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly EventQueue EventQueue = null!;
 
-
-
+		
 		public void UpdateComponents(float deltaTime)
 		{
+			bool allPlayersDead = true;
+			
 			uint topIndex = PlayerContainer.TopEmptyIndex;
 			for (int i = 0; i < topIndex; i++)
 			{
@@ -115,13 +122,25 @@ namespace Game.Player
 				// rigidbody.MovePosition(rigidbody.transform.position + force);
 				rigidbody.AddForce(force, ForceMode.Acceleration );
 
-				
+				Fix health = StatsSystem.GetStatDepletedValue(playerData.ID, GameStatsContainer.Health);
+				if(health > 0f)
+				{
+					allPlayersDead = false;
+				} else
+				{
+					rigidbody.linearVelocity = Vector3.zero;
+					rigidbody.angularVelocity = Vector3.zero;
+					EntityEventQueue.Execute<OnPlayerDeathEvent>(playerData.ID);
+				}
+
 				// rigidbody.linearVelocity = force;
 				// rigidbody.Move(rigidbody.transform.position + force, rigidbody.transform.rotation);
 				// rigidbody.transform.SetPositionAndRotation(rigidbody.transform.position + force, rigidbody.transform.rotation);
 				// Debug.Log($"Moving Player {playerData.PlayerNumber} with direction {playerData.MoveDirection} and move value {speed}");
 				
 			}
+			if(allPlayersDead && PlayerContainer.TopEmptyIndex > 0)
+				EventQueue.Execute<OnAllPlayersDeadEvent>();
 		}
 
 		public bool Active { get; set; } = true;

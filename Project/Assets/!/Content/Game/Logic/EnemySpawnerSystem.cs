@@ -51,13 +51,12 @@ namespace Game.Logic
 					double y = Math.Sin(range * Mathf.Deg2Rad);
 					Vector2 spawnDirection = new Vector2((float)x, (float)y).normalized;
 
-
 					Vector2 deltaSpawn = spawnDirection * GameplayConfig.GamelogicAttributes.EnemySpawnDistance;
 					Vector2 spawnLocation = averagePosition + deltaSpawn;
 
 					SpawnEnemyEvent spawnEnemyEvent = EntityEventQueue.Execute<SpawnEnemyEvent>(gameID);
-					spawnEnemyEvent.Position = spawnLocation;
-					spawnEnemyEvent.EnemyConfig = GameplayConfig.GamelogicAttributes.LowLevelEnemyConfig;
+					spawnEnemyEvent.Position = spawnLocation;                                         
+					spawnEnemyEvent.EnemySpawnerConfig = GameplayConfig.GamelogicAttributes.LowLevelSpawnConfig;
 					
 					// spawnEnemyEvent = EntityEventQueue.Execute<SpawnEnemyEvent>(gameID);
 					// spawnEnemyEvent.Position = spawnLocation;

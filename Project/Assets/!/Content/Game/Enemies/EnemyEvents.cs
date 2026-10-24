@@ -1,11 +1,13 @@
 using Core.Events;
 using Core.Model;
 using Core.View;
+using Game.Enemies.EnenmySpawners;
 using Game.Events;
 using Game.Logic;
 using Game.Player;
 using Global;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Game.Enemies
@@ -18,13 +20,29 @@ namespace Game.Enemies
 
 
 		public Vector2 Position;
-		public EnemyConfig EnemyConfig;
+		public EnemySpawnerConfig EnemySpawnerConfig;
+		
+		private readonly Vector2[] SpawnOffsets = new Vector2[]
+		{
+			Vector2.zero,
+			Vector2.right * 0.4f,
+			Vector2.one * 0.4f, 
+			Vector2.left * 0.4f,
+			Vector2.up * 0.4f,
+			Vector2.down * 0.4f,
+			-Vector2.one * 0.4f, 
+		};
 		
 		public override void Execute()
 		{
-			GameLogic.SpawnEnemy(Position, EnemyConfig);
-			GameLogic.SpawnEnemy(Position + Vector2.right * 0.4f, EnemyConfig);
-			GameLogic.SpawnEnemy(Position + Vector2.one * 0.4f , EnemyConfig);
+			uint spawnOffsetIndex = 0;
+			foreach (EnemyConfig enemyConfig in EnemySpawnerConfig.Enemies)
+			{
+				Vector2 spawnPosition = Position + SpawnOffsets[spawnOffsetIndex % (uint)SpawnOffsets.Length];
+				GameLogic.SpawnEnemy(spawnPosition, enemyConfig);
+
+				spawnOffsetIndex++;
+			}
 		}
 	}
 	
@@ -38,18 +56,19 @@ namespace Game.Enemies
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
 		
-		private readonly Collider[] ResultsCache = new Collider[10];
+		private readonly Collider[] ResultsCache = new Collider[15];
 		
 		public override void Execute()
 		{
 			EntityViewAtributes enemyViewAttributes = ViewEntitiesContainer.GetEntityViewAtributes(EntityID);
 			EnemyView enemyView = enemyViewAttributes!.Get<EnemyView>();
-			
+			NavMeshAgent navMeshAgent = enemyViewAttributes.Get<NavMeshAgent>();
+			float attackDistance = (float) StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.AttackDistance);
 			Vector3 direction = enemyView.transform.forward;
 			direction.y = 0f;
 			
-			Vector3 position = enemyView.transform.position + direction * 0.3f;
-			int size = Physics.OverlapSphereNonAlloc(position, 0.5f, ResultsCache);
+			Vector3 position = enemyView.transform.position + direction * (0.1f + navMeshAgent.radius);
+			int size = Physics.OverlapSphereNonAlloc(position, attackDistance, ResultsCache);
 			if(size > 0)
 			{
 				for (int j = 0; j < size; j++)

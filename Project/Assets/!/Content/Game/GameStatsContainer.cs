@@ -8,6 +8,7 @@ namespace Game
 	public sealed class GameStatsContainer : DataTable
 	{
 
+		
 		[SerializeField] private StatConfig _CastingTime;
 		public StatConfig CastingTime => _CastingTime;
 
@@ -27,9 +28,32 @@ namespace Game
 		[SerializeField] private StatConfig _Health;
 		public StatConfig Health => _Health;
 		
+		[SerializeField] private StatConfig _TurningSpeed;
+		public StatConfig TurningSpeed => _TurningSpeed;
+		
+		[SerializeField] private StatConfig _Acerelation;
+		public StatConfig Acerelation => _Acerelation;
+		
+		
 		[SerializeField] private StatConfig _Speed;
 		public StatConfig Speed => _Speed;
 		
+		
+		[SerializeField] private StatConfig _AttackDistance;
+		public StatConfig AttackDistance => _AttackDistance;
+		
+		[SerializeField] private StatConfig _AttackDuration;
+		public StatConfig AttackDuration => _AttackDuration;
 
+		[SerializeField] private StatConfig _AttackChargeDuration;
+		public StatConfig AttackChargeDuration => _AttackChargeDuration;
+		
+		
+		[SerializeField] private StatConfig _AttackRate;
+		public StatConfig AttackRate => _AttackRate;
+
+		[SerializeField] private StatConfig _CastDistance;
+		public StatConfig CastDistance => _CastDistance;
+		
 	}
 }

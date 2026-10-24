@@ -17,4 +17,11 @@ MonoBehaviour:
   _CastingMultiplier: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
   _Damage: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
   _Health: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}
+  _TurningSpeed: {fileID: 11400000, guid: fb01428c637c0f64ba6a1db38821a6aa, type: 2}
+  _Acerelation: {fileID: 11400000, guid: 3ff85850d73c8b54287b798c54e6c55c, type: 2}
   _Speed: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}
+  _AttackDistance: {fileID: 11400000, guid: f405d0d507970da4c96156544e11a046, type: 2}
+  _AttackDuration: {fileID: 11400000, guid: 6e3fb27630bd3064695397e8af453d02, type: 2}
+  _AttackChargeDuration: {fileID: 11400000, guid: d1a51c1605a303d40b02b800529cfd45, type: 2}
+  _AttackRate: {fileID: 11400000, guid: 3155107b904d16d4182c313c79a4e336, type: 2}
+  _CastDistance: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
