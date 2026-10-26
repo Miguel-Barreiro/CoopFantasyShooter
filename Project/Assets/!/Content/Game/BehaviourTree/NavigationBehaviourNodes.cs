@@ -33,6 +33,10 @@ namespace Game.BehaviourTree
 			Transform transform = viewAtributes!.GameObject!.transform;
 			NavMeshAgent navMeshAgent = viewAtributes.Get<NavMeshAgent>()!;
 			EnemyView enemyView = viewAtributes.Get<EnemyView>()!;
+			if (!navMeshAgent.isOnNavMesh)
+			{
+				return BehaviourStatus.Failure;
+			}
 
 			EntityViewAtributes targetViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(agentData.Target)!;
 			Vector3 targetPosition = targetViewAtributes!.GameObject!.transform.position;
@@ -72,7 +76,10 @@ namespace Game.BehaviourTree
 			NavMeshAgent navMeshAgent = viewAtributes!.Get<NavMeshAgent>()!;
 			
 			navMeshAgent!.velocity = Vector3.zero;
-			navMeshAgent.ResetPath();
+			if (navMeshAgent.isOnNavMesh)
+			{
+				navMeshAgent.ResetPath();
+			}
 		}
 
 	}
@@ -91,6 +98,10 @@ namespace Game.BehaviourTree
 			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId)!;
 			Transform transform = viewAtributes!.GameObject!.transform;
 			NavMeshAgent navMeshAgent = viewAtributes.Get<NavMeshAgent>()!;
+			if (!navMeshAgent.isOnNavMesh)
+			{
+				return BehaviourStatus.Failure;
+			}
 
 			EntityViewAtributes targetViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(agentData.Target)!;
 			Vector3 targetPosition = targetViewAtributes!.GameObject!.transform.position;

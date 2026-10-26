@@ -15,7 +15,11 @@ namespace Game.Enemies
 									IEnemy, 
 									IBehaviour
 	{
-		
+		public EnemyEntity()
+		{
+			ref BehaviourAgentData agentData = ref GetComponent<BehaviourAgentData>();
+			agentData.Enable = true;
+		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]

@@ -62,6 +62,11 @@ namespace Game.BehaviourTree
 			
 			enemyView.SetCast(targetPosition, false);
 
+			if (!navMeshAgent.isOnNavMesh)
+			{
+				return BehaviourStatus.Failure;
+			}
+
 			navMeshAgent.speed = (float) StatsSystem.GetStatDepletedValue(entityId, GameStatsContainer.Speed);
 			navMeshAgent.SetDestination(targetPosition);
 			transform.LookAt(targetPosition);

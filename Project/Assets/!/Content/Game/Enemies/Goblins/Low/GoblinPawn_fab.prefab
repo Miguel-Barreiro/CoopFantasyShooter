@@ -728,6 +728,7 @@ MonoBehaviour:
   SupportImage: {fileID: 9105802320590083743}
   UI: {fileID: 5196416418651895041}
   Animator: {fileID: 2193995549262047777}
+  Collider: {fileID: 1955032228891765515}
 --- !u!195 &3196989847939109793
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -40,6 +40,8 @@ namespace Game
 			EntId enemyId = new EnemyEntity().ID;
 			EntityViewAtributes view = AddView(enemyId, enemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity);
 			EnemyView enemyView = view.Get<EnemyView>();
+
+			enemyView.NavMeshAgent.Warp(spawnPosition);
 			// enemyView.SetSize(GameplayConfig.EnemyAttributes.Size);
 			
 			AddBehaviourTree();
@@ -50,7 +52,7 @@ namespace Game
 
 			OverrideDefaultStats(enemyId, enemyConfig.Stats);
 			
-			enemyView.TriggerSpawning();
+			// enemyView.TriggerSpawning();
 			
 			return enemyId;
 

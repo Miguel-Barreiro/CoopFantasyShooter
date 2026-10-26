@@ -13,7 +13,7 @@ namespace Game.Enemies
 {
 	[RequireComponent(typeof(NavMeshAgent))]
 	
-	public class EnemyView : BasicEntityView
+	public class EnemyView : EntityView
 	{
 		
 		private int IS_RUNNING_ANIM = UnityEngine.Animator.StringToHash("isRunning");
@@ -31,7 +31,7 @@ namespace Game.Enemies
 		public Image SupportImage;
 		public RectTransform UI;
 		public Animator Animator;
-		
+		public Collider Collider;
 		public NavMeshAgent NavMeshAgent { get; private set; }
 
 
@@ -80,7 +80,10 @@ namespace Game.Enemies
 			UI.gameObject.SetActive(true);
 			
 			NavMeshAgent.enabled = true;
-			NavMeshAgent.ResetPath();
+			if (NavMeshAgent.isOnNavMesh)
+			{
+				NavMeshAgent.ResetPath();
+			}
 			float range = (float) RandomSystem.Range(0f, 1f);
 			Animator.SetFloat(RANDOM_ANIM, range);
 			
@@ -92,6 +95,39 @@ namespace Game.Enemies
 			SetAttack(Vector3.zero, false, 0f);
 			SetSupport(EntId.Invalid, false);
 			
+		}
+
+		public override bool IsActive { get => gameObject.activeSelf; }
+		public override void ActivateGameObject()
+		{
+			
+			gameObject.SetActive(true);
+			UI.gameObject.SetActive(true);
+			Collider.enabled = true;
+			
+			float range = (float) RandomSystem.Range(0f, 1f);
+			Animator.SetFloat(RANDOM_ANIM, range);
+			
+			Animator.SetBool(IS_RUNNING_ANIM, false);
+			Animator.SetBool(IS_ATTACKING_ANIM, false);
+			Animator.SetBool(IS_CASTING_ANIM, false);
+			Animator.SetBool(IS_DEAD_ANIM, false);
+			SetAttack(Vector3.zero, false, 0f);
+			SetSupport(EntId.Invalid, false);
+
+			NavMeshAgent.enabled = true;
+			if (NavMeshAgent.isOnNavMesh)
+			{
+				NavMeshAgent.ResetPath();
+			}
+
+		}
+		public override void DeactivateGameObject()
+		{
+			NavMeshAgent.ResetPath();
+			NavMeshAgent.enabled = false;
+			Collider.enabled = false;
+			gameObject.SetActive(false);
 		}
 
 
