@@ -198,9 +198,9 @@ namespace Game
 			DeadBodyEntity deadBodyEntity = new DeadBodyEntity();
 			ViewEntitiesContainer.SwitchOwnership(enemyID, deadBodyEntity.ID);
 
-			// //TODO:we should not need to disable the agentData, but for now we will do this to avoid errors.
-			// ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyID);
-			// agentData.Enable = false;
+			// Entity destruction is deferred, so the behaviour tree would still run this frame without a view.
+			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyID);
+			agentData.Enable = false;
 			EntitiesContainer.DestroyEntity(enemyID);
 			
 			return deadBodyEntity.ID;
