@@ -19,53 +19,23 @@ namespace Game.Spells.Bullet
 			Rigidbody = GetComponent<Rigidbody>();
 		}
 
-		// private void Update()
-		// {
-		// 	RaycastHit[] raycastHits = Physics.SphereCastAll(transform.position, 0.1f, 
-		// 														Rigidbody.linearVelocity.normalized, 
-		// 														Rigidbody.linearVelocity.magnitude * Time.deltaTime);
-		// 	
-		// 	if(raycastHits.Length > 0)
-		// 	{
-		// 		foreach(RaycastHit hit in raycastHits)
-		// 		{
-		// 			EnemyView enemyView = hit.collider.gameObject.GetComponent<EnemyView>();
-		// 			
-		// 			OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(EntityID);
-		// 			
-		// 			if(enemyView != null)
-		// 				onSpellHitEvent.EnemyID = enemyView.EntityID;
-		// 			else
-		// 				onSpellHitEvent.EnemyID = EntId.Invalid;
-		// 		}
-		// 	}
-		// }
+		public override void Reset()
+		{
+			base.Reset();
+			Rigidbody.linearVelocity = Vector3.zero;
+			Rigidbody.angularVelocity = Vector3.zero;
+		}
 
-		// public void Fire()
-		// {
-		// 	
-		// }
-
-		// private void OnCollisionEnter(Collision collision)
-		// {
-		// 	EnemyView enemyView = collision.gameObject.GetComponent<EnemyView>();
-		// 	OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(EntityID);
-		// 	
-		// 	if(enemyView != null)
-		// 		onSpellHitEvent.EnemyID = enemyView.EntityID;
-		// 	else
-		// 		onSpellHitEvent.EnemyID = EntId.Invalid;
-		// }
-		//
-		// private void OnTriggerEnter(Collider other) 
-		// { 
-		// 	EnemyView enemyView = other.gameObject.GetComponent<EnemyView>();
-		// 	OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(EntityID);
-		// 	
-		// 	if(enemyView != null)
-		// 		onSpellHitEvent.EnemyID = enemyView.EntityID;
-		// 	else
-		// 		onSpellHitEvent.EnemyID = EntId.Invalid;
-		// } 
+		public override bool IsActive { get => gameObject.activeSelf; }
+		public override void ActivateGameObject()
+		{
+			gameObject.SetActive(true);
+		}
+		public override void DeactivateGameObject()
+		{
+			gameObject.SetActive(false);
+			Rigidbody.linearVelocity = Vector3.zero;
+			Rigidbody.angularVelocity = Vector3.zero;
+		}
 	}
 }

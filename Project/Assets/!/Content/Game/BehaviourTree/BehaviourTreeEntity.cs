@@ -21,9 +21,12 @@ namespace Game.BehaviourTree
 		public EntId SupportTarget;
 
 		public float AttackFrameNorm;
+
+		public bool Enable;
 		
 		public void Init()
 		{
+			Enable = true;
 			Target = EntId.Invalid;
 			SupportTarget = EntId.Invalid;
 			AttackFrameNorm = 0.5f;
@@ -78,8 +81,6 @@ namespace Game.BehaviourTree
 	}
 
 	public interface IBehaviour : Component<BehaviourNodeData> , IBehaviourAgent { }
-	
-
 	
 	public sealed class BehaviourTreeContainer : MultipleComponentEntityContainer<BehaviourNodeData>
 	{
@@ -146,6 +147,10 @@ namespace Game.BehaviourTree
 				uint currentNode = entityHeader.Indexes[0];
 				ref BehaviourNodeData mainNodeNodeData = ref BehaviourContainer.Components[currentNode];
 				EntId entityId = mainNodeNodeData.ID;
+				ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(entityId);
+				if(agentData.Enable == false) {
+					continue;
+				}
 				if (entityId == EntId.Invalid)
 				{
 					Debug.LogError($"BehaviourTreeSystem: Invalid entity ID for main node at index {i}. Skipping.");				
@@ -153,7 +158,6 @@ namespace Game.BehaviourTree
 				}
 
 				
-				ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(entityId);
 				
 				ProcessNode(entityId, ref mainNodeNodeData, ref agentData, deltaTime);
 				

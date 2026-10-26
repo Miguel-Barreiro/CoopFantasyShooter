@@ -41,15 +41,13 @@ namespace Game.Enemies
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
-
+		[Inject] private readonly GameLogic GameLogic = null!;
 
 		
 		public void OnCreateComponent(EntId newComponentId)
 		{
 			EntityViewAtributes entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(newComponentId);
 			EnemyContainer.GetComponent(newComponentId).NavMeshAgent = entityViewAtributes!.Get<NavMeshAgent>();
-			
-
 			
 		}
 
@@ -64,10 +62,8 @@ namespace Game.Enemies
 				Fix health = StatsSystem.GetStatDepletedValue(enemyID, GameStatsContainer.Health);
 				if(health <= 0)
 				{
-					EntitiesContainer.DestroyEntity(enemyID);
+					GameLogic.KillEnemy(enemyID);
 				}
-
-
 			}
 		}
 		

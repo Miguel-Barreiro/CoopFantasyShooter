@@ -11,7 +11,7 @@ namespace Game.Player
 {
 	[RequireComponent(typeof(Collider))]
 	[RequireComponent(typeof(Rigidbody))]
-	public sealed class PlayerView: EntityView
+	public sealed class PlayerView: BasicEntityView
 	{
 		
 		public Image HealthImage;

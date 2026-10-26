@@ -87,6 +87,8 @@ namespace Scenes.Play
 			
 			// BindInstance(LocalMultiplayerInputManager);
 			
+			
+			BindInstance(new DeadBodyViewSystem());
 
 			BindInstance(NavMeshSurface);
 			

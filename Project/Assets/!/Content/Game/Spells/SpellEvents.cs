@@ -1,6 +1,8 @@
 using Core.Events;
 using Core.Model;
+using Core.View;
 using FixedPointy;
+using Game.Enemies;
 using Zenject;
 
 namespace Game.Spells
@@ -61,6 +63,10 @@ namespace Game.Spells
 	{
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly EntitiesContainer EntitiesContainer = null!;
+		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+
+
 
 		public EntId EnemyID = EntId.Invalid;
 
@@ -68,10 +74,14 @@ namespace Game.Spells
 		{
 			if (EnemyID != EntId.Invalid)
 			{
-				Fix damage = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Damage);
-				StatsSystem.ChangeDepletedValue(EnemyID, GameStatsContainer.Health, -damage);
+				if (EntitiesContainer.IsEntityOfType<EnemyEntity>(EnemyID))
+				{
+					Fix damage = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Damage);
+					StatsSystem.ChangeDepletedValue(EnemyID, GameStatsContainer.Health, -damage);
+					EntityViewAtributes entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(EnemyID);
+					entityViewAtributes!.Get<EnemyView>().TriggerHit();
+				}
 			} 
-			
 			EntitiesContainer.DestroyEntity(EntityID);
 		}
 	}

@@ -116,6 +116,12 @@ namespace Game.Player
 				ref PlayerData playerData = ref PlayerContainer.Components[i];
 				EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerData.ID);
 				Rigidbody rigidbody = viewAtributes!.Get<Rigidbody>();
+				if (rigidbody == null)
+				{
+					Debug.Log($"Player {playerData.ID} has no rigidbody!");				
+					continue;
+				}
+
 				
 				float speed = GameplayConfig.PlayerAttributes.PlayerSpeed * playerData.MoveValue * deltaTime;
 				Vector3 force = playerData.MoveDirection * speed;

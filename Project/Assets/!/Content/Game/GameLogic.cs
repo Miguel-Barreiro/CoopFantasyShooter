@@ -45,8 +45,13 @@ namespace Game
 			AddBehaviourTree();
 			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyId);
 			agentData.AttackFrameNorm = enemyConfig.AttackFrameNormalizedTime;
+			agentData.Enable = true;
+
 
 			OverrideDefaultStats(enemyId, enemyConfig.Stats);
+			
+			enemyView.TriggerSpawning();
+			
 			return enemyId;
 
 			
@@ -186,6 +191,19 @@ namespace Game
 						break;
 				}
 			}
+		}
+
+		public EntId KillEnemy(EntId enemyID)
+		{
+			DeadBodyEntity deadBodyEntity = new DeadBodyEntity();
+			ViewEntitiesContainer.SwitchOwnership(enemyID, deadBodyEntity.ID);
+
+			// //TODO:we should not need to disable the agentData, but for now we will do this to avoid errors.
+			// ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyID);
+			// agentData.Enable = false;
+			EntitiesContainer.DestroyEntity(enemyID);
+			
+			return deadBodyEntity.ID;
 		}
 	}
 }

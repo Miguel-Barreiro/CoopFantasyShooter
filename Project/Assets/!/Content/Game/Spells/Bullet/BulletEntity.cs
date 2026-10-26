@@ -4,6 +4,7 @@ using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
+using FixedPointy;
 using Game.Enemies;
 using UnityEngine;
 using Zenject;
@@ -32,6 +33,10 @@ namespace Game.Spells.Bullet
 	{
 		[Inject] private readonly BasicCompContainer<BulletData> BulletContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+
+
 
 		
 		private readonly RaycastHit[] ResultsCache = new RaycastHit[10];
@@ -67,12 +72,21 @@ namespace Game.Spells.Bullet
 						RaycastHit hit = ResultsCache[j];
 						
 						EnemyView enemyView = hit.collider.gameObject.GetComponent<EnemyView>();
-						OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
-							
-						if(enemyView != null)
-							onSpellHitEvent.EnemyID = enemyView.EntityID;
+						
+						if (enemyView != null)
+						{
+							Fix health = StatsSystem.GetStatDepletedValue(enemyView.EntityID, GameStatsContainer.Health);
+							if (health > 0)
+							{
+								OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
+								onSpellHitEvent.EnemyID = enemyView.EntityID;
+							}
+						}
 						else
+						{
+							OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
 							onSpellHitEvent.EnemyID = EntId.Invalid;
+						}
 					}
 				}
 				
