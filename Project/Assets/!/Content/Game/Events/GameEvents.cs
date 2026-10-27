@@ -31,7 +31,7 @@ namespace Game.Events
 		
 		private async UniTask SwitchMainScene()
 		{
-			await UniTask.Delay(2000);
+			await UniTask.DelayFrame(2);
 			await ScenesController.SwitchScene(SceneNames.MAIN_MENU);
 		}
 		
