@@ -14,24 +14,31 @@ namespace Global
 {
 	public class GameplayConfig : DataConfig
 	{
-		[SerializeField] private uint _maxBullets = 100;
+		private const uint MINOR_EXTRA = 10;
+			
+		[SerializeField][Range(1, 500)] private uint _maxBullets = 100;
 		public uint MaxBullets => _maxBullets;
 		
-		[SerializeField] private uint _maxEnemies = 100;
+		[SerializeField][Range(1, 1000)] private uint _maxEnemies = 100;
 		public uint MaxEnemies => _maxEnemies;
 	
 	
-		[SerializeField] private uint _maxPlayers = 4;
+		[SerializeField][Range(1, 10)] private uint _maxPlayers = 4;
 		public uint MaxPlayers => _maxPlayers;
 		
-		[SerializeField] private uint _maxSpells = 100;
+		[SerializeField][Range(1, 100)] private uint _maxSpells = 100;
 		public uint MaxSpells => _maxSpells;
 
+		[SerializeField][Range(1, 100)] private uint _maxAbilitiesPerEntity = 10;
+		public uint MaxAbilities => _maxAbilitiesPerEntity * (MaxPlayers + MaxEnemies + MINOR_EXTRA);
+
+		
 		[SerializeField] public EnemiesAttributes EnemiesAttributes = new EnemiesAttributes();
 		[SerializeField] public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
 		[SerializeField] public PlayerAttributes PlayerAttributes = new PlayerAttributes();
 		[SerializeField] public BasicSpellsAttributes BasicSpellsAttributes = new BasicSpellsAttributes();
 		[SerializeField] public GamelogicAttributes GamelogicAttributes = new GamelogicAttributes();
+
 	}
 
 	
@@ -73,8 +80,14 @@ namespace Global
 		[SerializeField] private float _BulletSpeed = 500f;
 		public float BulletSpeed => _BulletSpeed;
 
+		[SerializeField] private AbilityConfig _bulletAbilityConfig = null!;
+		public AbilityConfig BulletAbilityConfig => _bulletAbilityConfig;
+		
+		
 		[SerializeField] private SpellConfig _bulletSpellConfig = null!;
-		public  SpellConfig BulletSpellConfig => _bulletSpellConfig;
+		public SpellConfig BulletSpellConfig => _bulletSpellConfig;
+
+		
 	}
 
 	[Serializable]

@@ -73,7 +73,7 @@ namespace Scenes.Play
 			BindInstance(new PlayerSystem());
 			BindInstance(new GameLogic());
 
-			BindInstance(new SpellSystem());
+			BindInstance(new AbilitySystem());
 			BindInstance(new BulletSystem());
 			
 			BindInstance(new EnemySpawnerSystem());
@@ -109,9 +109,10 @@ namespace Scenes.Play
 			#region SPELLS
 			dataController.ResizeComponentsContainer<BulletData>(GameplayConfig.MaxBullets);
 			dataController.ResizeComponentsContainer<PlayerData>(GameplayConfig.MaxPlayers);
-			dataController.ResizeComponentsContainer<SpellData>(GameplayConfig.MaxSpells);
+			dataController.ResizeComponentsContainer<AbilityData>(GameplayConfig.MaxAbilities);
 			#endregion
 
+			
 			
 			#region ENEMIES
 			dataController.ResizeComponentsContainer<EnemyData>(GameplayConfig.MaxEnemies);

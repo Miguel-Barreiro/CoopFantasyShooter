@@ -9,7 +9,7 @@ using Zenject;
 namespace Game.Spells.Bullet
 {
 	[RequireComponent(typeof(Rigidbody))]
-	public sealed class BulletView : EntityView
+	public sealed class BulletView : SpellView
 	{
 
 		public Rigidbody Rigidbody { get; private set; } = null!;
@@ -26,7 +26,6 @@ namespace Game.Spells.Bullet
 			Rigidbody.angularVelocity = Vector3.zero;
 		}
 
-		public override bool IsActive { get => gameObject.activeSelf; }
 		public override void ActivateGameObject()
 		{
 			gameObject.SetActive(true);

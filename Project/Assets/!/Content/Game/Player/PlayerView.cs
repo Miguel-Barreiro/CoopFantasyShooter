@@ -27,7 +27,7 @@ namespace Game.Player
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystemRo StatsSystem = null!;
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly BasicCompContainer<SpellData> SpellContainer = null!;
+		[Inject] private readonly BasicCompContainer<AbilityData> AbilityContainer = null!;
 
 
 		private readonly int DIE_ANIMATION = Animator.StringToHash("Die");
@@ -82,20 +82,20 @@ namespace Game.Player
 			_animator.transform.rotation = Quaternion.Lerp(_animator.transform.rotation, 
 															Quaternion.LookRotation(playerData.LookDirection), 
 															Time.deltaTime * 5f);
-			ref SpellData spellData = ref SpellContainer.GetComponent(playerData.AttackSpellID);
-			switch (spellData.State)
+			ref AbilityData abilityData = ref AbilityContainer.GetComponent(playerData.AttackAbiityID);
+			switch (abilityData.State)
 			{
-				case SpellData.SpellState.Recover:
-					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(playerData.AttackSpellID, GameStatsContainer.Cooldown);
+				case AbilityState.Recover:
+					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(playerData.AttackAbiityID, GameStatsContainer.Cooldown);
 
 					CooldownImage.fillAmount = cooldownPercentage;
 					PlayerText.gameObject.SetActive(false);
 					CooldownImage.gameObject.SetActive(true);
 					break;
-				case SpellData.SpellState.Cast:
-				case SpellData.SpellState.Ready:
-					int ammo = (int) StatsSystem.GetStatDepletedValue(playerData.AttackSpellID, GameStatsContainer.CastingMultiplier);
-					int ammoTotal = (int) StatsSystem.GetStatValue(playerData.AttackSpellID, GameStatsContainer.CastingMultiplier);
+				case AbilityState.Cast:
+				case AbilityState.Ready:
+					int ammo = (int) StatsSystem.GetStatDepletedValue(playerData.AttackAbiityID, GameStatsContainer.CastingMultiplier);
+					int ammoTotal = (int) StatsSystem.GetStatValue(playerData.AttackAbiityID, GameStatsContainer.CastingMultiplier);
 					PlayerText.gameObject.SetActive(true);
 					CooldownImage.gameObject.SetActive(false);
 					

@@ -1,13 +1,25 @@
-using System.Collections.Generic;
 using Core.Model.Data;
-using Core.Model.Stats;
 using Game.Logic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Spells
 {
-	public sealed class SpellConfig : BaseEntityConfig
+	public sealed class SpellConfig : BaseVSEntityConfig
 	{
+		[Header("LOGIC")] 
+		[SerializeField] private SpellType _SpellType;
+		public SpellType SpellType => _SpellType;
+
+		
+		[Header("VIEW")] 
+		[SerializeField] private SpellView _SpellPrefab;
+		public SpellView SpellPrefab => _SpellPrefab;
+		
+	}
+	
+	
+	public enum SpellType
+	{
+		Projectile = 0,
 	}
 }

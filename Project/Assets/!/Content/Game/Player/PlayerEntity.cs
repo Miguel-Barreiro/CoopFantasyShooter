@@ -37,7 +37,7 @@ namespace Game.Player
 		public int PlayerNumber;
 		
 		//spells
-		public EntId AttackSpellID;
+		public EntId AttackAbiityID;
 		
 		
 		// Movement
@@ -52,7 +52,7 @@ namespace Game.Player
 			MoveValue = 0f;
 			LookDirection = Vector2.right;
 			
-			AttackSpellID = EntId.Invalid;
+			AttackAbiityID = EntId.Invalid;
 		}
 	}
 

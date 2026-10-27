@@ -11,10 +11,10 @@ using Zenject;
 
 namespace Game.Spells.Bullet
 {
-	public sealed class BulletEntity : Entity,
-									IBullet
+	public sealed class BulletEntity : SpellEntity,
+										IBullet
 	{
-		
+		public BulletEntity(SpellConfig dataConfig) : base(dataConfig) { }
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -78,14 +78,14 @@ namespace Game.Spells.Bullet
 							Fix health = StatsSystem.GetStatDepletedValue(enemyView.EntityID, GameStatsContainer.Health);
 							if (health > 0)
 							{
-								OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
-								onSpellHitEvent.EnemyID = enemyView.EntityID;
+								OnAbilityHitEvent onAbilityHitEvent = EntityEventQueue.Execute<OnAbilityHitEvent>(bulletID);
+								onAbilityHitEvent.EnemyID = enemyView.EntityID;
 							}
 						}
 						else
 						{
-							OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
-							onSpellHitEvent.EnemyID = EntId.Invalid;
+							OnAbilityHitEvent onAbilityHitEvent = EntityEventQueue.Execute<OnAbilityHitEvent>(bulletID);
+							onAbilityHitEvent.EnemyID = EntId.Invalid;
 						}
 					}
 				}

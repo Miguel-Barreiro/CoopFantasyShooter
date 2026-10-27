@@ -5,11 +5,22 @@ using UnityEngine;
 
 namespace Game.Logic
 {
-	public abstract class BaseEntityConfig : DataConfig
+	
+	public interface IBaseEntityConfig
+	{
+		public List<StatOverride> StatsOverride { get; }
+	}
+	
+	public abstract class BaseEntityConfig : DataConfig, IBaseEntityConfig
+	{
+		[Header("STATS")]
+		[SerializeField] private List<StatOverride> _Stats;
+		public List<StatOverride> StatsOverride => _Stats;
+
+	}
+	
+	public abstract class BaseVSEntityConfig : VSAbilityDataConfig, IBaseEntityConfig
 	{
 		
-		[SerializeField] private List<StatOverride> _Stats;
-		public List<StatOverride> Stats => _Stats;
-
 	}
 }

@@ -14,16 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameAssemblyDef::Game.Spells.SpellConfig
   Id: tJ5uS4xLsrq
   name: FireBullet_spell
-  _Stats:
-  - _statConfig: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
-    _value: 0.2
+  _actionGraph: []
+  _statsOverride:
+  - _statConfig: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}
+    _value: 70
     _overrideType: 0
-  - _statConfig: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
-    _value: 3
-    _overrideType: 0
-  - _statConfig: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
-    _value: 10
-    _overrideType: 0
-  - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
-    _value: 5
-    _overrideType: 0
+    _depletedValueOverride: 0
+  _SpellType: 0
+  _SpellPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}

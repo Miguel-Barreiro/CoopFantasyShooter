@@ -48,9 +48,11 @@ namespace Game
 			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyId);
 			agentData.AttackFrameNorm = enemyConfig.AttackFrameNormalizedTime;
 			agentData.Enable = true;
+			
+			OverrideDefaultStats(enemyId, enemyConfig.StatsOverride);
 
-
-			OverrideDefaultStats(enemyId, enemyConfig.Stats);
+			foreach (AbilityConfig abilityConfig in enemyConfig.Abilities)
+				AddAbility(abilityConfig, enemyId);
 			
 			// enemyView.TriggerSpawning();
 			
@@ -93,31 +95,81 @@ namespace Game
 		}
 		
 		
-
-		public EntId SpawnBullet(EntId playerId)
+		public EntId SpawnSpell(EntId owner, SpellConfig spellConfig, Vector3 direction, Vector3 position)
 		{
-			EntId bulletId = new BulletEntity().ID;
+			EntId newEntityID;
+			switch (spellConfig.SpellType)
+			{
+				case SpellType.Projectile:
+					newEntityID = SpawnBullet(owner, spellConfig, direction, position);
+					break;
+					default:
+						return EntId.Invalid;
+				
+			}
+			
+			// SpellEntity spellEntity = new SpellEntity(spellConfig);
+			//
+			AddView(newEntityID, spellConfig.SpellPrefab.gameObject);
+			
+			return newEntityID;
 
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
-			
-			playerData.LookDirection = playerData.LookDirection.normalized;
-			Vector3 playerPosition = playerViewAtributes!.GameObject.transform.position;
-			
-			Vector3 position = playerPosition + 
-								Vector3.up * 0.9f +
-								playerData.LookDirection.normalized * 
-								(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
-			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(playerData.LookDirection.normalized));
-			
-			Rigidbody rigidbody = view.Get<Rigidbody>();
-			// rigidbody.MovePosition(position);
-			// rigidbody.MoveRotation(Quaternion.LookRotation(playerData.LookDirection.normalized));
-			rigidbody.linearVelocity = playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed;
-			// rigidbody.AddForce(playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed, ForceMode.VelocityChange);
 
-			Fix damage = StatsSystem.GetStatValue(playerData.AttackSpellID, GameStatsContainer.Damage);
+			//
+			// EntId bulletId = new BulletEntity().ID;
+			//
+			// ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
+			// EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
+			//
+			// playerData.LookDirection = playerData.LookDirection.normalized;
+			// Vector3 playerPosition = playerViewAtributes!.GameObject.transform.position;
+			//
+			// Vector3 position = playerPosition + 
+			// 					Vector3.up * 0.9f +
+			// 					playerData.LookDirection.normalized * 
+			// 					(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
+			// EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(playerData.LookDirection.normalized));
+			//
+			// Rigidbody rigidbody = view.Get<Rigidbody>();
+			// // rigidbody.MovePosition(position);
+			// // rigidbody.MoveRotation(Quaternion.LookRotation(playerData.LookDirection.normalized));
+			// rigidbody.linearVelocity = playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed;
+			// // rigidbody.AddForce(playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed, ForceMode.VelocityChange);
+			//
+			// Fix damage = StatsSystem.GetStatValue(playerData.AttackAbiityID, GameStatsContainer.Damage);
+			// StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
+			//
+			// return bulletId;
+		}
+
+		
+		
+		public EntId SpawnBullet(EntId ownerId, SpellConfig spellConfig, Vector3 direction, Vector3 position)
+		{
+			EntId bulletId = new BulletEntity(spellConfig).ID;
+
+			// // ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
+			// EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
+
+			// Vector3 direction = playerData.LookDirection.normalized;
+			// playerData.LookDirection = direction.normalized;
+			// Vector3 playerPosition = playerViewAtributes!.GameObject.transform.position;
+			
+			// Vector3 position = playerPosition + 
+			// 					Vector3.up * 0.9f +
+			// 					direction.normalized * 
+			// 					(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
+			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(direction.normalized));
+			
+			Fix damage = StatsSystem.GetStatValue(ownerId, GameStatsContainer.Damage);
 			StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
+
+			OverrideDefaultStats(bulletId, spellConfig.StatsOverride);
+
+
+			Rigidbody rigidbody = view.Get<Rigidbody>();
+			float speed = (float) StatsSystem.GetStatValue(bulletId, GameStatsContainer.Speed);
+			rigidbody.linearVelocity = direction * speed;
 			
 			return bulletId;
 		}
@@ -147,15 +199,14 @@ namespace Game
 			return ViewEntitiesContainer.Spawn(prefab, entityId);
 		}
 
-		public EntId CreateSpell(SpellConfig spellConfig, EntId playerId)
+		public EntId AddAbility(AbilityConfig abilityConfig, EntId entityID)
 		{
-			SpellEntity spellEntity = new SpellEntity();
-			EntId spellEntityID = spellEntity.ID;
-			IEntityHierarchySystem.AddChild(playerId, spellEntityID);
+			AbilityEntity abilityEntity = new AbilityEntity(entityID, abilityConfig);
+			EntId abilityEntityID = abilityEntity.ID;
 
-			OverrideDefaultStats(spellEntityID, spellConfig.Stats);
+			OverrideDefaultStats(abilityEntityID, abilityConfig.StatsOverride);
 			
-			return spellEntityID;
+			return abilityEntityID;
 		}
 
 

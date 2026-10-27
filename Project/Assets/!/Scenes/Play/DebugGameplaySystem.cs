@@ -21,8 +21,8 @@ namespace Scenes.Play
 		{
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(newPlayerId);
 
-			EntId spellID = GameLogic.CreateSpell(GameplayConfig.BasicSpellsAttributes.BulletSpellConfig, newPlayerId);
-			playerData.AttackSpellID = spellID;
+			EntId abilityID = GameLogic.AddAbility(GameplayConfig.BasicSpellsAttributes.BulletAbilityConfig, newPlayerId);
+			playerData.AttackAbiityID = abilityID;
 		}
 		
 

@@ -1,0 +1,201 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491003568a21afc4093dfa435921fc71, type: 3}
+  m_Name: MachineGun_vs
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.ActionGraph
+  nodes:
+  - {fileID: 8185532268612385790}
+  - {fileID: 1420225625056776417}
+  guid: bb47eac27bcaf5c45a3d0ec9c356ab85
+  fileId: 11400000
+  localVariables: []
+--- !u!114 &1420225625056776417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5c7be74d1ed4b00a5571f78440de2e4, type: 3}
+  m_Name: Spawn Spell
+  m_EditorClassIdentifier: GameAssemblyDef::Game.VSNodes.SpawnSpellNode
+  graph: {fileID: 11400000}
+  position: {x: 280, y: -104}
+  ports:
+    keys:
+    - Owner
+    - Continue
+    - Enter
+    - Direction
+    - Position
+    values:
+    - _fieldName: Owner
+      _node: {fileID: 1420225625056776417}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Owner
+        node: {fileID: 8185532268612385790}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Continue
+      _node: {fileID: 1420225625056776417}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: 1420225625056776417}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Continue
+        node: {fileID: 8185532268612385790}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Direction
+      _node: {fileID: 1420225625056776417}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Direction
+        node: {fileID: 8185532268612385790}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Position
+      _node: {fileID: 1420225625056776417}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: OriginPosition
+        node: {fileID: 8185532268612385790}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: bb47eac27bcaf5c45a3d0ec9c356ab85
+  fileId: 1420225625056776417
+  _config: {fileID: 11400000, guid: d7f43d8fe56409f40b79148b7ee6b60a, type: 2}
+  Direction: {x: 0, y: 0, z: 0}
+  Position: {x: 0, y: 0, z: 0}
+--- !u!114 &8185532268612385790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ef53b24147d94e8532c392272320e, type: 3}
+  m_Name: Entity Event Listen
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Events.EntityEventListenNode
+  graph: {fileID: 11400000}
+  position: {x: -296, y: -152}
+  ports:
+    keys:
+    - Continue
+    - TargetPosition
+    - Direction
+    - OriginPosition
+    - Owner
+    values:
+    - _fieldName: Continue
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: 1420225625056776417}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: TargetPosition
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: Direction
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Direction
+        node: {fileID: 1420225625056776417}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: OriginPosition
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Position
+        node: {fileID: 1420225625056776417}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: Owner
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Owner
+        node: {fileID: 1420225625056776417}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+  guid: bb47eac27bcaf5c45a3d0ec9c356ab85
+  fileId: 8185532268612385790
+  active: 1
+  selectedEventType:
+    TypeName: ActivateAbilityEvent
+    AssemblyQualifiedName: Game.Spells.ActivateAbilityEvent, GameAssemblyDef, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  vsFieldPorts:
+  - isInput: 0
+    FieldName: OriginPosition
+  - isInput: 0
+    FieldName: Direction
+  - isInput: 0
+    FieldName: TargetPosition
+  - isInput: 0
+    FieldName: Owner
+  Timing: 1
+  ListenTarget: 1

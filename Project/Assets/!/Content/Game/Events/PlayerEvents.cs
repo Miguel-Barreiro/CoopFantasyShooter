@@ -50,7 +50,7 @@ namespace Game.Events
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		// [Inject] private readonly GameLogic GameLogic = null!;
-		[Inject] private readonly SpellSystem SpellSystem = null!;
+		[Inject] private readonly AbilitySystem AbilitySystem = null!;
 
 
 
@@ -69,12 +69,12 @@ namespace Game.Events
 			}
 
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			if(playerData.AttackSpellID == EntId.Invalid)
+			if(playerData.AttackAbiityID == EntId.Invalid)
 			{
 				Debug.Log($"Player {PlayerNumber} does not have an attack spell, cannot shoot.");
 				return;
 			}
-			SpellSystem.TryCastSpell(playerData.AttackSpellID, playerId);
+			AbilitySystem.TryActivate(playerData.AttackAbiityID, playerId);
 		}
 	}
 	

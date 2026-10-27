@@ -1,10 +1,18 @@
+using System.Collections.Generic;
 using Game.Logic;
+using Game.Spells;
 using UnityEngine;
 
 namespace Game.Enemies
 {
 	public sealed class EnemyConfig : BaseEntityConfig
 	{
+		[Header("LOGIC")] 
+		[SerializeField] private List<AbilityConfig> _abilities;
+		public List<AbilityConfig> Abilities => _abilities;
+		
+		
+		[Header("VIEW")] 
 		[SerializeField] private EnemyView _EnemyPrefab;
 		public EnemyView EnemyPrefab => _EnemyPrefab;
 
@@ -15,6 +23,8 @@ namespace Game.Enemies
 		[Range(0.1f, 1f)]
 		private float _AttackFrameNormalizedTime = 0.5f;
 		public float AttackFrameNormalizedTime => _AttackFrameNormalizedTime;
+
+		
 
 	}
 	

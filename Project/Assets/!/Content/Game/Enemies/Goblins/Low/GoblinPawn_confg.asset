@@ -23,20 +23,8 @@ MonoBehaviour:
     _value: 15
     _overrideType: 0
     _depletedValueOverride: 0
-  - _statConfig: {fileID: 11400000, guid: f405d0d507970da4c96156544e11a046, type: 2}
-    _value: 1
-    _overrideType: 0
-    _depletedValueOverride: 0
-  - _statConfig: {fileID: 11400000, guid: fb01428c637c0f64ba6a1db38821a6aa, type: 2}
-    _value: 180
-    _overrideType: 0
-    _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}
-    _value: 6.08
-    _overrideType: 0
-    _depletedValueOverride: 0
-  - _statConfig: {fileID: 11400000, guid: 3ff85850d73c8b54287b798c54e6c55c, type: 2}
-    _value: 15
+    _value: 6.4
     _overrideType: 0
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: d1a51c1605a303d40b02b800529cfd45, type: 2}
@@ -45,6 +33,18 @@ MonoBehaviour:
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: 6e3fb27630bd3064695397e8af453d02, type: 2}
     _value: 0.6
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 3ff85850d73c8b54287b798c54e6c55c, type: 2}
+    _value: 15
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: fb01428c637c0f64ba6a1db38821a6aa, type: 2}
+    _value: 180
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: f405d0d507970da4c96156544e11a046, type: 2}
+    _value: 1
     _overrideType: 0
     _depletedValueOverride: 0
   _EnemyPrefab: {fileID: 4691699271608903737, guid: 1a13ae5f2738f2e41be957e9b3d7eff3, type: 3}

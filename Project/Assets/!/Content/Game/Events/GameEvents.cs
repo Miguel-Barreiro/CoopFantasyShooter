@@ -23,7 +23,7 @@ namespace Game.Events
 			DestroyAll<IEnemy>();
 			DestroyAll<IPlayer>();
 			DestroyAll<IBullet>();
-			DestroyAll<ISpell>();
+			DestroyAll<IAbility>();
 			DestroyAll<Logic.IGame>();
 			
 			SwitchMainScene().Forget();

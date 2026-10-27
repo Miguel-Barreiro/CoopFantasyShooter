@@ -18,6 +18,7 @@ MonoBehaviour:
   _maxEnemies: 300
   _maxPlayers: 4
   _maxSpells: 100
+  _maxAbilitiesPerEntity: 10
   EnemiesAttributes:
     _MinDistanceToTarget: 0.3
     _SafeDistanceToTarget: 13.3
@@ -32,6 +33,7 @@ MonoBehaviour:
     _BulletPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}
     _BulletSize: 0.25
     _BulletSpeed: 70
+    _bulletAbilityConfig: {fileID: 11400000, guid: dee0b533d7e7f7d44a6ef9d66edd97c6, type: 2}
     _bulletSpellConfig: {fileID: 11400000, guid: d7f43d8fe56409f40b79148b7ee6b60a, type: 2}
   GamelogicAttributes:
     _EnemySpawnCooldown: 10
