@@ -185,7 +185,8 @@ namespace Game.Events
 		public override void Execute()
 		{
 			Debug.Log("All players are dead. Switching to main menu.");
-			ScenesController.SwitchScene(SceneNames.MAIN_MENU);
+			// ScenesController.SwitchScene(SceneNames.MAIN_MENU);
+			EventQueue.Trigger<GoFromGameToMainEvent>();
 		}
 	}
 	
@@ -194,15 +195,16 @@ namespace Game.Events
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly GameLogic GameLogic = null!;
-		[Inject] private readonly ScenesController ScenesController = null!;
+
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+
+
 
 
 		public override void Execute()
 		{
-			// ScenesController.SwitchScene(SceneNames.MAIN_MENU);
-			// ref PlayerData playerData = ref PlayerContainer.GetComponent(EntityID);
-			// Debug.Log($"Player {playerData.PlayerNumber} has died.");
-			// GameLogic.RemovePlayer(playerData.PlayerNumber);
+
 		}
 	}
 	
