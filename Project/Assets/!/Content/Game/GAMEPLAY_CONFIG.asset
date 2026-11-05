@@ -19,6 +19,7 @@ MonoBehaviour:
   _maxPlayers: 4
   _maxSpells: 100
   _maxAbilitiesPerEntity: 10
+  _defaultVSTimerStat: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
   EnemiesAttributes:
     _MinDistanceToTarget: 0.3
     _SafeDistanceToTarget: 13.3
@@ -27,7 +28,7 @@ MonoBehaviour:
   PlayerAttributes:
     _PlayerPrefab: {fileID: 9126683855339754270, guid: 9da17d32931a82f4fb62f959e32dde0a, type: 3}
     _PlayerSpeed: 10
-    _Size: 0.4
+    _Size: 0.3
     _Health: 128
   BasicSpellsAttributes:
     _BulletPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}

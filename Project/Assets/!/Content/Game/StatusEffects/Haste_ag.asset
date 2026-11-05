@@ -1,0 +1,365 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7110041833177249526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc1902875214feca4358cad29401dfe, type: 3}
+  m_Name: Number
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.NumberNode
+  graph: {fileID: 11400000}
+  position: {x: -424, y: 296}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -7110041833177249526}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -6226706808537529784}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: -7110041833177249526
+  Value:
+    _raw: 0
+  ValueFloat: 2
+--- !u!114 &-6226706808537529784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174de556f5ed4188a11e7754abcced0f, type: 3}
+  m_Name: Add Stat Modifier
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Stats.AddStatModifierNode
+  graph: {fileID: 11400000}
+  position: {x: -184, y: 72}
+  ports:
+    keys:
+    - Stat
+    - Value
+    - Owner
+    - Target
+    - Continue
+    - Enter
+    values:
+    - _fieldName: Stat
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: Core.Model.Stats.StatConfig, Core.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -7110041833177249526}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Owner
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -4851495115171686129}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Target
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -4851495115171686129}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Continue
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: -6226706808537529784}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Continue
+        node: {fileID: -3121194721931836418}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: -6226706808537529784
+  Stat: {fileID: 11400000, guid: fb01428c637c0f64ba6a1db38821a6aa, type: 2}
+  Value:
+    _raw: 0
+  OverrideType: 3
+--- !u!114 &-4851495115171686129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992b34dd89b640b58e579826a876dad8, type: 3}
+  m_Name: Ent ID
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.EntIDNode
+  graph: {fileID: 11400000}
+  position: {x: -792, y: 200}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -4851495115171686129}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Target
+        node: {fileID: -3121194721931836418}
+        reroutePoints: []
+      - fieldName: Owner
+        node: {fileID: -3121194721931836418}
+        reroutePoints: []
+      - fieldName: Owner
+        node: {fileID: -6226706808537529784}
+        reroutePoints: []
+      - fieldName: Target
+        node: {fileID: -6226706808537529784}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: -4851495115171686129
+  Target: 1
+--- !u!114 &-3121194721931836418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174de556f5ed4188a11e7754abcced0f, type: 3}
+  m_Name: Add Stat Modifier
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Stats.AddStatModifierNode
+  graph: {fileID: 11400000}
+  position: {x: -504, y: -24}
+  ports:
+    keys:
+    - Stat
+    - Value
+    - Owner
+    - Target
+    - Continue
+    - Enter
+    values:
+    - _fieldName: Stat
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: Core.Model.Stats.StatConfig, Core.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: 1909999218471227083}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Owner
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -4851495115171686129}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Target
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -4851495115171686129}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Continue
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: -6226706808537529784}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: -3121194721931836418}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Continue
+        node: {fileID: 6186267156383661024}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: -3121194721931836418
+  Stat: {fileID: 11400000, guid: 5f59c6b9d80e363449351a003fdc467e, type: 2}
+  Value:
+    _raw: 0
+  OverrideType: 3
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491003568a21afc4093dfa435921fc71, type: 3}
+  m_Name: Haste_ag
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.ActionGraph
+  nodes:
+  - {fileID: 6186267156383661024}
+  - {fileID: -3121194721931836418}
+  - {fileID: -4851495115171686129}
+  - {fileID: 1909999218471227083}
+  - {fileID: -6226706808537529784}
+  - {fileID: -7110041833177249526}
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: 11400000
+  localVariables: []
+  localTriggers:
+  - Name: DefaultTimer
+    CooldownReset: 0
+    _CooldownStat: {fileID: 0}
+--- !u!114 &1909999218471227083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc1902875214feca4358cad29401dfe, type: 3}
+  m_Name: Number
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.NumberNode
+  graph: {fileID: 11400000}
+  position: {x: -760, y: 56}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 1909999218471227083}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: -3121194721931836418}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: 1909999218471227083
+  Value:
+    _raw: 0
+  ValueFloat: 1.5
+--- !u!114 &6186267156383661024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dff7a1654fa425dbdb433a3a01b3b5f, type: 3}
+  m_Name: On Init
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.OnInitNode
+  graph: {fileID: 11400000}
+  position: {x: -872, y: -24}
+  ports:
+    keys:
+    - Continue
+    values:
+    - _fieldName: Continue
+      _node: {fileID: 6186267156383661024}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: -3121194721931836418}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+  guid: 317ad2fe600a9ca4788eba5b6026dbe6
+  fileId: 6186267156383661024

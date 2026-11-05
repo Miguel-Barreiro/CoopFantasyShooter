@@ -22,7 +22,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1 ",
         "com.miguel.xnode": "1.8.6"
       },
-      "hash": "71cd2d9ad7801669a0e448107002aaee28d11aa1"
+      "hash": "d547c91643b1006cd90ce1d1857f8d7f0ca385c2"
     },
     "com.miguel.xnode": {
       "version": "https://github.com/Miguel-Barreiro/xNode.git",
@@ -140,7 +140,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.assistant": {
-      "version": "2.21.0-pre.1",
+      "version": "2.21.0-pre.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -451,6 +451,12 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "no.fullscreen.editor-pro": {
+      "version": "file:no.fullscreen.editor-pro",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

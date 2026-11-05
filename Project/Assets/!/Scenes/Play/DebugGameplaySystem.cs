@@ -21,7 +21,7 @@ namespace Scenes.Play
 		{
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(newPlayerId);
 
-			EntId abilityID = GameLogic.AddAbility(GameplayConfig.BasicSpellsAttributes.BulletAbilityConfig, newPlayerId);
+			EntId abilityID = GameLogic.AddPlayerAbility(GameplayConfig.BasicSpellsAttributes.BulletAbilityConfig, newPlayerId);
 			playerData.AttackAbiityID = abilityID;
 		}
 		

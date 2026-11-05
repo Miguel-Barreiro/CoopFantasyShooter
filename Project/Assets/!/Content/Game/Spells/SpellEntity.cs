@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
+using Game.Logic;
 
 namespace Game.Spells
 {
@@ -27,6 +28,7 @@ namespace Game.Spells
 	}
 
 	public interface ISpell : Component<SpellData>, 
-							IVSAbility 
+							IVSAbility , 
+							ISimulation
 	{ }
 }

@@ -1,12 +1,13 @@
 using Core.Model;
 using Core.Systems;
+using Core.VSEngine.Systems;
 using Global;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Logic
 {
-	public sealed class GameSetupSystem : IStartSystem
+	public sealed class GameSetupSystem : IStartSystem, IInitSystem
 	{
 
 		[Inject] private readonly StatsSystem StatsSystem = null!;
@@ -15,10 +16,12 @@ namespace Game.Logic
 
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 
+		[Inject] private readonly VSTimersSystem VSTimersSystem = null!;
+
+
+
 		public void StartSystem()
 		{
-			Random.InitState(Mathf.CeilToInt(Time.time * 100f));
-			
 			GameEntity gameEntity = new GameEntity();
 			StatsSystem.SetBaseValue(gameEntity.ID, 
 									GameStatsContainer.Cooldown, 
@@ -29,6 +32,12 @@ namespace Game.Logic
 									3f);
 
 			Debug.Log("GAME START");
+		}
+
+		public void Initialize()
+		{
+			Random.InitState(Mathf.CeilToInt(Time.time * 100f));
+			VSTimersSystem.SetDefaultTimerStat(GameplayConfig.DefaultVSTimerStat);
 		}
 	}
 }

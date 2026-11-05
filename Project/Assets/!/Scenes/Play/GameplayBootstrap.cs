@@ -1,15 +1,19 @@
 using Com.LuisPedroFonseca.ProCamera2D;
 using Core.Initialization;
 using Core.Model.ModelSystems;
+using Core.Systems;
 using Core.Zenject.Source.Main;
 using Game;
 using Game.BehaviourTree;
+using Game.Components;
 using Game.Enemies;
+using Game.Enemies.EnemyAbilities;
 using Game.Input;
 using Game.Logic;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
+using Game.StatusEffects;
 using Global;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -70,16 +74,23 @@ namespace Scenes.Play
 			BindInstance(proCamera2D);
 
 			BindInstance(new StartGameSystem());
+			
+			BindInstance(new WorldEntitySystem());
+			BindInstance(new StatusEffectSystem());
+			BindInstance(new StatusEffectViewSystem());
+			
 			BindInstance(new PlayerSystem());
+			BindInstance(new PlayerViewSystem());
 			BindInstance(new GameLogic());
 
-			BindInstance(new AbilitySystem());
+			BindInstance(new PlayerAbilitiesSystem());
 			BindInstance(new BulletSystem());
 			
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance( new GameSetupSystem());
 			
 			BindInstance(new EnemySystem());
+			BindInstance(new EnemyViewSystem());
 			BindInstance(new BehaviourNodesContainer());
 			BindInstance(new BehaviourTreeSystem());
 			
@@ -89,11 +100,16 @@ namespace Scenes.Play
 			
 			
 			BindInstance(new DeadBodyViewSystem());
+			BindInstance(new EnemyAbilitySystem());
+			
 
 			BindInstance(NavMeshSurface);
 			
+			BindInstance(new GameMemoryArena());
+			
 			//DEBUG
 			BindInstance(new DebugGameplaySystem());
+			
 		}
 
 		protected override void AddDebugOptions()
@@ -109,7 +125,7 @@ namespace Scenes.Play
 			#region SPELLS
 			dataController.ResizeComponentsContainer<BulletData>(GameplayConfig.MaxBullets);
 			dataController.ResizeComponentsContainer<PlayerData>(GameplayConfig.MaxPlayers);
-			dataController.ResizeComponentsContainer<AbilityData>(GameplayConfig.MaxAbilities);
+			dataController.ResizeComponentsContainer<PlayerAbilityData>(GameplayConfig.MaxAbilities);
 			#endregion
 
 			
@@ -118,7 +134,28 @@ namespace Scenes.Play
 			dataController.ResizeComponentsContainer<EnemyData>(GameplayConfig.MaxEnemies);
 			dataController.ResizeComponentsContainer<BehaviourNodeData>(GameplayConfig.MaxEnemies);
 			dataController.ResizeComponentsContainer<BehaviourAgentData>(GameplayConfig.MaxEnemies);
+			dataController.ResizeComponentsContainer<DeadBodyData>(GameplayConfig.MaxEnemies);
 			#endregion
+
+			#region Status Effects
+
+			uint maxStatusEffects = (GameplayConfig.MaxEnemies + GameplayConfig.MaxPlayers) * 
+										StatusEffectOwnerData.MAX_STATUS_EFFECTS_APPLIED; 
+			
+			dataController.ResizeComponentsContainer<StatusEffectData>(maxStatusEffects);
+			dataController.ResizeComponentsContainer<StatusEffectOwnerData>(maxStatusEffects);
+
+			#endregion
+			
+			uint totalEntities = GameplayConfig.MaxEnemies +
+								GameplayConfig.MaxPlayers +
+								GameplayConfig.MaxBullets +  
+								GameplayConfig.MaxSpells + 
+								GameplayConfig.MaxAbilities;
+
+			dataController.ResizeComponentsContainer<WorldEntityData>(totalEntities);
+			dataController.ResizeComponentsContainer<HierarchyData>(totalEntities);
+			dataController.ResizeComponentsContainer<SimulationData>(totalEntities);
 
 		}
 	}

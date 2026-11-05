@@ -27,7 +27,7 @@ namespace Game.Player
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystemRo StatsSystem = null!;
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly BasicCompContainer<AbilityData> AbilityContainer = null!;
+		[Inject] private readonly BasicCompContainer<PlayerAbilityData> AbilityContainer = null!;
 
 
 		private readonly int DIE_ANIMATION = Animator.StringToHash("Die");
@@ -47,9 +47,8 @@ namespace Game.Player
 		}
 
 
-		private void Update()
+		public void UpdateView(float deltaTime, ref PlayerData playerData)
 		{
-			UI.transform.LookAt(Camera.transform);
 			if(StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Health) <= 0f)
 			{
 				_animator.SetTrigger(DIE_ANIMATION);
@@ -60,8 +59,8 @@ namespace Game.Player
 				return;
 			}
 			
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(EntityID);
-
+			UI.transform.LookAt(Camera.transform);
+			
 			Vector3 lookDirection = playerData.LookDirection.normalized;
 			Vector3 moveDirection = playerData.MoveDirection.normalized;
 
@@ -82,8 +81,8 @@ namespace Game.Player
 			_animator.transform.rotation = Quaternion.Lerp(_animator.transform.rotation, 
 															Quaternion.LookRotation(playerData.LookDirection), 
 															Time.deltaTime * 5f);
-			ref AbilityData abilityData = ref AbilityContainer.GetComponent(playerData.AttackAbiityID);
-			switch (abilityData.State)
+			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(playerData.AttackAbiityID);
+			switch (playerAbilityData.State)
 			{
 				case AbilityState.Recover:
 					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(playerData.AttackAbiityID, GameStatsContainer.Cooldown);
@@ -103,7 +102,10 @@ namespace Game.Player
 					string playerTextText = $"{ammo}/{ammoTotal}";
 					PlayerText.text = playerTextText;
 					break;
-				
+				default:
+					PlayerText.gameObject.SetActive(false);
+					CooldownImage.gameObject.SetActive(false);
+					break;
 			}
 
 			HealthImage.fillAmount = (float) StatsSystem.GetStatDepletedPercentage(EntityID, GameStatsContainer.Health);

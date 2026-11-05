@@ -6,6 +6,8 @@ using Core.Utils.CachedDataStructures;
 using Core.View;
 using FixedPointy;
 using Game.Enemies;
+using Game.Enemies.EnemyAbilities;
+using Game.Spells;
 using Global;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,6 +19,149 @@ namespace Game.BehaviourTree
 	{
 		
 	}
+	
+	public sealed class CastAbilityNode : ActionBehaviourNode
+	{
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+
+		[Inject] private readonly BasicCompContainer<EnemyAbilityData> EnemyAbilityContainer = null!;
+		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly EnemyAbilitySystem EnemyAbilitySystem = null!;
+
+		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
+												ref BehaviourAgentData agentData, float deltaTime)
+		{
+			ref EnemyAbilityData abilityData = ref EnemyAbilityContainer.GetComponent(nodeData.AbilityID);
+
+			if(abilityData.State == AbilityState.Recover)
+				return BehaviourStatus.Failure;
+			
+			if (!abilityData.HasTarget())
+				return BehaviourStatus.Failure;
+			
+			if (!EnemyAbilitySystem.IsTargetValid(ref abilityData))
+				return BehaviourStatus.Failure;
+
+			switch (abilityData.State)
+			{
+				case AbilityState.Ready:
+					abilityData.State = AbilityState.Cast;
+					StatsSystem.ResetDepletedValueToMax(abilityData.ID, GameStatsContainer.CastingTime);
+					return BehaviourStatus.Running;
+				case AbilityState.Cast:
+					Fix newCastingTime = StatsSystem.ChangeDepletedValue(abilityData.ID, GameStatsContainer.CastingTime, -deltaTime);
+					if(newCastingTime <= 0)
+					{
+						abilityData.State = AbilityState.Recover;
+						StatsSystem.ResetDepletedValueToMax(abilityData.ID, GameStatsContainer.CastingTime);
+						StatsSystem.ResetDepletedValueToMax(abilityData.ID, GameStatsContainer.Cooldown);
+						
+						ActivateEnemyAbilityEvent abilityEvent = EntityEventQueue.Execute<ActivateEnemyAbilityEvent>(abilityData.ID);
+						abilityEvent.SetTargets(ref abilityData, Vector3.zero);
+						abilityEvent.Owner = abilityData.OwnerID;
+						
+						return BehaviourStatus.Success;
+					}
+					return BehaviourStatus.Running;
+			}
+			
+			return BehaviourStatus.Failure;
+		}
+	}
+
+	public sealed class CastSupportAbilityNode : ActionBehaviourNode
+	{
+		
+		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly GameplayConfig GameplayConfig = null!;
+		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly IRandomSystem RandomSystem = null!;
+
+		[Inject] private readonly BasicCompContainer<EnemyData> EnemyContainer = null!;
+		[Inject] private readonly PlayerAbilitiesSystem PlayerAbilitiesSystem = null!;
+
+		
+		
+		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
+												ref BehaviourAgentData agentData, float deltaTime)
+		{
+
+			// foreach (EntId ability in agentData.Abilities)
+			// {
+			// 	BehaviourStatus status = PlayerAbilitiesSystem.GetActivateState(ability);
+			// 	if(status == BehaviourStatus.Running)
+			// 		return BehaviourStatus.Running;
+			// }
+			//
+			// if(agentData.SupportTarget == EntId.Invalid)
+			// 	return BehaviourStatus.Failure;
+			//
+			// EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId);
+			// Transform transform = viewAtributes.GameObject.transform;
+			// NavMeshAgent navMeshAgent = viewAtributes.Get<NavMeshAgent>();
+			// EnemyView enemyView = viewAtributes.Get<EnemyView>();
+			//
+			// EntityViewAtributes targetViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(agentData.SupportTarget);
+			// Vector3 targetPosition = targetViewAtributes!.GameObject!.transform.position;
+			//
+			// Vector3 delta = targetPosition - transform.position;
+			// delta.y = 0f;
+			// float distanceToTarget = Vector3.SqrMagnitude(delta);
+			//
+			//
+			// float distanceToCast = (float) StatsSystem.GetStatDepletedValue(entityId, GameStatsContainer.CastDistance);
+			// if(distanceToTarget < distanceToCast)
+			// {
+			// 	// navMeshAgent.velocity = Vector3.zero;
+			// 	enemyView.SetCast(targetPosition, true);
+			// 	CastSupportDebug(ref agentData, targetViewAtributes.Get<EnemyView>());
+			// 	
+			// 	return BehaviourStatus.Success;
+			// }
+			//
+			// enemyView.SetCast(targetPosition, false);
+			//
+			// if (!navMeshAgent.isOnNavMesh)
+			// {
+			// 	return BehaviourStatus.Failure;
+			// }
+			//
+			// navMeshAgent.speed = (float) StatsSystem.GetStatDepletedValue(entityId, GameStatsContainer.Speed);
+			// navMeshAgent.SetDestination(targetPosition);
+			// transform.LookAt(targetPosition);
+			// return BehaviourStatus.Failure;
+			//
+			// void CastSupportDebug(ref BehaviourAgentData agentData, EnemyView targetView)
+			// {
+			// 	targetView.SetSupport(entityId, true);
+			// 	StatsSystem.RemoveAllModifiersFrom(entityId, agentData.SupportTarget, GameStatsContainer.Speed);
+			// 	StatsSystem.AddModifier(entityId, agentData.SupportTarget, 
+			// 							GameStatsContainer.Speed, 1.5f, 
+			// 							StatModifierType.Multiplicative);
+			// 	StatsSystem.AddModifier(entityId, agentData.SupportTarget, 
+			// 							GameStatsContainer.Acerelation, 1.5f, 
+			// 							StatModifierType.Multiplicative);
+			// 	StatsSystem.AddModifier(entityId, agentData.SupportTarget, 
+			// 							GameStatsContainer.TurningSpeed, 1.5f, 
+			// 							StatModifierType.Multiplicative);
+			// 	StatsSystem.ResetDepletedValueToMax(agentData.SupportTarget, GameStatsContainer.Speed);
+			// 	StatsSystem.ResetDepletedValueToMax(agentData.SupportTarget, GameStatsContainer.Acerelation);
+			// 	StatsSystem.ResetDepletedValueToMax(agentData.SupportTarget, GameStatsContainer.TurningSpeed);
+			// }
+			return BehaviourStatus.Failure;
+		}
+
+		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		{
+			base.Reset(entityId, ref nodeNodeData);
+			nodeNodeData.Cooldown = 0f;
+		}
+	}
+	
+	
 
 	public sealed class SupportCastNode : ActionBehaviourNode
 	{
@@ -34,6 +179,9 @@ namespace Game.BehaviourTree
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
 												ref BehaviourAgentData agentData, float deltaTime)
 		{
+			
+			
+			
 			if(agentData.SupportTarget == EntId.Invalid)
 				return BehaviourStatus.Failure;
 			

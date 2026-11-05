@@ -7,14 +7,16 @@ using Zenject;
 
 namespace Game.BehaviourTree
 {
-	public sealed class BehaviourTreeEntity : Entity, IBehaviour, IBehaviourAgent
-	{
-		
-	}
+	// public sealed class BehaviourTreeEntity : Entity, IBehaviour, IBehaviourAgent
+	// {
+	// 	
+	// }
 
 	[StructLayout(LayoutKind.Auto)]
 	public struct BehaviourAgentData : IComponentData
 	{
+		public const int MAX_ABILITIES = 4;
+		
 		public EntId ID { get; set; }
 		
 		public EntId Target;
@@ -22,6 +24,7 @@ namespace Game.BehaviourTree
 
 		public float AttackFrameNorm;
 
+		
 		public bool Enable;
 		
 		public void Init()
@@ -47,8 +50,11 @@ namespace Game.BehaviourTree
 		public EntId ID { get; set; }
 
 		
+		
 		public NodeType NodeType;
 		public float Cooldown;
+		
+		public EntId AbilityID;
 
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=MAX_CHILDREN)] public uint[] children;
 		public uint childrenCount;
@@ -88,16 +94,17 @@ namespace Game.BehaviourTree
 		
 		
 		
-		public ref BehaviourNodeData AddNode(EntId entityId, NodeType nodeType, uint parent = 0)
+		public ref BehaviourNodeData AddNode(EntId entityId, NodeType nodeType, out uint newChildOrder, uint parent = 0)
 		{
 			ref EntityComponentsHeader header = ref GetEntityComponentsHeader(entityId);
 			if(parent > header.Count)
 			{
+				newChildOrder = uint.MaxValue;
 				Debug.LogError($"BehaviourTreeContainer: Parent index {parent} is out of bounds for entity {entityId.Id}");
 				return ref Invalid;
 			}
 			
-			uint newChildOrder = AddComponent(entityId);
+			newChildOrder = AddComponent(entityId);
 			uint newNodeIndex = GetChildIndex(entityId, newChildOrder);
 			ref BehaviourNodeData newNodeNodeData = ref GetComponent(newNodeIndex);
 			newNodeNodeData.NodeType = nodeType;
@@ -116,22 +123,6 @@ namespace Game.BehaviourTree
 		[Inject] private readonly BehaviourTreeContainer BehaviourContainer = null!;
 		[Inject] private readonly BehaviourNodesContainer BehaviourNodesContainer = null!;
 		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
-
-
-		
-		// public void testCreateBehaviourTree(EntId entityId)
-		// {
-		// 	ref EntityComponentsHeader componentsHeader = ref BehaviourContainer.GetEntityComponentsHeader(entityId);
-		// 	uint mainNodeIndex = componentsHeader.Indexes[0];
-		// 	ref BehaviourNodeData mainNodeNodeData = ref BehaviourContainer.GetComponent(mainNodeIndex);
-		//
-		// 	
-		// 	uint childOrder = BehaviourContainer.AddComponent(entityId);
-		// 	uint newNodeIndex = BehaviourContainer.GetChildIndex(entityId, childOrder);
-		// 	
-		// 	ref BehaviourNodeData newNodeNodeData = ref BehaviourContainer.GetComponent(newNodeIndex);
-		// 	mainNodeNodeData.AddChild(newNodeIndex);
-		// }
 		
 		public void UpdateComponents(float deltaTime)
 		{
@@ -148,25 +139,19 @@ namespace Game.BehaviourTree
 				ref BehaviourNodeData mainNodeNodeData = ref BehaviourContainer.Components[currentNode];
 				EntId entityId = mainNodeNodeData.ID;
 				ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(entityId);
+
 				if(agentData.Enable == false) {
 					continue;
 				}
+#if DEBUG
 				if (entityId == EntId.Invalid)
 				{
 					Debug.LogError($"BehaviourTreeSystem: Invalid entity ID for main node at index {i}. Skipping.");				
 					continue;
 				}
-
-				
+#endif				
 				
 				ProcessNode(entityId, ref mainNodeNodeData, ref agentData, deltaTime);
-				
-				// uint currentChild = behaviourContainerComponent.currentChild;
-				// uint currentChildIndex = behaviourContainerComponent.children[currentChild];
-				// ref BehaviourData currentChildData = ref BehaviourContainer.Components[currentChildIndex];
-				// BehaviourStatus behaviourStatus = ProcessNode(ref currentChildData);
-				
-				
 			}
 
 

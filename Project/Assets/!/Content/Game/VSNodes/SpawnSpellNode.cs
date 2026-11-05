@@ -30,21 +30,23 @@ namespace Game.VSNodes
 		
 		protected override void Action()
 		{
-			
-			EntId ownerId = EntId.Invalid;
 			OperationResult<EntId> operationResult = Resolve<EntId>(nameof(Owner));
-			if (Check(operationResult.IsSuccess, $"Failed to resolve Owner for SpawnSpellNode {name} in graph {graph.name}:"))
-				 ownerId = operationResult.Result;
-
+			if (Check(!operationResult.IsSuccess, $"Failed to resolve Owner for SpawnSpellNode {name} in graph {graph.name}:"))
+				return;
+			
 			OperationResult<Vector3> directionResult = Resolve<Vector3>(nameof(Direction));
-			if (Check(directionResult.IsSuccess, $"Failed to resolve Direction for SpawnSpellNode {name} in graph {graph.name}:"))
-				Direction = directionResult.Result;
+			if (Check(!directionResult.IsSuccess, $"Failed to resolve Direction for SpawnSpellNode {name} in graph {graph.name}:"))
+				return;
 			
 			OperationResult<Vector3> positionResult = Resolve<Vector3>(nameof(Position));
-			if (Check(positionResult.IsSuccess, $"Failed to resolve Position for SpawnSpellNode {name} in graph {graph.name}:"))
-				Position = positionResult.Result;
+			if (Check(!positionResult.IsSuccess, $"Failed to resolve Position for SpawnSpellNode {name} in graph {graph.name}:"))
+				return;
 			
-			GameLogic.SpawnSpell(ownerId, config, Direction, Position);
+			
+			var direction = directionResult.Result;
+			var position = positionResult.Result;
+			EntId ownerId = operationResult.Result;
+			GameLogic.SpawnSpell(ownerId, config, direction, position);
 		}
 		public override OperationResult<object> GetValue(string portName)
 		{

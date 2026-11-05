@@ -1,0 +1,27 @@
+OVDF v1.1
+Game.Logic.BaseEntityConfig, GameAssemblyDef
+MetaGuid:a3463a73ff334658ad0d60844691a93f
+
+# $Wt4HPTPodSwkEHUcrs8ET8
+Position: $root:8
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $CJRCA6CYMDdHvTqXJW4EKC
+Position: $root:5
++ [Sirenix.OdinInspector.HorizontalGroupAttribute]
+
+# $7dtRbaXFpMMNDBgjHcwaqJ
+Position: $root:6
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# name
+Position: $CJRCA6CYMDdHvTqXJW4EKC:0
+
+# Id
+Position: $CJRCA6CYMDdHvTqXJW4EKC:1
+
+# _Stats
+Position: $Wt4HPTPodSwkEHUcrs8ET8:0
+
+# _Icon
+Position: $7dtRbaXFpMMNDBgjHcwaqJ:0

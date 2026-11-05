@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c3639c00b0724f9daa9ece13df003a33
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398680
+  packageName: Editor Pro 2
+  packageVersion: 2.1.2
+  assetPath: Packages/no.fullscreen.editor-pro/Editor/Window/Window.Startup.cs
+  uploadId: 1012834

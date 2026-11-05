@@ -1,0 +1,90 @@
+OVDF v1.1
+Game.Enemies.EnemyConfig, GameAssemblyDef
+MetaGuid:59e4b2fbfe2140538176ce7c3809cd80
+
+# $S3Fj24xx8QijL5ToK51DzG
+Position: $root:5
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $Wt4HPTPodSwkEHUcrs8ET8
+- [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $CJRCA6CYMDdHvTqXJW4EKC
+Position: $7DZUfqCnJKJYJidJjrqfKJ:2
+- [Sirenix.OdinInspector.HorizontalGroupAttribute]
+
+# $LeGQrorawuJHPH5XwBvFHH
+Position: $2y5PjxEGvtVWsFh5LCFCwt:0
++ [Sirenix.OdinInspector.TabGroupAttribute]
+	GroupName = "_"
+
+# $AGmW5ruJf39kkx8MnEeXtZ
+Position: $LeGQrorawuJHPH5XwBvFHH:0
++ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
+	GroupName = "Stats"
+	Name = "Stats"
+	Icon = AwardFill
+
+# $5qQy3Hkd5LKwpQsBxbyRYw
+Position: $LeGQrorawuJHPH5XwBvFHH:1
++ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
+	GroupName = "Abilities"
+	Name = "Abilities"
+	Icon = BatteryCharging
+
+# $7DZUfqCnJKJYJidJjrqfKJ
+Position: $QJJ4UX13vJ8ZiTU8fYgaVt:0
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+	Indent = True
+
+# $2y5PjxEGvtVWsFh5LCFCwt
+Position: $root:3
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $EN2kEZMqGV3oAP6zhAjF8g
+Position: $7dtRbaXFpMMNDBgjHcwaqJ:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $Q3wfyRimw8f8VVaZXwFmib
+Position: $EN2kEZMqGV3oAP6zhAjF8g:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $QJJ4UX13vJ8ZiTU8fYgaVt
+Position: $EN2kEZMqGV3oAP6zhAjF8g:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# _behaviourType
+Position: $S3Fj24xx8QijL5ToK51DzG:0
+
+# _EnemyPrefab
+Position: $S3Fj24xx8QijL5ToK51DzG:1
+
+# _abilities
+Position: $5qQy3Hkd5LKwpQsBxbyRYw:0
+
+# _AttackFrameNormalizedTime
+Position: $S3Fj24xx8QijL5ToK51DzG:2
+
+# _Stats
+Position: $AGmW5ruJf39kkx8MnEeXtZ:0
+
+# Icon
++ [Sirenix.OdinInspector.ImageAttribute]
+	FitToAvailableWidth = True
+	Alignment = 0
+
+# _Icon
+Position: $Q3wfyRimw8f8VVaZXwFmib:0
++ [Sirenix.OdinInspector.PreviewFieldAttribute]
+	Height = 120
+	alignment = Left
+	alignmentHasValue = True
+	previewGetter = ""
+	PreviewGetterHasValue = True
+	FilterMode = Bilinear
+
+# name
+Position: $7DZUfqCnJKJYJidJjrqfKJ:0
+
+# Id
+Position: $7DZUfqCnJKJYJidJjrqfKJ:1

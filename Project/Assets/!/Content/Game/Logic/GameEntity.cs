@@ -4,7 +4,7 @@ using Core.Model.ModelSystems;
 
 namespace Game.Logic
 {
-	public sealed class GameEntity :Entity, IGame
+	public sealed class GameEntity :Entity, IGame, ISimulation
 	{
 		
 	}
@@ -19,4 +19,17 @@ namespace Game.Logic
 	}
 
 	public interface IGame : Component<GameData> { }
+
+
+
+	[StructLayout(LayoutKind.Auto)]
+	public struct SimulationData : IComponentData
+	{
+		public EntId ID { get; set; }
+		
+
+		public void Init() { }
+	}
+
+	public interface ISimulation : Component<SimulationData> { }
 }

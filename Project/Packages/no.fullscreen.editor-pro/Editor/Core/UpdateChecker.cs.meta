@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 5593a2d0c30ba2044863b7312d847ce2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398680
+  packageName: Editor Pro 2
+  packageVersion: 2.1.2
+  assetPath: Packages/no.fullscreen.editor-pro/Editor/Core/UpdateChecker.cs
+  uploadId: 1012834

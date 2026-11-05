@@ -3,6 +3,7 @@ using System.Collections;
 using Core.Model;
 using Core.View;
 using FixedPointy;
+using Game.StatusEffects;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -13,7 +14,7 @@ namespace Game.Enemies
 {
 	[RequireComponent(typeof(NavMeshAgent))]
 	
-	public class EnemyView : EntityView
+	public class EnemyView : EntityView, IStatusEffectOwnerView
 	{
 		
 		private int IS_RUNNING_ANIM = UnityEngine.Animator.StringToHash("isRunning");
@@ -47,17 +48,6 @@ namespace Game.Enemies
 			NavMeshAgent = GetComponent<NavMeshAgent>();
 			float range = (float) RandomSystem.Range(0f, 1f);
 			Animator.SetFloat(RANDOM_ANIM, range);
-		}
-		
-		private void Update()
-		{
-			if (Debug)
-				return;
-			Fix healthPercentage = StatsSystem.GetStatDepletedPercentage(EntityID,GameStatsContainer.Health);
-			HealthImage.fillAmount = (float) healthPercentage;
-			UI.transform.LookAt(Camera.transform);
-			
-			Animator.SetBool(IS_RUNNING_ANIM, NavMeshAgent.velocity.magnitude > 0.1f);
 		}
 		
 		public void SetSupport(EntId casterId, bool isSupporting)
@@ -202,5 +192,26 @@ namespace Game.Enemies
 			}
 		}
 
+
+		public void OnStatusEffectAdded(EntId statusEffectId, EntId ownerId, ref StatusEffectData statusEffectData)
+		{
+			this.SupportImage.gameObject.SetActive(true);
+		}
+
+		public void OnStatusEffectRemoved(EntId statusEffectId, EntId ownerId, ref StatusEffectData statusEffectData)
+		{
+			this.SupportImage.gameObject.SetActive(false);
+		}
+
+		public void UpdateView(float deltaTime, ref EnemyData componentData)
+		{
+			if (Debug)
+				return;
+			Fix healthPercentage = StatsSystem.GetStatDepletedPercentage(EntityID,GameStatsContainer.Health);
+			HealthImage.fillAmount = (float) healthPercentage;
+			UI.transform.LookAt(Camera.transform);
+			
+			Animator.SetBool(IS_RUNNING_ANIM, NavMeshAgent.velocity.magnitude > 0.1f);
+		}
 	}
 }

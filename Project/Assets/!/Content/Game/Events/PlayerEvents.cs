@@ -49,10 +49,10 @@ namespace Game.Events
 	public sealed class ShootPlayerEvent : Event<ShootPlayerEvent>
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		// [Inject] private readonly GameLogic GameLogic = null!;
-		[Inject] private readonly AbilitySystem AbilitySystem = null!;
-
-
+		[Inject] private readonly PlayerAbilitiesSystem PlayerAbilitiesSystem = null!;
+		[Inject] private readonly BasicCompContainer<PlayerAbilityData> AbilityContainer = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
 		public int PlayerNumber = -1;
 		
@@ -69,13 +69,16 @@ namespace Game.Events
 			}
 
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			if(playerData.AttackAbiityID == EntId.Invalid)
+			EntId abilityID = playerData.AttackAbiityID;
+			if(abilityID == EntId.Invalid)
 			{
 				Debug.Log($"Player {PlayerNumber} does not have an attack spell, cannot shoot.");
 				return;
 			}
-			AbilitySystem.TryActivate(playerData.AttackAbiityID, playerId);
+			
+			PlayerAbilitiesSystem.TryActivate(abilityID, playerId);
 		}
+		
 	}
 	
 	

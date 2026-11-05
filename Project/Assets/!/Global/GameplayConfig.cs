@@ -1,5 +1,6 @@
 using System;
 using Core.Model.Data;
+using Core.Model.Stats;
 using FixedPointy;
 using Game.Enemies;
 using Game.Enemies.EnenmySpawners;
@@ -32,7 +33,12 @@ namespace Global
 		[SerializeField][Range(1, 100)] private uint _maxAbilitiesPerEntity = 10;
 		public uint MaxAbilities => _maxAbilitiesPerEntity * (MaxPlayers + MaxEnemies + MINOR_EXTRA);
 
-		
+
+		[SerializeField] private StatConfig _defaultVSTimerStat;
+		public StatConfig DefaultVSTimerStat => _defaultVSTimerStat;
+
+
+
 		[SerializeField] public EnemiesAttributes EnemiesAttributes = new EnemiesAttributes();
 		[SerializeField] public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
 		[SerializeField] public PlayerAttributes PlayerAttributes = new PlayerAttributes();

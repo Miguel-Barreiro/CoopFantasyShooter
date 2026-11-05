@@ -18,7 +18,9 @@ namespace Game.BehaviourTree
 		AttackTarget = 4,
 		MoveAwayFromTarget = 5,
 		CastSupportTarget = 6,
-		FindSupportTarget = 7
+		FindSupportTarget = 7,
+		CastAbility = 8, 
+		FirstChild = 9
 	}
 	
 	
@@ -37,7 +39,9 @@ namespace Game.BehaviourTree
 				{ NodeType.AttackTarget, new SimpleAttackNode() }, 					// 4
 				{ NodeType.MoveAwayFromTarget, new MoveAwayFromTargetNode() },      // 5
 				{ NodeType.CastSupportTarget, new SupportCastNode() },              // 6
-				{ NodeType.FindSupportTarget, new FindSupportTargetNode() }         // 7
+				{ NodeType.FindSupportTarget, new FindSupportTargetNode() },        // 7
+				{ NodeType.CastAbility, new CastAbilityNode() },                    // 8
+				{ NodeType.FirstChild, new FirstChildNode() }                       // 9
 			};                                                                      
 		}                                                                           
 
@@ -83,7 +87,42 @@ namespace Game.BehaviourTree
 			return ref childNodeData;
 		}
 	}
+	
+	
+	public sealed class FirstChildNode : BaseBehaviourNode
+	{
+		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
+												ref BehaviourAgentData agentData, float deltaTime)
+		{
+			ref EntityComponentsHeader header = ref BehaviourTreeContainer.GetEntityComponentsHeader(entityId);
+			for (int i = 0; i < nodeData.childrenCount; i++)
+			{
+				ref BehaviourNodeData childNodeData = ref GetChild(ref header, nodeData.children[i]);
+				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime);
+				switch (status)
+				{
+					case BehaviourStatus.Running:
+						return BehaviourStatus.Running;
+					case BehaviourStatus.Success:
+						Reset(entityId, ref nodeData);
+						return BehaviourStatus.Success;
+					case BehaviourStatus.Failure:
+						continue;
+					default:
+						continue;
+				}
+			}
+			
+			Reset(entityId, ref nodeData);
+			return BehaviourStatus.Failure;
+		}
+	}
 
+	
+	/// <summary>
+	/// TODO: Implement PriorityNode to process children in order of priority,
+	/// returning success if any child succeeds, and failure only if all children fail.
+	/// </summary>
 	public sealed class PriorityNode : BaseBehaviourNode
 	{
 		public override BehaviourStatus Process(EntId entityId,

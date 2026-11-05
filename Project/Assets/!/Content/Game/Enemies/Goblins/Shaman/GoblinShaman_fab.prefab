@@ -2342,6 +2342,7 @@ MonoBehaviour:
   SupportImage: {fileID: 5624310309866798963}
   UI: {fileID: 8669077068348038381}
   Animator: {fileID: 6307883989260251296}
+  Collider: {fileID: 351120768092476403}
 --- !u!136 &351120768092476403
 CapsuleCollider:
   m_ObjectHideFlags: 0

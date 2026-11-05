@@ -16,6 +16,11 @@ namespace Game
 		[SerializeField] private StatConfig _Cooldown;
 		public StatConfig Cooldown => _Cooldown;
 		
+		[SerializeField] private StatConfig _TimeToLive;
+		public StatConfig TimeToLive => _TimeToLive;
+		
+		
+		
 		
 		[SerializeField] private StatConfig _CastingMultiplier;
 		public StatConfig CastingMultiplier => _CastingMultiplier;

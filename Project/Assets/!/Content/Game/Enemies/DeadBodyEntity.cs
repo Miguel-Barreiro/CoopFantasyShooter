@@ -9,26 +9,28 @@ using Zenject;
 
 namespace Game.Enemies
 {
-	public sealed class DeadBodyEntity : Entity, IDeadBody
-	{
-		public const float TIME_TO_DISAPPEAR = 5f;
-		
-		public DeadBodyEntity()
-		{
-		}
-	}
-
+	// public sealed class DeadBodyEntity : Entity, IDeadBody
+	// {
+	// 	
+	// 	public DeadBodyEntity()
+	// 	{
+	// 	}
+	// }
+	//
 
 	[StructLayout(LayoutKind.Auto)]
 	public struct DeadBodyData : IComponentData
 	{
+		public const float TIME_TO_DISAPPEAR = 5f;
 		public EntId ID { get; set; }
 		
 		public float timeToDisappear;
+		public bool Enabled;
 
 		public void Init()
 		{
-			timeToDisappear = DeadBodyEntity.TIME_TO_DISAPPEAR;
+			Enabled = false;
+			timeToDisappear = TIME_TO_DISAPPEAR;
 		}
 	}
 
@@ -36,7 +38,7 @@ namespace Game.Enemies
 	
 	
 	
-	public sealed class DeadBodyViewSystem : UpdateComponents<DeadBodyData>, OnCreateComponent<DeadBodyData>
+	public sealed class DeadBodyViewSystem : UpdateComponents<DeadBodyData>
 	{
 		[Inject] private readonly EntitiesContainer EntitiesContainer = null!;
 		[Inject] private readonly BasicCompContainer<DeadBodyData> DeadBodyContainer = null!;
@@ -49,21 +51,15 @@ namespace Game.Enemies
 			for (int i = 0; i < topIndex; i++)
 			{
 				ref DeadBodyData componentData = ref DeadBodyContainer.Components[i];
+				if(!componentData.Enabled)
+					continue;
+				
 				componentData.timeToDisappear -= deltaTime;
 				
-				if (componentData.timeToDisappear <= 0f)
-					EntitiesContainer.DestroyEntity(componentData.ID);
+				// if (componentData.timeToDisappear <= 0f)
+					// EntitiesContainer.DestroyEntity(componentData.ID);
 				
 			}
-		}
-
-
-		public void OnCreateComponent(EntId newComponentId)
-		{
-			EntityViewAtributes? entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(newComponentId);
-			EnemyView? enemyView = entityViewAtributes?.Get<EnemyView>();
-			if(enemyView != null)
-				enemyView.SetDead();
 		}
 		
 		

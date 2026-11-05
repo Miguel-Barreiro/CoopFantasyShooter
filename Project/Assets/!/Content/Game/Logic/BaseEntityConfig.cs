@@ -13,7 +13,9 @@ namespace Game.Logic
 	
 	public abstract class BaseEntityConfig : DataConfig, IBaseEntityConfig
 	{
-		[Header("STATS")]
+		[SerializeField] private Texture2D _Icon;
+		public Texture2D Icon => _Icon;
+		
 		[SerializeField] private List<StatOverride> _Stats;
 		public List<StatOverride> StatsOverride => _Stats;
 
@@ -21,6 +23,9 @@ namespace Game.Logic
 	
 	public abstract class BaseVSEntityConfig : VSAbilityDataConfig, IBaseEntityConfig
 	{
+		
+		[SerializeField] private Texture2D _Icon;
+		public Texture2D Icon => _Icon;
 		
 	}
 }

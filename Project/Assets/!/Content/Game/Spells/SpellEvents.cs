@@ -2,6 +2,7 @@ using Core.Events;
 using Core.Model;
 using Core.View;
 using FixedPointy;
+using Game.Components;
 using Game.Enemies;
 using Game.Player;
 using Global;
@@ -13,7 +14,7 @@ namespace Game.Spells
 	public abstract class AbilityEvent<T> : EntityEvent<T> 
 		where T : AbilityEvent<T>, new()
 	{
-		[Inject] protected readonly BasicCompContainer<AbilityData> AbilityContainer = null!;
+		[Inject] protected readonly BasicCompContainer<PlayerAbilityData> AbilityContainer = null!;
 		
 	}
 	
@@ -27,8 +28,8 @@ namespace Game.Spells
 		public override void Execute()
 		{
 			StatsSystem.ResetDepletedValueToMin(EntityID, GameStatsContainer.CastingTime);
-			ref AbilityData abilityData = ref AbilityContainer.GetComponent(EntityID);
-			abilityData.State = AbilityState.Ready;
+			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(EntityID);
+			playerAbilityData.State = AbilityState.Ready;
 		}
 	}
 	
@@ -41,19 +42,20 @@ namespace Game.Spells
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
 		
 		public EntId PlayerID = EntId.Invalid;
 		
 		public override void Execute()
 		{
-			
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(PlayerID);
-			EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(PlayerID);
+			ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(PlayerID);
+			// EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(PlayerID);
 
 			Vector3 direction = playerData.LookDirection.normalized;
-			playerData.LookDirection = direction.normalized;
-			Vector3 playerPosition = playerViewAtributes!.GameObject!.transform.position;
-
+			// playerData.LookDirection = direction.normalized;
+			
+			Vector3 playerPosition = worldEntityData.Position;
 			Vector3 position = playerPosition + 
 							Vector3.up * 0.9f +
 							direction.normalized * 
@@ -76,8 +78,8 @@ namespace Game.Spells
 		
 		public override void Execute()
 		{
-			ref AbilityData abilityData = ref AbilityContainer.GetComponent(EntityID);
-			abilityData.State = AbilityState.Recover;
+			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(EntityID);
+			playerAbilityData.State = AbilityState.Recover;
 		}
 	}
 	

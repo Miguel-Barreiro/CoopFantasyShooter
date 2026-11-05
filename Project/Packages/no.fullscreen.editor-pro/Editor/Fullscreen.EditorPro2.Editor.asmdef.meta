@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 986fce09914ea7f45a52ab6c0efe8864
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398680
+  packageName: Editor Pro 2
+  packageVersion: 2.1.2
+  assetPath: Packages/no.fullscreen.editor-pro/Editor/Fullscreen.EditorPro2.Editor.asmdef
+  uploadId: 1012834

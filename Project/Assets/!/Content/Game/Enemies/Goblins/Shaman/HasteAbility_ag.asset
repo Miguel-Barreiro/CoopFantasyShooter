@@ -1,0 +1,612 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7308950612715212413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ef53b24147d94e8532c392272320e, type: 3}
+  m_Name: Entity Event Listen
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Events.EntityEventListenNode
+  graph: {fileID: 11400000}
+  position: {x: -856, y: -344}
+  ports:
+    keys:
+    - Continue
+    - Owner
+    values:
+    - _fieldName: Continue
+      _node: {fileID: -7308950612715212413}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: 368892357004088048}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: Owner
+      _node: {fileID: -7308950612715212413}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Entity
+        node: {fileID: 8427094240983526994}
+        reroutePoints: []
+      - fieldName: Owner
+        node: {fileID: 1651587073610879786}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: -7308950612715212413
+  active: 1
+  selectedEventType:
+    TypeName: FindTargetsAbilityEvent
+    AssemblyQualifiedName: Game.Enemies.EnemyAbilities.FindTargetsAbilityEvent, GameAssemblyDef,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  vsFieldPorts:
+  - isInput: 0
+    FieldName: Owner
+  Timing: 1
+  ListenTarget: 0
+--- !u!114 &-6972218498765615475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4a19c84963d4843b3779c8fa3b59c8d, type: 3}
+  m_Name: Search Entities By Distance
+  m_EditorClassIdentifier: GameAssemblyDef::Game.VSNodes.Search.SearchEntitiesByDistanceNode
+  graph: {fileID: 11400000}
+  position: {x: -248, y: -136}
+  ports:
+    keys:
+    - SearchPosition
+    - MaxDistance
+    - SearchNumber
+    - ResultEntities
+    - MinDistance
+    values:
+    - _fieldName: SearchPosition
+      _node: {fileID: -6972218498765615475}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Position
+        node: {fileID: 8427094240983526994}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: MaxDistance
+      _node: {fileID: -6972218498765615475}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: 1651587073610879786}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: SearchNumber
+      _node: {fileID: -6972218498765615475}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Value
+        node: {fileID: 7289784098421448499}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ResultEntities
+      _node: {fileID: -6972218498765615475}
+      _typeQualifiedName: System.Collections.Generic.List`1[[Core.Model.EntId, Core.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
+        Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: TargetEntities
+        node: {fileID: 368892357004088048}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: MinDistance
+      _node: {fileID: -6972218498765615475}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: -6972218498765615475
+  ResultEntities: []
+  SearchEntityType: 1
+  SearchPosition: {x: 0, y: 0, z: 0}
+  MaxDistance:
+    _raw: 65536
+  MinDistance:
+    _raw: 65536
+  SearchNumber:
+    _raw: 65536
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491003568a21afc4093dfa435921fc71, type: 3}
+  m_Name: HasteAbility_ag
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.ActionGraph
+  nodes:
+  - {fileID: -7308950612715212413}
+  - {fileID: 368892357004088048}
+  - {fileID: -6972218498765615475}
+  - {fileID: 6812943406892332562}
+  - {fileID: 8427094240983526994}
+  - {fileID: 7289784098421448499}
+  - {fileID: 1651587073610879786}
+  - {fileID: 6049503730615594013}
+  - {fileID: 3851893656156703805}
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 11400000
+  localVariables: []
+  localTriggers:
+  - Name: DefaultTimer
+    CooldownReset: 0
+    _CooldownStat: {fileID: 0}
+--- !u!114 &368892357004088048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536fbad7b8bf48518740352ab2b67d00, type: 3}
+  m_Name: Set Enemy Ability Target
+  m_EditorClassIdentifier: GameAssemblyDef::Game.Enemies.EnemyAbilities.SetEnemyAbilityTargetNode
+  graph: {fileID: 11400000}
+  position: {x: 136, y: -296}
+  ports:
+    keys:
+    - TargetEntities
+    - TargetPositions
+    - Continue
+    - Enter
+    values:
+    - _fieldName: TargetEntities
+      _node: {fileID: 368892357004088048}
+      _typeQualifiedName: System.Collections.Generic.List`1[[Core.Model.EntId, Core.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
+        Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: ResultEntities
+        node: {fileID: -6972218498765615475}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: TargetPositions
+      _node: {fileID: 368892357004088048}
+      _typeQualifiedName: System.Collections.Generic.List`1[[UnityEngine.Vector3,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: Continue
+      _node: {fileID: 368892357004088048}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: 368892357004088048}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Continue
+        node: {fileID: -7308950612715212413}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 368892357004088048
+  TargetType: 1
+  TargetEntities: []
+  TargetPositions: []
+--- !u!114 &1651587073610879786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ecd0722a604c8db31ee53e210fbad0, type: 3}
+  m_Name: Get Stat Value
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Stats.GetStatValueNode
+  graph: {fileID: 11400000}
+  position: {x: -728, y: -104}
+  ports:
+    keys:
+    - Owner
+    - Value
+    values:
+    - _fieldName: Owner
+      _node: {fileID: 1651587073610879786}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Owner
+        node: {fileID: -7308950612715212413}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: 1651587073610879786}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: MaxDistance
+        node: {fileID: -6972218498765615475}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 1651587073610879786
+  Value:
+    _raw: 0
+  Stat: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
+  Depleted: 0
+--- !u!114 &3851893656156703805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b935a16a914ca6a239bbe4217bb78c, type: 3}
+  m_Name: Apply Status Effect
+  m_EditorClassIdentifier: GameAssemblyDef::Game.StatusEffects.ApplyStatusEffectNode
+  graph: {fileID: 11400000}
+  position: {x: 24, y: 296}
+  ports:
+    keys:
+    - Target
+    - Continue
+    - Enter
+    values:
+    - _fieldName: Target
+      _node: {fileID: 3851893656156703805}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: ExecuteValue
+        node: {fileID: 6049503730615594013}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Continue
+      _node: {fileID: 3851893656156703805}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: 3851893656156703805}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: LoopExecute
+        node: {fileID: 6049503730615594013}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 3851893656156703805
+  StatusEffectConfig: {fileID: 11400000, guid: 4438f2d197cba964b9655491055ab963, type: 2}
+--- !u!114 &6049503730615594013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c705817ed2fc4569823e83f264f24fa6, type: 3}
+  m_Name: Foreach Loop
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.ForeachLoopNode
+  graph: {fileID: 11400000}
+  position: {x: -312, y: 232}
+  ports:
+    keys:
+    - Continue
+    - LoopExecute
+    - Enter
+    - ExecuteValue
+    - List
+    values:
+    - _fieldName: Continue
+      _node: {fileID: 6049503730615594013}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: LoopExecute
+      _node: {fileID: 6049503730615594013}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: 3851893656156703805}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Enter
+      _node: {fileID: 6049503730615594013}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Continue
+        node: {fileID: 6812943406892332562}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ExecuteValue
+      _node: {fileID: 6049503730615594013}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Target
+        node: {fileID: 3851893656156703805}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: List
+      _node: {fileID: 6049503730615594013}
+      _typeQualifiedName: System.Collections.Generic.List`1[[Core.Model.EntId, Core.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
+        Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Targets
+        node: {fileID: 6812943406892332562}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 6049503730615594013
+  Type: 1
+--- !u!114 &6812943406892332562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ef53b24147d94e8532c392272320e, type: 3}
+  m_Name: Entity Event Listen
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.Events.EntityEventListenNode
+  graph: {fileID: 11400000}
+  position: {x: -808, y: 232}
+  ports:
+    keys:
+    - Continue
+    - OriginPosition
+    - TargetPositions
+    - Targets
+    - Owner
+    values:
+    - _fieldName: Continue
+      _node: {fileID: 6812943406892332562}
+      _typeQualifiedName: Core.VSEngine.Control, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Enter
+        node: {fileID: 6049503730615594013}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: OriginPosition
+      _node: {fileID: 6812943406892332562}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: TargetPositions
+      _node: {fileID: 6812943406892332562}
+      _typeQualifiedName: System.Collections.Generic.List`1[[UnityEngine.Vector3,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: Targets
+      _node: {fileID: 6812943406892332562}
+      _typeQualifiedName: System.Collections.Generic.List`1[[Core.Model.EntId, Core.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
+        Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: List
+        node: {fileID: 6049503730615594013}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: Owner
+      _node: {fileID: 6812943406892332562}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 6812943406892332562
+  active: 1
+  selectedEventType:
+    TypeName: ActivateEnemyAbilityEvent
+    AssemblyQualifiedName: Game.Enemies.EnemyAbilities.ActivateEnemyAbilityEvent,
+      GameAssemblyDef, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  vsFieldPorts:
+  - isInput: 0
+    FieldName: OriginPosition
+  - isInput: 0
+    FieldName: TargetPositions
+  - isInput: 0
+    FieldName: Targets
+  - isInput: 0
+    FieldName: Owner
+  Timing: 1
+  ListenTarget: 0
+--- !u!114 &7289784098421448499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc1902875214feca4358cad29401dfe, type: 3}
+  m_Name: Number
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.NumberNode
+  graph: {fileID: 11400000}
+  position: {x: -488, y: -8}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 7289784098421448499}
+      _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SearchNumber
+        node: {fileID: -6972218498765615475}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 7289784098421448499
+  Value:
+    _raw: 0
+  ValueFloat: 1
+--- !u!114 &8427094240983526994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d9da5a7c6e4af3917ed1df5f2e98bb, type: 3}
+  m_Name: Get Entity Position
+  m_EditorClassIdentifier: GameAssemblyDef::Game.VSNodes.Values.GetEntityPositionNode
+  graph: {fileID: 11400000}
+  position: {x: -488, y: -232}
+  ports:
+    keys:
+    - Entity
+    - Position
+    values:
+    - _fieldName: Entity
+      _node: {fileID: 8427094240983526994}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Owner
+        node: {fileID: -7308950612715212413}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Position
+      _node: {fileID: 8427094240983526994}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: SearchPosition
+        node: {fileID: -6972218498765615475}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: 8427094240983526994
+  Position: {x: 0, y: 0, z: 0}

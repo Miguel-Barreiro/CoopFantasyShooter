@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c555fee818a103847b10ad286668084f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398680
+  packageName: Editor Pro 2
+  packageVersion: 2.1.2
+  assetPath: Packages/no.fullscreen.editor-pro/Editor/Window/BrowserWindow.cs
+  uploadId: 1012834

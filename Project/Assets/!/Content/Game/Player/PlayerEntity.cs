@@ -6,7 +6,11 @@ using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
 using FixedPointy;
+using Game.Components;
 using Game.Events;
+using Game.Logic;
+using Game.StatusEffects;
+using Game.VSNodes.Search;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -15,16 +19,20 @@ namespace Game.Player
 {
 	
 	
-	public class PlayerEntity : Entity, IPlayer, IHierarchyEntity
+	public class PlayerEntity : Entity, 
+								IPlayer, 
+								IStatusEffectOwner, 
+								IWorldEntity, 
+								IHierarchyEntity
 	{
-		[Inject] private readonly GameConfig GameConfig = null!;
-
 		
-		public PlayerEntity(int playerNumber)
+		public PlayerEntity(int playerNumber, Fix size)
 		{
 			ref PlayerData playerData = ref GetComponent<PlayerData>();
 			playerData.PlayerNumber = playerNumber;
 
+			ref WorldEntityData worldEntityData = ref GetComponent<WorldEntityData>();
+			worldEntityData.Size = size;
 		}
 	}
 
@@ -56,7 +64,11 @@ namespace Game.Player
 		}
 	}
 
-	public interface IPlayer : Component<PlayerData>, IHierarchyEntity
+	public interface IPlayer : IStatusEffectOwner,
+								ISimulation, 
+								IHierarchyEntity, 
+								IWorldEntity, 
+								Component<PlayerData>
 	{ }
 	
 	
@@ -145,6 +157,7 @@ namespace Game.Player
 				// Debug.Log($"Moving Player {playerData.PlayerNumber} with direction {playerData.MoveDirection} and move value {speed}");
 				
 			}
+			
 			if(allPlayersDead && PlayerContainer.TopEmptyIndex > 0)
 				EventQueue.Execute<OnAllPlayersDeadEvent>();
 		}

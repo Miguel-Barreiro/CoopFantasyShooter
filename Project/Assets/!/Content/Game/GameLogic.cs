@@ -7,9 +7,11 @@ using Core.View;
 using FixedPointy;
 using Game.BehaviourTree;
 using Game.Enemies;
+using Game.Enemies.EnemyAbilities;
 using Game.Player;
 using Game.Spells;
 using Game.Spells.Bullet;
+using Game.StatusEffects;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -28,6 +30,12 @@ namespace Game
 
 		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
 		[Inject] private readonly BehaviourTreeContainer BehaviourTreeContainer = null!;
+		[Inject] private readonly BasicCompContainer<DeadBodyData> DeadBodyContainer = null!;
+
+		[Inject] private readonly BasicCompContainer<StatusEffectOwnerData> StatusEffectOwnerContainer = null!;
+		[Inject] private readonly BasicCompContainer<StatusEffectData> StatusEffectContainer = null!;
+		[Inject] private readonly StatusEffectSystem StatusEffectSystem = null!;
+
 
 
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
@@ -37,11 +45,12 @@ namespace Game
 			//to make interesting clumps of enemies. For now we will just spawn them in a random position around the player.
 			
 			Vector3 spawnPosition = new Vector3(position.x, 0f, position.y);
-			EntId enemyId = new EnemyEntity().ID;
+			EntId enemyId = new EnemyEntity(enemyConfig.Size).ID;
 			EntityViewAtributes view = AddView(enemyId, enemyConfig.EnemyPrefab.gameObject, spawnPosition, Quaternion.identity);
 			EnemyView enemyView = view.Get<EnemyView>();
 
 			enemyView.NavMeshAgent.Warp(spawnPosition);
+			enemyView.NavMeshAgent.radius = (float) enemyConfig.Size;
 			// enemyView.SetSize(GameplayConfig.EnemyAttributes.Size);
 			
 			AddBehaviourTree();
@@ -52,7 +61,7 @@ namespace Game
 			OverrideDefaultStats(enemyId, enemyConfig.StatsOverride);
 
 			foreach (AbilityConfig abilityConfig in enemyConfig.Abilities)
-				AddAbility(abilityConfig, enemyId);
+				AddPlayerAbility(abilityConfig, enemyId);
 			
 			// enemyView.TriggerSpawning();
 			
@@ -62,21 +71,26 @@ namespace Game
 			
 			void AddGoblinPawnBehaviourTree()
 			{
-				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget);
+				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget, out _);
 				findTargetNode.Cooldown = 0f;
-				ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
-				ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
+				ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget, out _);
+				ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget, out _);
 				
 			}
 			void AddGoblinShamanBehaviourTree()
 			{
-				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget);
+				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget, out _);
 				findTargetNode.Cooldown = 0f;
 				// ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
-				ref BehaviourNodeData moveAwayFromTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveAwayFromTarget);
-				ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget);
+				ref BehaviourNodeData moveAwayFromTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveAwayFromTarget, out _);
+				ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget, out _);
 				findSupportTargetNode.Cooldown = 0f;
-				ref BehaviourNodeData castSupportSpell = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.CastSupportTarget);
+				
+				ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out uint abilitiesParent);
+				
+				foreach (AbilityConfig abilityConfig in enemyConfig.Abilities)
+					AddEnemyAbility(abilityConfig, enemyId, abilitiesParent);
+				
 				// ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
 			}
 			
@@ -177,7 +191,7 @@ namespace Game
 
 		public EntId AddPlayer(int newPlayerNumber)
 		{
-			EntId playerId = new PlayerEntity(newPlayerNumber).ID;
+			EntId playerId = new PlayerEntity(newPlayerNumber, GameplayConfig.PlayerAttributes.Size).ID;
 			
 			EntityViewAtributes view = AddView(playerId, GameplayConfig.PlayerAttributes.PlayerPrefab.gameObject);
 			PlayerView playerView = view.Get<PlayerView>();
@@ -199,10 +213,23 @@ namespace Game
 			return ViewEntitiesContainer.Spawn(prefab, entityId);
 		}
 
-		public EntId AddAbility(AbilityConfig abilityConfig, EntId entityID)
+		public EntId AddPlayerAbility(AbilityConfig abilityConfig, EntId entityID)
 		{
-			AbilityEntity abilityEntity = new AbilityEntity(entityID, abilityConfig);
-			EntId abilityEntityID = abilityEntity.ID;
+			PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, abilityConfig);
+			EntId abilityEntityID = playerAbilityEntity.ID;
+			
+			OverrideDefaultStats(abilityEntityID, abilityConfig.StatsOverride);
+			
+			return abilityEntityID;
+		}
+		
+		public EntId AddEnemyAbility(AbilityConfig abilityConfig, EntId entityID, uint parentNodeOrder = 0)
+		{
+			EnemyAbilityEntity enemyAbilityEntity = new EnemyAbilityEntity(entityID, abilityConfig);
+			EntId abilityEntityID = enemyAbilityEntity.ID;
+
+			ref BehaviourNodeData nodeData = ref BehaviourTreeContainer.AddNode(entityID, NodeType.CastAbility, out _, parentNodeOrder);
+			nodeData.AbilityID = abilityEntityID;
 
 			OverrideDefaultStats(abilityEntityID, abilityConfig.StatsOverride);
 			
@@ -246,17 +273,39 @@ namespace Game
 			}
 		}
 
-		public EntId KillEnemy(EntId enemyID)
+		public void KillEnemy(EntId enemyID)
 		{
-			DeadBodyEntity deadBodyEntity = new DeadBodyEntity();
-			ViewEntitiesContainer.SwitchOwnership(enemyID, deadBodyEntity.ID);
+			// DeadBodyEntity deadBodyEntity = new DeadBodyEntity();
+			// ViewEntitiesContainer.SwitchOwnership(enemyID, deadBodyEntity.ID);
 
 			// Entity destruction is deferred, so the behaviour tree would still run this frame without a view.
 			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyID);
 			agentData.Enable = false;
-			EntitiesContainer.DestroyEntity(enemyID);
 			
-			return deadBodyEntity.ID;
+
+			ref DeadBodyData deadBodyData = ref DeadBodyContainer.GetComponent(enemyID);
+			deadBodyData.Enabled = true;
+			
+			EntityViewAtributes? entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(enemyID);
+			EnemyView? enemyView = entityViewAtributes?.Get<EnemyView>();
+			if(enemyView != null)
+				enemyView.SetDead();
+			
+			// EntitiesContainer.DestroyEntity(enemyID);
+			
+			// return deadBodyEntity.ID;
 		}
+
+		public EntId ApplyStatusEffect(EntId target, StatusEffectConfig statusEffectConfig)
+		{
+			StatusEffectEntity statusEffectEntity = new StatusEffectEntity(target, statusEffectConfig);
+			
+			OverrideDefaultStats(statusEffectEntity.ID, statusEffectConfig.StatsOverride);
+			
+			return statusEffectEntity.ID;
+		}
+		
+		
+
 	}
 }

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: af02920e8b7e1824ba631500e9512186
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398680
+  packageName: Editor Pro 2
+  packageVersion: 2.1.2
+  assetPath: Packages/no.fullscreen.editor-pro/package.json
+  uploadId: 1012834

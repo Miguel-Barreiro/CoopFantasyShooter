@@ -1,0 +1,16 @@
+{
+  "name": "no.fullscreen.editor-pro",
+  "version": "2.1.2",
+  "displayName": "Editor Pro 2",
+  "description": "A powerful ScriptableObject browser for Unity, with categories, search, favorites, tabs, and an advanced inspector.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Fullscreen Studios"
+  },
+  "keywords": [
+    "editor",
+    "scriptableobject",
+    "ui toolkit"
+  ],
+  "documentationUrl": "https://fullscreen.no/docs/"
+}

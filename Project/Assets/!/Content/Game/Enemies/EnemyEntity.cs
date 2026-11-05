@@ -5,7 +5,9 @@ using Core.Systems;
 using Core.View;
 using FixedPointy;
 using Game.BehaviourTree;
-using Unity.AI.Navigation;
+using Game.Components;
+using Game.Logic;
+using Game.StatusEffects;
 using UnityEngine.AI;
 using Zenject;
 
@@ -13,12 +15,20 @@ namespace Game.Enemies
 {
 	public sealed class EnemyEntity : Entity, 
 									IEnemy, 
+									IWorldEntity,
+									IHierarchyEntity, 
+									IStatusEffectOwner, 
+									IDeadBody, 
 									IBehaviour
 	{
-		public EnemyEntity()
+		public EnemyEntity(Fix size)
 		{
 			ref BehaviourAgentData agentData = ref GetComponent<BehaviourAgentData>();
 			agentData.Enable = true;
+
+			ref WorldEntityData worldEntityData = ref GetComponent<WorldEntityData>();
+			worldEntityData.Size = size;
+
 		}
 	}
 
@@ -28,15 +38,19 @@ namespace Game.Enemies
 		public EntId ID { get; set; }
 		public NavMeshAgent NavMeshAgent;
 		
-		public EntId TargetPlayerID;
+		// public EntId TargetPlayerID;
 
 		public void Init()
 		{
-			TargetPlayerID = EntId.Invalid;
+			// TargetPlayerID = EntId.Invalid;
 		}
 	}
 
-	public interface IEnemy : Component<EnemyData> { }
+	public interface IEnemy : IWorldEntity, 
+							ISimulation, 
+							IHierarchyEntity, 
+							IStatusEffectOwner, 
+							Component<EnemyData> { }
 	
 	
 	public sealed class EnemySystem : OnCreateComponent<EnemyData>, UpdateComponents<EnemyData>
@@ -70,7 +84,6 @@ namespace Game.Enemies
 				}
 			}
 		}
-		
 		
 		
 		public bool Active { get; set; } = true;

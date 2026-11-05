@@ -5,6 +5,7 @@ using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
 using FixedPointy;
+using Game.Components;
 using Game.Enemies;
 using UnityEngine;
 using Zenject;
@@ -12,7 +13,8 @@ using Zenject;
 namespace Game.Spells.Bullet
 {
 	public sealed class BulletEntity : SpellEntity,
-										IBullet
+										IBullet, 
+										IWorldEntity
 	{
 		public BulletEntity(SpellConfig dataConfig) : base(dataConfig) { }
 	}
@@ -26,7 +28,7 @@ namespace Game.Spells.Bullet
 		public void Init() { }
 	}
 
-	public interface IBullet : Component<BulletData> { }
+	public interface IBullet : IWorldEntity, Component<BulletData> { }
 
 
 	public sealed class BulletSystem : UpdateComponents<BulletData>

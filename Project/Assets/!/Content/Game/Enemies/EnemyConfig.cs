@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FixedPointy;
 using Game.Logic;
 using Game.Spells;
 using UnityEngine;
@@ -7,12 +8,10 @@ namespace Game.Enemies
 {
 	public sealed class EnemyConfig : BaseEntityConfig
 	{
-		[Header("LOGIC")] 
 		[SerializeField] private List<AbilityConfig> _abilities;
 		public List<AbilityConfig> Abilities => _abilities;
 		
 		
-		[Header("VIEW")] 
 		[SerializeField] private EnemyView _EnemyPrefab;
 		public EnemyView EnemyPrefab => _EnemyPrefab;
 
@@ -24,8 +23,12 @@ namespace Game.Enemies
 		private float _AttackFrameNormalizedTime = 0.5f;
 		public float AttackFrameNormalizedTime => _AttackFrameNormalizedTime;
 
-		
+		[SerializeField]
+		[Range(0.1f, 2f)]
+		private float _size = 0.4f;
+		public float Size => _size;
 
+		
 	}
 	
 	public enum EnemyBehaviourType

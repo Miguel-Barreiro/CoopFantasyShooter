@@ -1,6 +1,7 @@
 using Core.Events;
 using Core.Model;
 using Core.View;
+using Game.Components;
 using Game.Enemies.EnenmySpawners;
 using Game.Events;
 using Game.Logic;
@@ -50,24 +51,25 @@ namespace Game.Enemies
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly BasicCompContainer<EnemyData> EnemyContainer = null!;
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		// [Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
-
+		
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;	
+		
 		
 		private readonly Collider[] ResultsCache = new Collider[15];
 		
 		public override void Execute()
 		{
-			EntityViewAtributes enemyViewAttributes = ViewEntitiesContainer.GetEntityViewAtributes(EntityID);
-			EnemyView enemyView = enemyViewAttributes!.Get<EnemyView>();
-			NavMeshAgent navMeshAgent = enemyViewAttributes.Get<NavMeshAgent>();
+			ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(EntityID);
 			float attackDistance = (float) StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.AttackDistance);
-			Vector3 direction = enemyView.transform.forward;
+			
+			Vector3 direction = worldEntityData.Direction;
 			direction.y = 0f;
 			
-			Vector3 position = enemyView.transform.position + direction * (0.1f + navMeshAgent.radius);
+			Vector3 position = worldEntityData.Position + direction * (float) (0.1f + worldEntityData.Size);
 			int size = Physics.OverlapSphereNonAlloc(position, attackDistance, ResultsCache);
 			if(size > 0)
 			{

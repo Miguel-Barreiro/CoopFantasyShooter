@@ -6,6 +6,7 @@ using Core.Systems;
 using Core.Utils;
 using Core.View;
 using FixedPointy;
+using Game.Components;
 using Game.Enemies;
 using Game.Player;
 using Global;
@@ -22,12 +23,14 @@ namespace Game.Logic
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		// [Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 
 
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly IRandomSystem RandomSystem = null!;
 
+
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
 
 
 		public void UpdateComponents(float deltaTime)
@@ -82,9 +85,12 @@ namespace Game.Logic
 				for (int i = 0; i < topPlayerIndex; i++)
 				{
 					EntId entId = PlayerContainer.Components[i].ID;
-					EntityViewAtributes? viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entId);
-					Vector3 playerWorldPosition = viewAtributes!.GameObject!.transform.position;
-					FixVec2 pos = new FixVec2(playerWorldPosition.x, playerWorldPosition.z);
+					
+					ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(entId);
+					
+					// EntityViewAtributes? viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entId);
+					// Vector3 playerWorldPosition = viewAtributes!.GameObject!.transform.position;
+					FixVec2 pos = new FixVec2(worldEntityData.Position.x, worldEntityData.Position.z);
 					averagePosition += pos;
 				}
  
