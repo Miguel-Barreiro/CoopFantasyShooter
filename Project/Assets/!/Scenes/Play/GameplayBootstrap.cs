@@ -1,7 +1,9 @@
 using Com.LuisPedroFonseca.ProCamera2D;
 using Core.Initialization;
+using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
+using Core.VSEngine.Systems;
 using Core.Zenject.Source.Main;
 using Game;
 using Game.BehaviourTree;
@@ -11,6 +13,7 @@ using Game.Enemies.EnemyAbilities;
 using Game.Input;
 using Game.Logic;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
 using Game.StatusEffects;
@@ -126,6 +129,7 @@ namespace Scenes.Play
 			dataController.ResizeComponentsContainer<BulletData>(GameplayConfig.MaxBullets);
 			dataController.ResizeComponentsContainer<PlayerData>(GameplayConfig.MaxPlayers);
 			dataController.ResizeComponentsContainer<PlayerAbilityData>(GameplayConfig.MaxAbilities);
+			dataController.ResizeComponentsContainer<SpellData>(GameplayConfig.MaxSpells);
 			#endregion
 
 			
@@ -156,6 +160,9 @@ namespace Scenes.Play
 			dataController.ResizeComponentsContainer<WorldEntityData>(totalEntities);
 			dataController.ResizeComponentsContainer<HierarchyData>(totalEntities);
 			dataController.ResizeComponentsContainer<SimulationData>(totalEntities);
+			dataController.ResizeComponentsContainer<VSAbilityData>(totalEntities);
+			dataController.ResizeComponentsContainer<VSTimersData>(totalEntities);
+			
 
 		}
 	}

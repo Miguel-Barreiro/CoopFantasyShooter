@@ -20,7 +20,8 @@ namespace Game.BehaviourTree
 		CastSupportTarget = 6,
 		FindSupportTarget = 7,
 		CastAbility = 8, 
-		FirstChild = 9
+		FirstChild = 9, 
+		RangedAttack = 10
 	}
 	
 	
@@ -41,7 +42,8 @@ namespace Game.BehaviourTree
 				{ NodeType.CastSupportTarget, new SupportCastNode() },              // 6
 				{ NodeType.FindSupportTarget, new FindSupportTargetNode() },        // 7
 				{ NodeType.CastAbility, new CastAbilityNode() },                    // 8
-				{ NodeType.FirstChild, new FirstChildNode() }                       // 9
+				{ NodeType.FirstChild, new FirstChildNode() },                       // 9
+				{ NodeType.RangedAttack, new RangedAttackNode() }                    // 10
 			};                                                                      
 		}                                                                           
 

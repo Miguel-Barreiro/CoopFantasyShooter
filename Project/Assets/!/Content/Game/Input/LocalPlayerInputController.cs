@@ -57,6 +57,7 @@ namespace Game.Input
 			_playerInput.onDeviceRegained -= OnDeviceRegained;
 			
 			_playerMoveInputAction.performed -=  OnMove;
+			
 
 			_playerInput.actions["Look"].performed -=  OnLook;
 			_AttackPlayerInputAction.performed -=  OnAttack;
@@ -73,23 +74,36 @@ namespace Game.Input
 		{
 			if (_AttackPlayerInputAction.IsPressed())
 			{
-				ShootPlayerEvent shootPlayerEvent = EventQueue.Trigger<ShootPlayerEvent>();
-				shootPlayerEvent.PlayerNumber = PlayerIndex;
+				UseMainAbilityPlayerEvent useMainAbilityPlayerEvent = EventQueue.Trigger<UseMainAbilityPlayerEvent>();
+				useMainAbilityPlayerEvent.PlayerNumber = PlayerIndex;
 			}
 
-			Vector2 moveDirection = _playerMoveInputAction.ReadValue<Vector2>();
-			MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
-			Vector2 direction = moveDirection;
-			movePlayerEvent.PlayerNumber = PlayerIndex;
-			movePlayerEvent.Direction = direction;
 
-			if (moveDirection.magnitude < 0.2f)
+			if (!_playerMoveInputAction.IsInProgress())
 			{
+				MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
+				movePlayerEvent.PlayerNumber = PlayerIndex;
+				movePlayerEvent.Direction = Vector2.zero;
 				movePlayerEvent.MoveValue = 0f;
-			} else
-			{
-				movePlayerEvent.MoveValue = 2f;
 			}
+
+			//
+			// Vector2 moveDirection = _playerMoveInputAction.ReadValue<Vector2>();
+			// MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
+			// movePlayerEvent.PlayerNumber = PlayerIndex;
+			// movePlayerEvent.Direction = moveDirection;
+			// if (moveDirection.magnitude < 0.2f)
+			// {
+			// 	Debug.Log($"MovePlayerEvent: Player {PlayerIndex} stopped moving.");
+			// }
+			//
+			// if (moveDirection.magnitude < 0.2f)
+			// {
+			// 	movePlayerEvent.MoveValue = 0f;
+			// } else
+			// {
+			// 	movePlayerEvent.MoveValue = 1f;
+			// }
 
 		}
 
@@ -117,10 +131,19 @@ namespace Game.Input
 		private void OnMove(InputAction.CallbackContext context)
 		{
 			Vector2 direction = context.ReadValue<Vector2>();
+			// Debug.Log($"OnMove: Player {PlayerIndex} tried moving {direction}.");
 			
 			MovePlayerEvent movePlayerEvent = EventQueue.Trigger<MovePlayerEvent>();
 			movePlayerEvent.PlayerNumber = PlayerIndex;
 			movePlayerEvent.Direction = direction;
+			
+			if (direction.magnitude < 0.2f)
+			{
+				movePlayerEvent.MoveValue = 0f;
+			} else
+			{
+				movePlayerEvent.MoveValue = 1f;
+			}
 		}
 
 		private void OnLook(InputAction.CallbackContext context)
@@ -136,8 +159,8 @@ namespace Game.Input
 
 		private void OnAttack(InputAction.CallbackContext context)
 		{
-			ShootPlayerEvent shootPlayerEvent = EventQueue.Trigger<ShootPlayerEvent>();
-			shootPlayerEvent.PlayerNumber = PlayerIndex;
+			UseMainAbilityPlayerEvent useMainAbilityPlayerEvent = EventQueue.Trigger<UseMainAbilityPlayerEvent>();
+			useMainAbilityPlayerEvent.PlayerNumber = PlayerIndex;
 		}
 
 		private void OnInteract(InputAction.CallbackContext context)

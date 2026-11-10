@@ -4,6 +4,7 @@ using Core.Model;
 using Core.View;
 using FixedPointy;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Spells;
 using Global;
 using UnityEngine;
@@ -46,7 +47,7 @@ namespace Game.Events
 	}
 	
 	
-	public sealed class ShootPlayerEvent : Event<ShootPlayerEvent>
+	public sealed class UseMainAbilityPlayerEvent : Event<UseMainAbilityPlayerEvent>
 	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly PlayerAbilitiesSystem PlayerAbilitiesSystem = null!;
@@ -64,19 +65,19 @@ namespace Game.Events
 			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
 			if(playerId == EntId.Invalid)
 			{
-				Debug.Log($"Player {PlayerNumber} not found, cannot shoot.");
+				Debug.Log($"Player {PlayerNumber} not found, cannot use main ability.");
 				return;
 			}
 
 			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			EntId abilityID = playerData.AttackAbiityID;
-			if(abilityID == EntId.Invalid)
+			EntId mainAbilityID = playerData.AbilityIDs[(int)PlayerAbilitySlot.Main];
+			if( mainAbilityID == EntId.Invalid)
 			{
-				Debug.Log($"Player {PlayerNumber} does not have an attack spell, cannot shoot.");
+				Debug.Log($"Player {PlayerNumber} does not have a main ability, cannot use it.");
 				return;
 			}
 			
-			PlayerAbilitiesSystem.TryActivate(abilityID, playerId);
+			PlayerAbilitiesSystem.TryActivate(mainAbilityID);
 		}
 		
 	}

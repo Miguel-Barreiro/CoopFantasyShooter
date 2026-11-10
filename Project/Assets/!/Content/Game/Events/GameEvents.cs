@@ -4,6 +4,7 @@ using Core.Initialization;
 using Core.Model;
 using Core.Systems;
 using Core.Utils.CachedDataStructures;
+using Core.View;
 using Cysharp.Threading.Tasks;
 using Game.Enemies;
 using Game.Logic;
@@ -22,6 +23,10 @@ namespace Game.Events
 		[Inject] private readonly ScenesController ScenesController = null!;
 		[Inject] private readonly EntitiesContainer EntitiesContainer = null!;
 		[Inject] private readonly SystemsController SystemsController = null!;
+		// [Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly GenericGameObjectPool GenericGameObjectPool = null!;
+
+
 
 
 		
@@ -38,11 +43,14 @@ namespace Game.Events
 		private async UniTask SwitchMainScene()
 		{
 
-			SystemsController.PauseLoop();
+			
+			await UniTask.DelayFrame(2);
+			GenericGameObjectPool.ClearAll();
+			
+			// SystemsController.PauseLoop();
 
 			Debug.Log($"LOAD MAIN MENU SCENE");
 				
-			await UniTask.DelayFrame(2);
 			await UniTask.Delay(200, true);
 			await UniTask.DelayFrame(1);
 			

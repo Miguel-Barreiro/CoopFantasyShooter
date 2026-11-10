@@ -9,6 +9,7 @@ using Game.BehaviourTree;
 using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
 using Game.StatusEffects;
@@ -60,8 +61,10 @@ namespace Game
 			
 			OverrideDefaultStats(enemyId, enemyConfig.StatsOverride);
 
-			foreach (AbilityConfig abilityConfig in enemyConfig.Abilities)
-				AddPlayerAbility(abilityConfig, enemyId);
+			
+			
+			foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
+				AddEnemyAbility(abilityConfig, enemyId);
 			
 			// enemyView.TriggerSpawning();
 			
@@ -86,10 +89,10 @@ namespace Game
 				ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget, out _);
 				findSupportTargetNode.Cooldown = 0f;
 				
-				ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out uint abilitiesParent);
-				
-				foreach (AbilityConfig abilityConfig in enemyConfig.Abilities)
-					AddEnemyAbility(abilityConfig, enemyId, abilitiesParent);
+				// ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out abilitiesParent);
+				//
+				// foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
+				// 	AddEnemyAbility(abilityConfig, enemyId, abilitiesParent);
 				
 				// ref BehaviourNodeData attackNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.AttackTarget);
 			}
@@ -105,6 +108,12 @@ namespace Game
 						AddGoblinShamanBehaviourTree();
 						break;
 				}
+
+				ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out uint abilitiesParent);
+				
+				foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
+					AddEnemyAbility(abilityConfig, enemyId, abilitiesParent);
+
 			}
 		}
 		
@@ -191,14 +200,19 @@ namespace Game
 
 		public EntId AddPlayer(int newPlayerNumber)
 		{
-			EntId playerId = new PlayerEntity(newPlayerNumber, GameplayConfig.PlayerAttributes.Size).ID;
+			PlayerAttributes playerAttributes = GameplayConfig.PlayerAttributes;
+			EntId playerId = new PlayerEntity(newPlayerNumber, playerAttributes.Size).ID;
+
+			foreach (PlayerAbilityConfig playerAbility in playerAttributes.PlayerAbilities)
+				AddPlayerAbility(playerAbility, playerId);
 			
-			EntityViewAtributes view = AddView(playerId, GameplayConfig.PlayerAttributes.PlayerPrefab.gameObject);
+			
+			EntityViewAtributes view = AddView(playerId, playerAttributes.PlayerPrefab.gameObject);
 			PlayerView playerView = view.Get<PlayerView>();
-			playerView.SetSize(GameplayConfig.PlayerAttributes.Size);
+			playerView.SetSize(playerAttributes.Size);
 			ProCamera2D.AddCameraTarget(view.GameObject.transform);
-			
-			StatsSystem.SetBaseValue(playerId, GameStatsContainer.Health, GameplayConfig.PlayerAttributes.Health);
+
+			OverrideDefaultStats(playerId, playerAttributes.PlayerStats);
 			
 			return playerId;
 		}
@@ -213,32 +227,59 @@ namespace Game
 			return ViewEntitiesContainer.Spawn(prefab, entityId);
 		}
 
-		public EntId AddPlayerAbility(AbilityConfig abilityConfig, EntId entityID)
+		public EntId AddPlayerAbility(PlayerAbilityConfig playerAbilityConfig, EntId entityID)
 		{
-			PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, abilityConfig);
-			EntId abilityEntityID = playerAbilityEntity.ID;
+			ref PlayerData playerData = ref PlayerContainer.GetComponent(entityID);
+			EntId newAbilityEntityID;
+			if(playerAbilityConfig.InputSlot != PlayerAbilitySlot.None)
+			{
+				int abilityIndex = (int)playerAbilityConfig.InputSlot;
+				if (abilityIndex >= playerData.AbilityIDs.Length)
+				{
+					Debug.LogError($"Player {entityID} does not have enough ability slots for ability type {playerAbilityConfig.InputSlot}. " +
+								   $"Max ability slots: {playerData.AbilityIDs.Length}, Ability type index: {abilityIndex}");
+					return EntId.Invalid;
+				}
+				if (playerData.AbilityIDs[abilityIndex] != EntId.Invalid)
+				{
+					Debug.LogError("Ability slot already occupied! We are going to overwrite the existing ability");
+					EntitiesContainer.DestroyEntity(playerData.AbilityIDs[abilityIndex]);
+				}
+				PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, playerAbilityConfig);
+				newAbilityEntityID = playerAbilityEntity.ID;
+				playerData.AbilityIDs[abilityIndex] = newAbilityEntityID;
+			} else
+			{
+				PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, playerAbilityConfig);
+				newAbilityEntityID = playerAbilityEntity.ID;
+			}
 			
-			OverrideDefaultStats(abilityEntityID, abilityConfig.StatsOverride);
-			
-			return abilityEntityID;
+			OverrideDefaultStats(newAbilityEntityID, playerAbilityConfig.StatsOverride);
+
+			return newAbilityEntityID;
 		}
+
 		
-		public EntId AddEnemyAbility(AbilityConfig abilityConfig, EntId entityID, uint parentNodeOrder = 0)
+		
+		
+		public EntId AddEnemyAbility(EnemyAbilityConfig enemyAbilityConfig, EntId entityID, uint parentNodeOrder = 0)
 		{
-			EnemyAbilityEntity enemyAbilityEntity = new EnemyAbilityEntity(entityID, abilityConfig);
+			EnemyAbilityEntity enemyAbilityEntity = new EnemyAbilityEntity(entityID, enemyAbilityConfig);
 			EntId abilityEntityID = enemyAbilityEntity.ID;
 
+			
+			// TODO we need to add a specific node for each ability type, for now we will just add a generic node for all abilities.
 			ref BehaviourNodeData nodeData = ref BehaviourTreeContainer.AddNode(entityID, NodeType.CastAbility, out _, parentNodeOrder);
 			nodeData.AbilityID = abilityEntityID;
 
-			OverrideDefaultStats(abilityEntityID, abilityConfig.StatsOverride);
+			OverrideDefaultStats(abilityEntityID, enemyAbilityConfig.StatsOverride);
 			
 			return abilityEntityID;
 		}
 
 
 
-		private void OverrideDefaultStats(EntId newEntityID, List<StatOverride> statOverrides)
+		private void OverrideDefaultStats(EntId newEntityID, IReadOnlyCollection<StatOverride> statOverrides)
 		{
 			foreach (StatOverride statOverride in statOverrides)
 			{

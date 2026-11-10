@@ -9,8 +9,8 @@ using FixedPointy;
 using Game.Components;
 using Game.Events;
 using Game.Logic;
+using Game.Player.Abilities;
 using Game.StatusEffects;
-using Game.VSNodes.Search;
 using Global;
 using UnityEngine;
 using Zenject;
@@ -19,12 +19,21 @@ namespace Game.Player
 {
 	
 	
+	public enum PlayerAbilitySlot
+	{
+		None = -1, 
+		Main = 0,
+		Secondary = 1,
+	}
+
+	
 	public class PlayerEntity : Entity, 
 								IPlayer, 
 								IStatusEffectOwner, 
 								IWorldEntity, 
 								IHierarchyEntity
 	{
+		public const int NUMBER_ABILITIES_TYPES = 2;
 		
 		public PlayerEntity(int playerNumber, Fix size)
 		{
@@ -44,13 +53,15 @@ namespace Game.Player
 		public EntId ID { get; set; }
 		public int PlayerNumber;
 		
-		//spells
-		public EntId AttackAbiityID;
+		//Abilities
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = PlayerEntity.NUMBER_ABILITIES_TYPES)]
+		public EntId[] AbilityIDs;
+
 		
 		
 		// Movement
 		public Vector3 MoveDirection;
-		public float MoveValue;
+		public Fix MoveValue;
 		public Vector3 LookDirection;
 
 		public void Init()
@@ -60,7 +71,9 @@ namespace Game.Player
 			MoveValue = 0f;
 			LookDirection = Vector2.right;
 			
-			AttackAbiityID = EntId.Invalid;
+			AbilityIDs = new EntId[PlayerEntity.NUMBER_ABILITIES_TYPES];
+			for (int i = 0; i < AbilityIDs.Length; i++)
+				AbilityIDs[i] = EntId.Invalid;
 		}
 	}
 
@@ -117,7 +130,8 @@ namespace Game.Player
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly EventQueue EventQueue = null!;
 
-		
+		private readonly Fix SPEED_MULT = Fix.One * 300f;
+
 		public void UpdateComponents(float deltaTime)
 		{
 			bool allPlayersDead = true;
@@ -126,21 +140,31 @@ namespace Game.Player
 			for (int i = 0; i < topIndex; i++)
 			{
 				ref PlayerData playerData = ref PlayerContainer.Components[i];
-				EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerData.ID);
+				EntId playerDataID = playerData.ID;
+				
+				EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerDataID);
 				Rigidbody rigidbody = viewAtributes!.Get<Rigidbody>();
 				if (rigidbody == null)
 				{
-					Debug.Log($"Player {playerData.ID} has no rigidbody!");				
+					Debug.Log($"Player {playerDataID} has no rigidbody!");				
 					continue;
 				}
-
 				
-				float speed = GameplayConfig.PlayerAttributes.PlayerSpeed * playerData.MoveValue * deltaTime;
-				Vector3 force = playerData.MoveDirection * speed;
+				Fix time = deltaTime;
+				Fix speedValue = StatsSystem.GetStatValue(playerDataID, GameStatsContainer.Speed);
+				Fix speed = speedValue * playerData.MoveValue * time * SPEED_MULT;
+
+				//check if the player is moving backwards, and if so, apply a speed multiplier
+				float dot = Vector3.Dot(playerData.MoveDirection, playerData.LookDirection);
+				if(dot <= 0f)
+					speed *= GameplayConfig.PlayerAttributes.BackwardSpeedMultiplier;
+
+
+				Vector3 force = playerData.MoveDirection * (float)speed;
 				// rigidbody.MovePosition(rigidbody.transform.position + force);
 				rigidbody.AddForce(force, ForceMode.Acceleration );
 
-				Fix health = StatsSystem.GetStatDepletedValue(playerData.ID, GameStatsContainer.Health);
+				Fix health = StatsSystem.GetStatDepletedValue(playerDataID, GameStatsContainer.Health);
 				if(health > 0f)
 				{
 					allPlayersDead = false;
@@ -148,13 +172,8 @@ namespace Game.Player
 				{
 					rigidbody.linearVelocity = Vector3.zero;
 					rigidbody.angularVelocity = Vector3.zero;
-					EntityEventQueue.Execute<OnPlayerDeathEvent>(playerData.ID);
+					EntityEventQueue.Execute<OnPlayerDeathEvent>(playerDataID);
 				}
-
-				// rigidbody.linearVelocity = force;
-				// rigidbody.Move(rigidbody.transform.position + force, rigidbody.transform.rotation);
-				// rigidbody.transform.SetPositionAndRotation(rigidbody.transform.position + force, rigidbody.transform.rotation);
-				// Debug.Log($"Moving Player {playerData.PlayerNumber} with direction {playerData.MoveDirection} and move value {speed}");
 				
 			}
 			

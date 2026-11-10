@@ -7,6 +7,7 @@ using Core.View;
 using FixedPointy;
 using Game.Components;
 using Game.Enemies;
+using Game.Logic;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,7 @@ namespace Game.Spells.Bullet
 {
 	public sealed class BulletEntity : SpellEntity,
 										IBullet, 
+										ISimulation, 
 										IWorldEntity
 	{
 		public BulletEntity(SpellConfig dataConfig) : base(dataConfig) { }
@@ -28,7 +30,9 @@ namespace Game.Spells.Bullet
 		public void Init() { }
 	}
 
-	public interface IBullet : IWorldEntity, Component<BulletData> { }
+	public interface IBullet : ISimulation,
+								IWorldEntity, 
+								Component<BulletData> { }
 
 
 	public sealed class BulletSystem : UpdateComponents<BulletData>
@@ -37,8 +41,6 @@ namespace Game.Spells.Bullet
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
-
-
 
 		
 		private readonly RaycastHit[] ResultsCache = new RaycastHit[10];
@@ -80,14 +82,14 @@ namespace Game.Spells.Bullet
 							Fix health = StatsSystem.GetStatDepletedValue(enemyView.EntityID, GameStatsContainer.Health);
 							if (health > 0)
 							{
-								OnAbilityHitEvent onAbilityHitEvent = EntityEventQueue.Execute<OnAbilityHitEvent>(bulletID);
-								onAbilityHitEvent.EnemyID = enemyView.EntityID;
+								OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
+								onSpellHitEvent.EnemyID = enemyView.EntityID;
 							}
 						}
 						else
 						{
-							OnAbilityHitEvent onAbilityHitEvent = EntityEventQueue.Execute<OnAbilityHitEvent>(bulletID);
-							onAbilityHitEvent.EnemyID = EntId.Invalid;
+							OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
+							onSpellHitEvent.EnemyID = EntId.Invalid;
 						}
 					}
 				}

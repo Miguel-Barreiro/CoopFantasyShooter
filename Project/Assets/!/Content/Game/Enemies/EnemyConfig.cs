@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using FixedPointy;
+using Game.Enemies.EnemyAbilities;
 using Game.Logic;
+using Game.Player.Abilities;
 using Game.Spells;
 using UnityEngine;
 
@@ -8,8 +10,8 @@ namespace Game.Enemies
 {
 	public sealed class EnemyConfig : BaseEntityConfig
 	{
-		[SerializeField] private List<AbilityConfig> _abilities;
-		public List<AbilityConfig> Abilities => _abilities;
+		[SerializeField] private List<EnemyAbilityConfig> _abilities;
+		public List<EnemyAbilityConfig> Abilities => _abilities;
 		
 		
 		[SerializeField] private EnemyView _EnemyPrefab;

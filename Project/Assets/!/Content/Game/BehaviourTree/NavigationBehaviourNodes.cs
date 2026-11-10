@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.Model;
 using Core.Utils.CachedDataStructures;
 using Core.View;
+using FixedPointy;
 using Game.Enemies;
 using Game.Player;
 using Global;
@@ -108,10 +109,11 @@ namespace Game.BehaviourTree
 
 			Vector3 delta = transform.position - targetPosition;
 			delta.y = 0f;
-			float distanceToTarget = Vector3.SqrMagnitude(delta);
-			
-						
-			if(distanceToTarget > GameplayConfig.EnemiesAttributes.SafeDistanceToTarget) {
+			float distanceToTarget = Vector3.Magnitude(delta);
+
+
+			Fix safeDistance = StatsSystem.GetStatValue(entityId, GameStatsContainer.SafeDistanceToTarget);
+			if(distanceToTarget > safeDistance) {
 				return BehaviourStatus.Success;
 			}
 			

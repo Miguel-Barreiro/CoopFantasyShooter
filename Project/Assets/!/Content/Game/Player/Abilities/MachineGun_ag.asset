@@ -190,8 +190,8 @@ MonoBehaviour:
   active: 1
   selectedEventType:
     TypeName: ActivateAbilityEvent
-    AssemblyQualifiedName: Game.Spells.ActivateAbilityEvent, GameAssemblyDef, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    AssemblyQualifiedName: Game.Player.Abilities.ActivateAbilityEvent, GameAssemblyDef,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   vsFieldPorts:
   - isInput: 0
     FieldName: OriginPosition
@@ -202,4 +202,4 @@ MonoBehaviour:
   - isInput: 0
     FieldName: Owner
   Timing: 1
-  ListenTarget: 1
+  ListenTarget: 0

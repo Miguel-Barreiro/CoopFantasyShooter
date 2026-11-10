@@ -19,4 +19,4 @@ MonoBehaviour:
   defaultMinValue: 0
   description: in seconds how much does it take to do something. It uses the depleted
     value to execute the calculation
-  canOverflow: 0
+  canOverflow: 1

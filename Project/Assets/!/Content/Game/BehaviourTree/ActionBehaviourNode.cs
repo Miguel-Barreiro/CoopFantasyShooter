@@ -7,6 +7,7 @@ using Core.View;
 using FixedPointy;
 using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
+using Game.Player.Abilities;
 using Game.Spells;
 using Global;
 using UnityEngine;

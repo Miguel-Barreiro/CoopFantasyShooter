@@ -19,10 +19,9 @@ namespace Scenes.Play
 
 		public void OnCreateComponent(EntId newPlayerId)
 		{
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(newPlayerId);
+			// ref PlayerData playerData = ref PlayerContainer.GetComponent(newPlayerId);
 
-			EntId abilityID = GameLogic.AddPlayerAbility(GameplayConfig.BasicSpellsAttributes.BulletAbilityConfig, newPlayerId);
-			playerData.AttackAbiityID = abilityID;
+			// EntId abilityID = GameLogic.AddPlayerAbility(GameplayConfig.BasicSpellsAttributes.BulletPlayerAbilityConfig, newPlayerId);
 		}
 		
 

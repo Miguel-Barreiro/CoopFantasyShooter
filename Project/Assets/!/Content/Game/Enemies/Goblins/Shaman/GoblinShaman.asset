@@ -33,7 +33,7 @@ MonoBehaviour:
     _overrideType: 0
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
-    _value: 15
+    _value: 20
     _overrideType: 0
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: f405d0d507970da4c96156544e11a046, type: 2}
@@ -44,8 +44,12 @@ MonoBehaviour:
     _value: 1
     _overrideType: 0
     _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 95e129d85f8bc484194205239957178d, type: 2}
+    _value: 15
+    _overrideType: 0
+    _depletedValueOverride: 0
   _abilities:
-  - {fileID: 11400000, guid: edd270d9d58650f4bbc79e118f15c101, type: 2}
+  - {fileID: 11400000, guid: 5b75da8cfa9b17b46aaa1ae09db2317e, type: 2}
   _EnemyPrefab: {fileID: 5536831061415052667, guid: 40e932b76624a574998a1dc7435e33af, type: 3}
   _behaviourType: 2
   _AttackFrameNormalizedTime: 0.299

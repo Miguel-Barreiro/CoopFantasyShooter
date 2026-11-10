@@ -15,6 +15,7 @@ MonoBehaviour:
   _CastingTime: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
   _Cooldown: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
   _TimeToLive: {fileID: 11400000, guid: 9c4d282d01227a645bff00f0ba65ca40, type: 2}
+  _Ammo: {fileID: 11400000, guid: 47bb0845ad6d55343abbcaefafcfd976, type: 2}
   _CastingMultiplier: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
   _Damage: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
   _Health: {fileID: 11400000, guid: 4914c751a363f58428459d242e4750eb, type: 2}
@@ -26,3 +27,4 @@ MonoBehaviour:
   _AttackChargeDuration: {fileID: 11400000, guid: d1a51c1605a303d40b02b800529cfd45, type: 2}
   _AttackRate: {fileID: 11400000, guid: 3155107b904d16d4182c313c79a4e336, type: 2}
   _CastDistance: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
+  _SafeDistance: {fileID: 11400000, guid: 95e129d85f8bc484194205239957178d, type: 2}

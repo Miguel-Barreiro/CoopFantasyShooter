@@ -16,7 +16,7 @@ MonoBehaviour:
   name: CastMultiplier_stat
   defaultBaseValue: 1
   defaultMaxValue: 20
-  defaultMinValue: 0
+  defaultMinValue: 1
   description: 'this is  used in the calculation of the shooting rate .by decreasing
     deltaTime and reseting to the base value '
   canOverflow: 0

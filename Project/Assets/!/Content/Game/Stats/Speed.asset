@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Core.Runtime::Core.Model.Stats.StatConfig
   Id: 3cXiVvnq4cD
   name: Speed_stat
-  defaultBaseValue: 1
-  defaultMaxValue: 60
+  defaultBaseValue: 5
+  defaultMaxValue: 100
   defaultMinValue: 0
   description: how much speed it has
   canOverflow: 0

@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Name: Apply Status Effect
   m_EditorClassIdentifier: GameAssemblyDef::Game.StatusEffects.ApplyStatusEffectNode
   graph: {fileID: 11400000}
-  position: {x: 24, y: 296}
+  position: {x: -104, y: 360}
   ports:
     keys:
     - Target
@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Name: Foreach Loop
   m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.ForeachLoopNode
   graph: {fileID: 11400000}
-  position: {x: -312, y: 232}
+  position: {x: -392, y: 280}
   ports:
     keys:
     - Continue

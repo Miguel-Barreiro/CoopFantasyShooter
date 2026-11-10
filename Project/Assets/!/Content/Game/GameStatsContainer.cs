@@ -20,7 +20,8 @@ namespace Game
 		public StatConfig TimeToLive => _TimeToLive;
 		
 		
-		
+		[SerializeField] private StatConfig _Ammo;
+		public StatConfig Ammo => _Ammo;
 		
 		[SerializeField] private StatConfig _CastingMultiplier;
 		public StatConfig CastingMultiplier => _CastingMultiplier;
@@ -59,6 +60,10 @@ namespace Game
 
 		[SerializeField] private StatConfig _CastDistance;
 		public StatConfig CastDistance => _CastDistance;
+
+		[SerializeField] private StatConfig _SafeDistance;
+		public StatConfig SafeDistanceToTarget => _SafeDistance;
+
 		
 	}
 }

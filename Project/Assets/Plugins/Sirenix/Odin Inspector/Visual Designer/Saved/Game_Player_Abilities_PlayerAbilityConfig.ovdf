@@ -1,0 +1,61 @@
+OVDF v1.1
+Game.Player.Abilities.PlayerAbilityConfig, GameAssemblyDef
+MetaGuid:bbd475a7f9fd4760843f2e71f4101eb9
+
+# $u6WXyFHWLDHQaDus7eNRw
+Position: $root:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $AYZvTwcumoLoWA8iHCuWuy
+Position: $u6WXyFHWLDHQaDus7eNRw:2
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $EAjErBbDGD232kfMZg61fK
+Position: $u6WXyFHWLDHQaDus7eNRw:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $JvvFAAc7X7ZfbcABQe3Bkg
+Position: $root:1
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $KW3VSq2r5qspPk4Le3M9EW
+Position: $root
++ [Sirenix.OdinInspector.TabGroupAttribute]
+
+# $SHTmdLZ6BSi5c4Z6vLJv6A
+Position: $KW3VSq2r5qspPk4Le3M9EW:0
++ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
+	GroupName = "Graphs"
+	Icon = ColumnsGap
+
+# $R1iwMmSUg7G8chLfUvC27S
+Position: $KW3VSq2r5qspPk4Le3M9EW:1
++ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
+	GroupName = "Stats"
+	Icon = AwardFill
+
+# _ExtraLogicActions
+Position: $4q8uVZJJAhCsyvfFoHPae2:0
+
+# _actionGraph
+Position: $SHTmdLZ6BSi5c4Z6vLJv6A:0
+
+# Id
+Position: $AYZvTwcumoLoWA8iHCuWuy:0
+
+# name
+Position: $AYZvTwcumoLoWA8iHCuWuy:1
+
+# _statsOverride
+Position: $R1iwMmSUg7G8chLfUvC27S:0
+
+# _Icon
+Position: $EAjErBbDGD232kfMZg61fK:0
++ [Sirenix.OdinInspector.PreviewFieldAttribute]
+	Height = 100
+
+# _InputSlot
+Position: $JvvFAAc7X7ZfbcABQe3Bkg:1
+
+# _abilityType
+Position: $JvvFAAc7X7ZfbcABQe3Bkg:0

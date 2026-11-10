@@ -6,6 +6,7 @@ using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Game.Logic;
+using Game.Player.Abilities;
 using Game.Spells;
 using UnityEngine;
 using Zenject;
@@ -18,7 +19,7 @@ namespace Game.Enemies.EnemyAbilities
 											IVSAbility,
 											IHierarchyEntity
 	{
-		public EnemyAbilityEntity(EntId ownerID, AbilityConfig dataConfig) 
+		public EnemyAbilityEntity(EntId ownerID, EnemyAbilityConfig dataConfig) 
 			: base()
 		{
 			var hierarchySystem = GetSystem<IEntityHierarchySystem>();
@@ -50,12 +51,17 @@ namespace Game.Enemies.EnemyAbilities
 		public EntId OwnerID;
 		
 		public AbilityState State;
-		
+
+
+
+
+		#region Targets
+
 		public AbilityTargetType TargetType;
 		public float FindTargetCooldown;
 		public float FindTargetCooldownMax;
-
-
+		
+		
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=MAX_TARGETS)] public EntId[] Targets;
 		public uint TargetCount;
 		
@@ -63,6 +69,8 @@ namespace Game.Enemies.EnemyAbilities
 		public uint TargetPositionCount;
 		
 		public bool TargetSet;
+
+		#endregion
 
 		public void Init()
 		{

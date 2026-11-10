@@ -45,7 +45,7 @@ namespace Game.BehaviourTree
 	[StructLayout(LayoutKind.Auto)]
 	public struct BehaviourNodeData : IComponentData
 	{
-		private const int MAX_CHILDREN = 4;
+		private const int MAX_CHILDREN = 5;
 		
 		public EntId ID { get; set; }
 

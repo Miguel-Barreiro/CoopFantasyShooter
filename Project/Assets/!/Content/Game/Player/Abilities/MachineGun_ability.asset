@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MachineGun_ability
   m_EditorClassIdentifier: GameAssemblyDef::Game.Spells.AbilityConfig
   Id: pLP4-OsHPEz
-  name: MachineGun_ability
+  name: Machine Gun
   _actionGraph:
   - {fileID: 11400000, guid: bb47eac27bcaf5c45a3d0ec9c356ab85, type: 2}
   _statsOverride:
@@ -29,7 +29,10 @@ MonoBehaviour:
     _value: 0.15
     _overrideType: 0
     _depletedValueOverride: 0
-  - _statConfig: {fileID: 11400000, guid: e152b75dd8818e2479f871ff1cd279d1, type: 2}
-    _value: 10
+  - _statConfig: {fileID: 11400000, guid: 47bb0845ad6d55343abbcaefafcfd976, type: 2}
+    _value: 15
     _overrideType: 0
     _depletedValueOverride: 0
+  _Icon: {fileID: 2800000, guid: a4167b48d8d784bc5b6a2bbb70b4f96f, type: 3}
+  _abilityType: 1
+  _InputSlot: 0

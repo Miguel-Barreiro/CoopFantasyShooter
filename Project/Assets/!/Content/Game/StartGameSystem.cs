@@ -16,6 +16,8 @@ namespace Game
 		public void StartSystem()
 		{
 			LocalMultiplayerInputManager localMultiplayerInputManager = ObjectBuilder.Instantiate(GameConfig.LocalMultiplayerInputManagerPrefab);
+			//TODO: we need to make the gameobject persistent across scenes,
+			//but we need to make sure it doesn't get duplicated when we reload the scene.
 		}
 	}
 }

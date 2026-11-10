@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core.Model.Data;
 using Core.Model.Stats;
+using Game.Player.Abilities;
 using UnityEngine;
 
 namespace Game.Logic
@@ -27,5 +28,11 @@ namespace Game.Logic
 		[SerializeField] private Texture2D _Icon;
 		public Texture2D Icon => _Icon;
 		
+	}
+	
+	
+	public abstract class BaseAbilityConfig : BaseVSEntityConfig
+	{
+
 	}
 }

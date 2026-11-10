@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
 using Core.Model.Data;
 using Core.Model.Stats;
 using FixedPointy;
 using Game.Enemies;
 using Game.Enemies.EnenmySpawners;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 namespace Global
 {
@@ -86,8 +89,8 @@ namespace Global
 		[SerializeField] private float _BulletSpeed = 500f;
 		public float BulletSpeed => _BulletSpeed;
 
-		[SerializeField] private AbilityConfig _bulletAbilityConfig = null!;
-		public AbilityConfig BulletAbilityConfig => _bulletAbilityConfig;
+		// [SerializeField] private PlayerAbilityConfig _bulletAbilityConfig = null!;
+		// public PlayerAbilityConfig BulletPlayerAbilityConfig => _bulletAbilityConfig;
 		
 		
 		[SerializeField] private SpellConfig _bulletSpellConfig = null!;
@@ -119,22 +122,35 @@ namespace Global
 	[Serializable]
 	public class PlayerAttributes
 	{
-		private const float SPEED_MULT = 300f;
 		// private const float SPEED_MULT = 10f;
 		
 		
 		[SerializeField] private PlayerView _PlayerPrefab;
 		public PlayerView PlayerPrefab => _PlayerPrefab;
 		
-		[Range(0, 20)]
-		[SerializeField] private float _PlayerSpeed = 1;
-		public float PlayerSpeed => _PlayerSpeed * SPEED_MULT;
+		// [Range(0, 20)]
+		// [SerializeField] private float _PlayerSpeed = 1;
+		// public float PlayerSpeed => _PlayerSpeed * SPEED_MULT;
 		[Range(0, 2)]
-		[SerializeField] private float _Size = 0.3f;
+		[SerializeField] private float _Size = 0.2f;
 		public float Size => _Size;
+		// [SerializeField]
+		// [Range(0, 200)]
+		// private int _Health = 100;
+		// public int Health => _Health;
+
+
+		[SerializeField] private List<StatOverride> _PlayerStats;
+		public IReadOnlyCollection<StatOverride> PlayerStats => _PlayerStats;
+
+
+		[SerializeField] private List<PlayerAbilityConfig> _PlayerAbilities;
+		public IReadOnlyCollection<PlayerAbilityConfig> PlayerAbilities => _PlayerAbilities;
+
+
 		[SerializeField]
-		[Range(0, 200)]
-		private int _Health = 100;
-		public int Health => _Health;
+		[Range(0.1f, 1f)] private float _BackwardSpeedMultiplier = 0.7f;
+		public float BackwardSpeedMultiplier => _BackwardSpeedMultiplier;
+
 	}
 }

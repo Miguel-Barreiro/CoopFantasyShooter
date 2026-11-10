@@ -1,6 +1,7 @@
 using Core.Model;
 using Core.View;
 using FixedPointy;
+using Game.Player.Abilities;
 using Game.Spells;
 using TMPro;
 using UnityEngine;
@@ -47,6 +48,9 @@ namespace Game.Player
 		}
 
 
+		const int MAIN_ABILITY = (int)PlayerAbilitySlot.Main;
+		
+		
 		public void UpdateView(float deltaTime, ref PlayerData playerData)
 		{
 			if(StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Health) <= 0f)
@@ -81,11 +85,12 @@ namespace Game.Player
 			_animator.transform.rotation = Quaternion.Lerp(_animator.transform.rotation, 
 															Quaternion.LookRotation(playerData.LookDirection), 
 															Time.deltaTime * 5f);
-			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(playerData.AttackAbiityID);
+			EntId mainAbilityID = playerData.AbilityIDs[MAIN_ABILITY];
+			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(mainAbilityID);
 			switch (playerAbilityData.State)
 			{
 				case AbilityState.Recover:
-					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(playerData.AttackAbiityID, GameStatsContainer.Cooldown);
+					float cooldownPercentage = (float) StatsSystem.GetStatDepletedPercentage(mainAbilityID, GameStatsContainer.Cooldown);
 
 					CooldownImage.fillAmount = cooldownPercentage;
 					PlayerText.gameObject.SetActive(false);
@@ -93,8 +98,8 @@ namespace Game.Player
 					break;
 				case AbilityState.Cast:
 				case AbilityState.Ready:
-					int ammo = (int) StatsSystem.GetStatDepletedValue(playerData.AttackAbiityID, GameStatsContainer.CastingMultiplier);
-					int ammoTotal = (int) StatsSystem.GetStatValue(playerData.AttackAbiityID, GameStatsContainer.CastingMultiplier);
+					int ammo = (int) StatsSystem.GetStatDepletedValue(mainAbilityID, GameStatsContainer.Ammo);
+					int ammoTotal = (int) StatsSystem.GetStatValue(mainAbilityID, GameStatsContainer.Ammo);
 					PlayerText.gameObject.SetActive(true);
 					CooldownImage.gameObject.SetActive(false);
 					

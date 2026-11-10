@@ -10,6 +10,7 @@ using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
 using Game.Logic;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Spells;
 using UnityEngine;
 using UnityEngine.Serialization;
