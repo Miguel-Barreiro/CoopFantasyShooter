@@ -1,3 +1,4 @@
+using Core.Events;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
@@ -6,7 +7,7 @@ using Zenject;
 
 namespace Game.Enemies
 {
-	public sealed class EnemyViewSystem : UpdateComponents<EnemyData>
+	public sealed class EnemyViewSystem : UpdateComponents<EnemyData>, OnCreateComponent<EnemyData>
 	{
 		[Inject] private readonly BasicCompContainer<EnemyData> EnemyContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
@@ -24,6 +25,18 @@ namespace Game.Enemies
 				if(enemyView != null)
 					enemyView.UpdateView(deltaTime, ref componentData);
 			}
+
+		}
+
+		public void OnCreateComponent(EntId newComponentId)
+		{
+			EntityEventQueue.AddEntityEventListener<OnEntityHitEvent>(newComponentId, OnEntityHit);
+		}
+
+		private void OnEntityHit(OnEntityHitEvent entityEvent)
+		{
+			EntityViewAtributes entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityEvent.EntityID);
+			entityViewAtributes!.Get<EnemyView>().TriggerHit();
 
 		}
 

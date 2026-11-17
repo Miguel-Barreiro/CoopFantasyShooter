@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using Core.Model;
 using Core.Model.ModelSystems;
-using Core.Systems;
 using Game.Logic;
 
 namespace Game.Spells
@@ -10,10 +9,15 @@ namespace Game.Spells
 										ISpell, 
 										IVSAbility
 	{
+		public override ulong GetStartTags() => (ulong)GameTag.Projectile;
+		
 		protected SpellEntity(SpellConfig dataConfig) : base() 
 		{
 			ref VSAbilityData abilityData = ref GetComponent<VSAbilityData>();
 			abilityData.dataConfig = dataConfig;
+
+			ref SpellData spellData = ref GetComponent<SpellData>();
+			spellData.SpellType = dataConfig.SpellType;
 		}
 
 	}
@@ -23,6 +27,7 @@ namespace Game.Spells
 	{
 		public EntId ID { get; set; }
 		
+		public SpellType SpellType;
 
 		public void Init() { }
 	}

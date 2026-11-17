@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using Core.Events;
 using Core.Model;
 using Core.View;
+using Core.VSEngine;
 using FixedPointy;
 using Game.Enemies;
+using Game.Player;
 using Game.Player.Abilities;
 using Zenject;
 
@@ -21,25 +24,32 @@ namespace Game.Spells
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly EntitiesContainer EntitiesContainer = null!;
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 
 
-
-		public EntId EnemyID = EntId.Invalid;
-
+		[VSField()]
+		public List<EntId> TargetIDs = new List<EntId>();
+		
 		public override void Execute()
 		{
-			if (EnemyID != EntId.Invalid)
+			Fix pierceTimes = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.PierceTimes);
+
+			foreach (EntId targetID in TargetIDs)
 			{
-				if (EntitiesContainer.IsEntityOfType<EnemyEntity>(EnemyID))
-				{
-					Fix damage = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Damage);
-					StatsSystem.ChangeDepletedValue(EnemyID, GameStatsContainer.Health, -damage);
-					EntityViewAtributes entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(EnemyID);
-					entityViewAtributes!.Get<EnemyView>().TriggerHit();
-				}
-			} 
-			EntitiesContainer.DestroyEntity(EntityID);
+				if (targetID == EntId.Invalid)
+					continue;
+
+				Fix damage = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Damage);
+				StatsSystem.ChangeDepletedValue(targetID, GameStatsContainer.Health, -damage);
+
+				OnEntityHitEvent onEntityHitEvent = EntityEventQueue.Execute<OnEntityHitEvent>(targetID);
+				onEntityHitEvent.ExecuterID = EntityID;
+				
+			}
+			if(pierceTimes <= 0)
+				EntitiesContainer.DestroyEntity(EntityID);
+			else
+				StatsSystem.ChangeDepletedValue(EntityID, GameStatsContainer.PierceTimes, -1);
+			
 		}
 	}
 }

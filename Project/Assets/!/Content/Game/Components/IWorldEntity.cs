@@ -16,13 +16,16 @@ namespace Game.Components
 	public struct WorldEntityData : IComponentData
 	{
 		public EntId ID { get; set; }
-		
+
+		public Vector3 Velocity;
+
 		public Vector3 Position;
 		public Vector3 Direction;
 		public Fix Size;
 
 		public void Init()
 		{
+			Velocity = Vector3.zero;
 			Position = Vector3.zero;
 			Direction = Vector3.forward;
 			Size = 0.15f;

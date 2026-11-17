@@ -34,7 +34,9 @@ namespace Game.Player
 								IHierarchyEntity
 	{
 		public const int NUMBER_ABILITIES_TYPES = 2;
-		
+
+		public override ulong GetStartTags() => (ulong)GameTag.Player;
+
 		public PlayerEntity(int playerNumber, Fix size)
 		{
 			ref PlayerData playerData = ref GetComponent<PlayerData>();

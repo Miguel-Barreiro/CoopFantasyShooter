@@ -18,7 +18,12 @@ namespace Game.Spells.Bullet
 										ISimulation, 
 										IWorldEntity
 	{
-		public BulletEntity(SpellConfig dataConfig) : base(dataConfig) { }
+		public BulletEntity(SpellConfig dataConfig, EntId casterID) : base(dataConfig)
+		{
+			ref BulletData bulletData = ref GetComponent<BulletData>();
+			bulletData.CasterID = casterID;
+			bulletData.TargetTags = EntitiesContainer.ToMask(dataConfig.HitTags);
+		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -26,8 +31,13 @@ namespace Game.Spells.Bullet
 	{
 		public EntId ID { get; set; }
 		
+		public ulong TargetTags;
+		public EntId CasterID;
 
-		public void Init() { }
+		public void Init()
+		{
+			TargetTags = (ulong)GameTag.None;
+		}
 	}
 
 	public interface IBullet : ISimulation,
@@ -41,9 +51,11 @@ namespace Game.Spells.Bullet
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly SpellsLogic SpellsLogic = null!;
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
+
 
 		
-		private readonly RaycastHit[] ResultsCache = new RaycastHit[10];
 		
 		public void UpdateComponents(float deltaTime)
 		{
@@ -54,52 +66,36 @@ namespace Game.Spells.Bullet
 				ref BulletData componentData = ref BulletContainer.Components[i];
 				EntId bulletID = componentData.ID;
 				
-				EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(bulletID);
-				Vector3 position = viewAtributes!.GameObject!.transform.position;
-				if(position.magnitude > 2000f)
-				{
+				ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(bulletID);
+				
+				worldEntityData.Position += worldEntityData.Velocity * deltaTime;
+				worldEntityData.Direction = worldEntityData.Velocity.normalized;
+				
+
+				// EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(bulletID);
+				// // Vector3 position = viewAtributes!.GameObject!.transform.position;
+				// if(worldEntityData.Position.magnitude > 2000f)
+				// {
+				// 	EntitiesContainer.DestroyEntity(bulletID);
+				// 	continue;
+				// }
+				
+				
+				// Rigidbody rigidbody = viewAtributes.Get<Rigidbody>();
+				// Vector3 velocity = rigidbody.linearVelocity;
+
+				//TODO: Add bullet size as a stat
+				SpellsLogic.HitSpellInCirle(bulletID, worldEntityData.Position, worldEntityData.Velocity * deltaTime,
+											componentData.TargetTags, componentData.CasterID, 0.15f );
+
+				
+				Fix newTimeToLive = StatsSystem.ChangeDepletedValue(bulletID, GameStatsContainer.TimeToLive, -deltaTime);
+				if(newTimeToLive <= Fix.Zero)
 					EntitiesContainer.DestroyEntity(bulletID);
-					continue;
-				}
 				
-				Rigidbody rigidbody = viewAtributes.Get<Rigidbody>();
-				Vector3 velocity = rigidbody.linearVelocity;
+			}
 
-				int size = Physics.SphereCastNonAlloc(position, 0.1f, 
-													velocity.normalized, ResultsCache,
-													velocity.magnitude * Time.deltaTime);
-				
-				if(size > 0)
-				{
-					for (int j = 0; j < size; j++)
-					{
-						RaycastHit hit = ResultsCache[j];
-						
-						EnemyView enemyView = hit.collider.gameObject.GetComponent<EnemyView>();
-						
-						if (enemyView != null)
-						{
-							Fix health = StatsSystem.GetStatDepletedValue(enemyView.EntityID, GameStatsContainer.Health);
-							if (health > 0)
-							{
-								OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
-								onSpellHitEvent.EnemyID = enemyView.EntityID;
-							}
-						}
-						else
-						{
-							OnSpellHitEvent onSpellHitEvent = EntityEventQueue.Execute<OnSpellHitEvent>(bulletID);
-							onSpellHitEvent.EnemyID = EntId.Invalid;
-						}
-					}
-				}
-				
-				
-			}		
 
-			
-			
-			
 		}
 
 		public bool Active { get; set; } = true;

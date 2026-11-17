@@ -88,6 +88,8 @@ namespace Scenes.Play
 
 			BindInstance(new PlayerAbilitiesSystem());
 			BindInstance(new BulletSystem());
+			BindInstance(new BulletViewSystem());
+			BindInstance(new SpellsLogic());
 			
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance( new GameSetupSystem());

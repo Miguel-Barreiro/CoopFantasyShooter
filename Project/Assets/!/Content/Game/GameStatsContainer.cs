@@ -27,6 +27,10 @@ namespace Game
 		public StatConfig CastingMultiplier => _CastingMultiplier;
 		
 		
+		[SerializeField] private StatConfig _PierceTimes;
+		public StatConfig PierceTimes => _PierceTimes;
+		
+		
 		[SerializeField] private StatConfig _Damage;
 		public StatConfig Damage => _Damage;
 

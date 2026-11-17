@@ -20,5 +20,7 @@ MonoBehaviour:
     _value: 70
     _overrideType: 0
     _depletedValueOverride: 0
+  _Icon: {fileID: 0}
   _SpellType: 0
+  _HitTags: 3
   _SpellPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}

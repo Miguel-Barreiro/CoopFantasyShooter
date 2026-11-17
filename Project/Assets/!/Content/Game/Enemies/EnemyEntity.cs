@@ -21,6 +21,9 @@ namespace Game.Enemies
 									IDeadBody, 
 									IBehaviour
 	{
+		
+		public override ulong GetStartTags() => (ulong)GameTag.Enemy;
+		
 		public EnemyEntity(Fix size)
 		{
 			ref BehaviourAgentData agentData = ref GetComponent<BehaviourAgentData>();
@@ -61,6 +64,10 @@ namespace Game.Enemies
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameLogic GameLogic = null!;
 
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
+
+		
+		
 		
 		public void OnCreateComponent(EntId newComponentId)
 		{
@@ -75,7 +82,9 @@ namespace Game.Enemies
 			for (int i = 0; i < topIndex; i++)
 			{
 				ref EnemyData componentData = ref EnemyContainer.Components[i];
-
+				ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(componentData.ID);
+				worldEntityData.Velocity = componentData.NavMeshAgent.velocity;
+				
 				EntId enemyID = componentData.ID;
 				Fix health = StatsSystem.GetStatDepletedValue(enemyID, GameStatsContainer.Health);
 				if(health <= 0)

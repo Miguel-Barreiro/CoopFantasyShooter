@@ -6,12 +6,14 @@ using Core.Systems;
 using Core.View;
 using FixedPointy;
 using Game.BehaviourTree;
+using Game.Components;
 using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
 using Game.Player;
 using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
+using Game.Spells.Mortar;
 using Game.StatusEffects;
 using Global;
 using UnityEngine;
@@ -37,6 +39,7 @@ namespace Game
 		[Inject] private readonly BasicCompContainer<StatusEffectData> StatusEffectContainer = null!;
 		[Inject] private readonly StatusEffectSystem StatusEffectSystem = null!;
 
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
 
 
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
@@ -118,17 +121,16 @@ namespace Game
 		}
 		
 		
-		public EntId SpawnSpell(EntId owner, SpellConfig spellConfig, Vector3 direction, Vector3 position)
+		public EntId SpawnDirectionSpell(EntId ownerAbilityID, SpellConfig spellConfig, Vector3 direction, Vector3 position)
 		{
 			EntId newEntityID;
 			switch (spellConfig.SpellType)
 			{
 				case SpellType.Projectile:
-					newEntityID = SpawnBullet(owner, spellConfig, direction, position);
+					newEntityID = SpawnBullet(ownerAbilityID, spellConfig, direction, position);
 					break;
-					default:
-						return EntId.Invalid;
-				
+				default:
+					return EntId.Invalid;
 			}
 			
 			// SpellEntity spellEntity = new SpellEntity(spellConfig);
@@ -136,63 +138,65 @@ namespace Game
 			AddView(newEntityID, spellConfig.SpellPrefab.gameObject);
 			
 			return newEntityID;
+		}
 
 
+		public EntId SpawnPositionSpell(EntId ownerAbilityID, SpellConfig spellConfig, 
+											Vector3 originPosition, Vector3 targetPosition)
+		{
+			EntId newEntityID;
+			switch (spellConfig.SpellType)
+			{
+				case SpellType.Mortar:
+					newEntityID = SpawnMortar(ownerAbilityID, spellConfig, originPosition, targetPosition);
+					break;
+				default:
+					return EntId.Invalid;
+			}
+			
+			// SpellEntity spellEntity = new SpellEntity(spellConfig);
 			//
-			// EntId bulletId = new BulletEntity().ID;
-			//
-			// ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			// EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
-			//
-			// playerData.LookDirection = playerData.LookDirection.normalized;
-			// Vector3 playerPosition = playerViewAtributes!.GameObject.transform.position;
-			//
-			// Vector3 position = playerPosition + 
-			// 					Vector3.up * 0.9f +
-			// 					playerData.LookDirection.normalized * 
-			// 					(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
-			// EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(playerData.LookDirection.normalized));
-			//
-			// Rigidbody rigidbody = view.Get<Rigidbody>();
-			// // rigidbody.MovePosition(position);
-			// // rigidbody.MoveRotation(Quaternion.LookRotation(playerData.LookDirection.normalized));
-			// rigidbody.linearVelocity = playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed;
-			// // rigidbody.AddForce(playerData.LookDirection.normalized * GameplayConfig.BasicSpellsAttributes.BulletSpeed, ForceMode.VelocityChange);
-			//
-			// Fix damage = StatsSystem.GetStatValue(playerData.AttackAbiityID, GameStatsContainer.Damage);
-			// StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
-			//
-			// return bulletId;
+			AddView(newEntityID, spellConfig.SpellPrefab.gameObject);
+			
+			return newEntityID;
+		}
+
+		public EntId SpawnMortar(EntId ownerAbilityID, SpellConfig spellConfig, Vector3 originPosition, Vector3 targetPosition)
+		{
+			EntId mortarId = new MortarEntity(spellConfig).ID;
+
+			EntityViewAtributes view = AddView(mortarId, spellConfig.SpellPrefab.gameObject, targetPosition, Quaternion.identity);
+			
+			Fix damage = StatsSystem.GetStatValue(ownerAbilityID, GameStatsContainer.Damage);
+			StatsSystem.SetBaseValue(mortarId, GameStatsContainer.Damage, damage);
+
+			OverrideDefaultStats(mortarId, spellConfig.StatsOverride);
+			
+			return mortarId;
 		}
 
 		
-		
-		public EntId SpawnBullet(EntId ownerId, SpellConfig spellConfig, Vector3 direction, Vector3 position)
+		public EntId SpawnBullet(EntId ownerAbilityID, SpellConfig spellConfig, Vector3 direction, Vector3 position)
 		{
-			EntId bulletId = new BulletEntity(spellConfig).ID;
+			EntId casterID = IEntityHierarchySystem.GetParent(ownerAbilityID);
+			EntId bulletId = new BulletEntity(spellConfig, casterID).ID;
 
-			// // ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			// EntityViewAtributes playerViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
-
-			// Vector3 direction = playerData.LookDirection.normalized;
-			// playerData.LookDirection = direction.normalized;
-			// Vector3 playerPosition = playerViewAtributes!.GameObject.transform.position;
+			ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(bulletId);
 			
-			// Vector3 position = playerPosition + 
-			// 					Vector3.up * 0.9f +
-			// 					direction.normalized * 
-			// 					(GameplayConfig.PlayerAttributes.Size + GameplayConfig.BasicSpellsAttributes.BulletSize);
 			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(direction.normalized));
 			
-			Fix damage = StatsSystem.GetStatValue(ownerId, GameStatsContainer.Damage);
+			Fix damage = StatsSystem.GetStatValue(ownerAbilityID, GameStatsContainer.Damage);
 			StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
 
 			OverrideDefaultStats(bulletId, spellConfig.StatsOverride);
-
-
-			Rigidbody rigidbody = view.Get<Rigidbody>();
+			
+			// Rigidbody rigidbody = view.Get<Rigidbody>();
 			float speed = (float) StatsSystem.GetStatValue(bulletId, GameStatsContainer.Speed);
-			rigidbody.linearVelocity = direction * speed;
+			Vector3 velocity = direction * speed;
+			worldEntityData.Velocity = velocity;
+			
+			
+			// rigidbody.linearVelocity = velocity;
 			
 			return bulletId;
 		}
@@ -279,7 +283,7 @@ namespace Game
 
 
 
-		private void OverrideDefaultStats(EntId newEntityID, IReadOnlyCollection<StatOverride> statOverrides)
+		public void OverrideDefaultStats(EntId newEntityID, IReadOnlyCollection<StatOverride> statOverrides)
 		{
 			foreach (StatOverride statOverride in statOverrides)
 			{

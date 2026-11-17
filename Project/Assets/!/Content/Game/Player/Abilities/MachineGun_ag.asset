@@ -42,7 +42,7 @@ MonoBehaviour:
     - Continue
     - Enter
     - Direction
-    - Position
+    - OriginPosition
     values:
     - _fieldName: Owner
       _node: {fileID: 1420225625056776417}
@@ -89,7 +89,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: Position
+    - _fieldName: OriginPosition
       _node: {fileID: 1420225625056776417}
       _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
@@ -103,9 +103,18 @@ MonoBehaviour:
       _dynamic: 0
   guid: bb47eac27bcaf5c45a3d0ec9c356ab85
   fileId: 1420225625056776417
+  StatsOverrides:
+  - _statConfig: {fileID: 11400000, guid: 9c4d282d01227a645bff00f0ba65ca40, type: 2}
+    _value: 10
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: aff68b2490cde844da1e7a25f5eddfa6, type: 2}
+    _value: 5
+    _overrideType: 0
+    _depletedValueOverride: 0
   _config: {fileID: 11400000, guid: d7f43d8fe56409f40b79148b7ee6b60a, type: 2}
   Direction: {x: -0.47364393, y: 0, z: 0.88071644}
-  Position: {x: -1.6378067, y: 0.9, z: -3.165156}
+  OriginPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &8185532268612385790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +136,7 @@ MonoBehaviour:
     - TargetPosition
     - Direction
     - OriginPosition
+    - InstanceNumber
     values:
     - _fieldName: Continue
       _node: {fileID: 8185532268612385790}
@@ -178,9 +188,18 @@ MonoBehaviour:
       _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: Position
+      - fieldName: OriginPosition
         node: {fileID: 1420225625056776417}
         reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: InstanceNumber
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 2
@@ -201,5 +220,7 @@ MonoBehaviour:
     FieldName: TargetPosition
   - isInput: 0
     FieldName: Owner
+  - isInput: 0
+    FieldName: InstanceNumber
   Timing: 1
   ListenTarget: 0
