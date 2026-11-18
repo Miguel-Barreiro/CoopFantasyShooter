@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54bf4b061ed4c2bb06c9f0c4277f7cf, type: 3}
   m_Name: ALL_STATS_CONTAINER
   m_EditorClassIdentifier: GameAssemblyDef::Game.GameStatsContainer
+  _Size: {fileID: 11400000, guid: 393be984e0c92c349a1f3d39cbac9d6e, type: 2}
   _CastingTime: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
   _Cooldown: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
   _TimeToLive: {fileID: 11400000, guid: 9c4d282d01227a645bff00f0ba65ca40, type: 2}

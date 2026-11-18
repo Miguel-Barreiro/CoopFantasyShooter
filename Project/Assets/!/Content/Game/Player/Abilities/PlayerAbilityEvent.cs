@@ -10,15 +10,15 @@ using Zenject;
 namespace Game.Player.Abilities
 {
 	
-	public abstract class AbilityEvent<T> : EntityEvent<T> 
-		where T : AbilityEvent<T>, new()
+	public abstract class PlayerAbilityEvent<T> : EntityEvent<T> 
+		where T : PlayerAbilityEvent<T>, new()
 	{
 		[Inject] protected readonly BasicCompContainer<PlayerAbilityData> AbilityContainer = null!;
 		
 	}
 	
 	
-	public sealed class OnReadyAbilityEvent : AbilityEvent<OnReadyAbilityEvent>
+	public sealed class OnReadyPlayerAbilityEvent : PlayerAbilityEvent<OnReadyPlayerAbilityEvent>
 	{
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;

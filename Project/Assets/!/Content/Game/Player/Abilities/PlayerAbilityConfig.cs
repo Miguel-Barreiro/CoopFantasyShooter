@@ -6,8 +6,8 @@ namespace Game.Player.Abilities
 {
 	public sealed class PlayerAbilityConfig : BaseVSEntityConfig
 	{
-		[SerializeField] private PlayerAbilityAction.AbilityType _abilityType;
-		public PlayerAbilityAction.AbilityType AbilityType => _abilityType;
+		[SerializeField] private GameLogic.AbilityType _abilityType;
+		public GameLogic.AbilityType AbilityType => _abilityType;
 
 
 		[SerializeField] private PlayerAbilitySlot _InputSlot;

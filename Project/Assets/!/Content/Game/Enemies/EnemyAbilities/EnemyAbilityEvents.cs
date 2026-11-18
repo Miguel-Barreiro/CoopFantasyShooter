@@ -12,7 +12,7 @@ namespace Game.Enemies.EnemyAbilities
 		where T : EnemyAbilityEvent<T>, new()
 	{
 		[VSField(IsWritable = false)]
-		public EntId Owner = EntId.Invalid;
+		public EntId EnemyOwner = EntId.Invalid;
 		
 		
 	}

@@ -8,6 +8,8 @@ namespace Game
 	public sealed class GameStatsContainer : DataTable
 	{
 
+		[SerializeField] private StatConfig _Size;
+		public StatConfig Size => _Size;
 		
 		[SerializeField] private StatConfig _CastingTime;
 		public StatConfig CastingTime => _CastingTime;

@@ -3,6 +3,7 @@ using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
+using Game.Enemies.EnemyAbilities;
 using Zenject;
 
 namespace Game.Enemies
@@ -31,6 +32,13 @@ namespace Game.Enemies
 		public void OnCreateComponent(EntId newComponentId)
 		{
 			EntityEventQueue.AddEntityEventListener<OnEntityHitEvent>(newComponentId, OnEntityHit);
+			EntityEventQueue.AddEntityEventListener<ActivateEnemyAbilityEvent>(newComponentId, OnActivateEnemyAbility);
+		}
+
+		private void OnActivateEnemyAbility(ActivateEnemyAbilityEvent entityEvent)
+		{
+			EntityViewAtributes entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityEvent.EntityID);
+			entityViewAtributes!.Get<EnemyView>().SetCast(entityEvent.TargetPositions[0], true);
 		}
 
 		private void OnEntityHit(OnEntityHitEvent entityEvent)

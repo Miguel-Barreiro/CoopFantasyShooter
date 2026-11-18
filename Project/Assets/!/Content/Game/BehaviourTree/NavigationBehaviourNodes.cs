@@ -4,6 +4,7 @@ using Core.Model;
 using Core.Utils.CachedDataStructures;
 using Core.View;
 using FixedPointy;
+using Game.Components;
 using Game.Enemies;
 using Game.Player;
 using Global;
@@ -16,39 +17,34 @@ namespace Game.BehaviourTree
 	
 	public sealed class MoveToTargetNode : BaseBehaviourNode
 	{
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		// [Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, AgentMotion agentMotion)
 		{
 			if (agentData.Target == EntId.Invalid)
 			{
 				return BehaviourStatus.Failure;
 			}
 
-			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId)!;
-			Transform transform = viewAtributes!.GameObject!.transform;
-			NavMeshAgent navMeshAgent = viewAtributes.Get<NavMeshAgent>()!;
-			EnemyView enemyView = viewAtributes.Get<EnemyView>()!;
+			NavMeshAgent navMeshAgent = agentMotion.NavMeshAgent;
 			if (!navMeshAgent.isOnNavMesh)
 			{
 				return BehaviourStatus.Failure;
 			}
+			ref  WorldEntityData targetWorldEntityData = ref WorldEntityContainer.GetComponent(agentData.Target);
+			Vector3 targetPosition = targetWorldEntityData.Position;
 
-			EntityViewAtributes targetViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(agentData.Target)!;
-			Vector3 targetPosition = targetViewAtributes!.GameObject!.transform.position;
-
-			Vector3 delta = targetPosition - transform.position;
+			Vector3 delta = targetPosition - agentData.Position;
 			delta.y = 0f;
 
-			// float attackDistance = (float) StatsSystem.GetStatDepletedValue(entityId, GameStatsContainer.AttackDistance);
-			// if(distanceToTarget < attackDistance + GameplayConfig.EnemiesAttributes.DistanceToAttack + navMeshAgent.radius) {
-			// 	return BehaviourStatus.Success;
-			// }
+			Transform transform = agentMotion.Transform;
+			
 			float distanceToTarget = Vector3.Magnitude(delta);
 			if(distanceToTarget < (GameplayConfig.EnemiesAttributes.MinDistanceToTarget + navMeshAgent.radius)) {
 				navMeshAgent.speed = 0f;
@@ -69,12 +65,11 @@ namespace Game.BehaviourTree
 			return BehaviourStatus.Success;
 		}
 		
-		public override void Reset(EntId entityId, ref BehaviourNodeData behaviourNodeData)
+		public override void Reset(EntId entityId, ref BehaviourNodeData behaviourNodeData, AgentMotion agentMotion)
 		{
-			base.Reset(entityId, ref behaviourNodeData);
+			base.Reset(entityId, ref behaviourNodeData, agentMotion);
 
-			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId)!;
-			NavMeshAgent navMeshAgent = viewAtributes!.Get<NavMeshAgent>()!;
+			NavMeshAgent navMeshAgent = agentMotion.NavMeshAgent;
 			
 			navMeshAgent!.velocity = Vector3.zero;
 			if (navMeshAgent.isOnNavMesh)
@@ -94,7 +89,9 @@ namespace Game.BehaviourTree
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 
-		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, ref BehaviourAgentData agentData, float deltaTime)
+		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId)!;
 			Transform transform = viewAtributes!.GameObject!.transform;
@@ -103,17 +100,17 @@ namespace Game.BehaviourTree
 			{
 				return BehaviourStatus.Failure;
 			}
-
-			EntityViewAtributes targetViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(agentData.Target)!;
-			Vector3 targetPosition = targetViewAtributes!.GameObject!.transform.position;
+			
+			Vector3 targetPosition = agentData.ClosestEnemyPosition;
 
 			Vector3 delta = transform.position - targetPosition;
 			delta.y = 0f;
 			float distanceToTarget = Vector3.Magnitude(delta);
 
 
-			Fix safeDistance = StatsSystem.GetStatValue(entityId, GameStatsContainer.SafeDistanceToTarget);
-			if(distanceToTarget > safeDistance) {
+			Fix fullSafeDistance = StatsSystem.GetStatValue(entityId, GameStatsContainer.SafeDistanceToTarget);
+			Fix safeDistance = fullSafeDistance* 0.8f;
+			if(distanceToTarget > safeDistance ) {
 				return BehaviourStatus.Success;
 			}
 			
@@ -121,7 +118,7 @@ namespace Game.BehaviourTree
 			navMeshAgent.acceleration = (float) StatsSystem.GetStatValue(entityId, GameStatsContainer.Acerelation);
 			navMeshAgent.angularSpeed = (float) StatsSystem.GetStatValue(entityId, GameStatsContainer.TurningSpeed);
 
-			Vector3 runAwayNewPosition = targetPosition + delta.normalized * GameplayConfig.EnemiesAttributes.SafeDistanceToTarget;
+			Vector3 runAwayNewPosition = targetPosition + delta.normalized * (float) fullSafeDistance;
 			navMeshAgent.SetDestination(runAwayNewPosition);
 			transform.LookAt(runAwayNewPosition);
 			
@@ -145,7 +142,8 @@ namespace Game.BehaviourTree
 		private const float CHOSE_TARGET_COOLDOWN = 5f;
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			uint maxEnemies = EnemyContainer.TopEmptyIndex;
 			if(maxEnemies == 0) {
@@ -207,7 +205,8 @@ namespace Game.BehaviourTree
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			if(agentData.Target != EntId.Invalid) {
 				nodeData.Cooldown -= deltaTime;

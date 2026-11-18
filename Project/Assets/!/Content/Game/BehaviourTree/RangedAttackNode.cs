@@ -27,15 +27,16 @@ namespace Game.BehaviourTree
 		private readonly RaycastHit[] HitsCache = new RaycastHit[8];
 
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData,
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			
 			return BehaviourStatus.Success;
 		}
 
-		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, AgentMotion agentMotion)
 		{
-			base.Reset(entityId, ref nodeNodeData);
+			base.Reset(entityId, ref nodeNodeData, agentMotion);
 			nodeNodeData.Cooldown = 0f;
 
 			EnemyView? enemyView = ViewEntitiesContainer.GetEntityViewAtributes(entityId)?.Get<EnemyView>();

@@ -4,12 +4,14 @@ using Core.VSEngine;
 using Core.VSEngine.Nodes;
 using Game.Spells;
 using UnityEngine;
+using UnityEngine.Serialization;
 using XNode;
 using Zenject;
 
 namespace Game.VSNodes
 {
-	[Node.CreateNodeMenu(VSGameNodeMenuNames.SPELLS + "/" + "Spawn Mortar Spell", order = VSNodeMenuNames.VERY_IMPORTANT)]
+	[Node.CreateNodeMenu(VSGameNodeMenuNames.SPELLS + "/" + "Spawn Mortar Spell", order = VSNodeMenuNames.VERY_IMPORTANT)] 
+	[NodeWidth(300)]
 	public sealed class SpawnMortarNode : BasicFlowNode
 	{
 		[Inject] private readonly GameLogic GameLogic = null!;
@@ -26,11 +28,11 @@ namespace Game.VSNodes
 		private Vector3 TargetPosition;
 		
 		[Input(ShowBackingValue.Never, ConnectionType.Override), SerializeField] 
-		private EntId Owner;
+		private EntId OwnerAbility;
 		
 		protected override void Action()
 		{
-			OperationResult<EntId> operationResult = Resolve<EntId>(nameof(Owner));
+			OperationResult<EntId> operationResult = Resolve<EntId>(nameof(OwnerAbility));
 			if (Check(!operationResult.IsSuccess, $"Failed to resolve Owner for SpawnSpellNode {name} in graph {graph.name}:"))
 				return;
 			

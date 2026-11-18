@@ -5,6 +5,7 @@ using Core.Initialization;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
+using FixedPointy;
 using Game.Logic;
 using Game.Player.Abilities;
 using Game.Spells;
@@ -30,6 +31,7 @@ namespace Game.Enemies.EnemyAbilities
 			
 			ref EnemyAbilityData enemyAbilityData = ref GetComponent<EnemyAbilityData>();
 			enemyAbilityData.OwnerID = ownerID;
+			enemyAbilityData.AbilityType = dataConfig.AbilityType;
 		}
 		
 	}
@@ -48,12 +50,11 @@ namespace Game.Enemies.EnemyAbilities
 	{
 		private const int MAX_TARGETS = 5;
 		public EntId ID { get; set; }
+		public GameLogic.AbilityType AbilityType;
 		public EntId OwnerID;
 		
 		public AbilityState State;
-
-
-
+			
 
 		#region Targets
 
@@ -74,6 +75,7 @@ namespace Game.Enemies.EnemyAbilities
 
 		public void Init()
 		{
+			AbilityType = GameLogic.AbilityType.Ammo;
 			TargetSet = false;
 			State = AbilityState.Ready;
 			TargetCount = 0;
@@ -161,6 +163,10 @@ namespace Game.Enemies.EnemyAbilities
 	{
 		[Inject] private readonly BasicCompContainer<EnemyAbilityData> EnemyAbilityContainer = null!;
 		[Inject] private readonly ObjectBuilder ObjectBuilder = null!;
+		[Inject] private readonly StatsSystem StatsSystem = null!;
+		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+
+
 
 		
 		private readonly Dictionary<AbilityTargetType, AblilityTargetType> TargetTypeHandlers = new()
@@ -209,9 +215,28 @@ namespace Game.Enemies.EnemyAbilities
 					abilityData.ClearTarget();
 
 					FindTargetsAbilityEvent findTargetsAbilityEvent = EntityEventQueue.Execute<FindTargetsAbilityEvent>(abilityID);
-					findTargetsAbilityEvent.Owner = abilityData.OwnerID;
+					findTargetsAbilityEvent.EnemyOwner = abilityData.OwnerID;
 				}
 
+
+				switch (abilityData.AbilityType)
+				{
+					case GameLogic.AbilityType.Ammo:
+						AmmoAbilityUpdate(ref abilityData);
+						break;
+				}
+				void AmmoAbilityUpdate(ref EnemyAbilityData enemyAbilityData)
+				{
+					switch (enemyAbilityData.State)
+					{
+						case AbilityState.Recover:
+							Fix newDepletedValue = StatsSystem.ChangeDepletedValue(enemyAbilityData.ID, GameStatsContainer.Cooldown, -deltaTime);
+							if (newDepletedValue <= Fix.Zero)
+								enemyAbilityData.State = AbilityState.Ready;
+							break;
+					}
+				}
+				
 			}
 		}
 

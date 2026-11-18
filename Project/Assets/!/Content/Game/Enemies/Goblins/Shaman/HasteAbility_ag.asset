@@ -17,7 +17,7 @@ MonoBehaviour:
   ports:
     keys:
     - Continue
-    - Owner
+    - EnemyOwner
     values:
     - _fieldName: Continue
       _node: {fileID: -7308950612715212413}
@@ -31,16 +31,13 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 2
       _dynamic: 0
-    - _fieldName: Owner
+    - _fieldName: EnemyOwner
       _node: {fileID: -7308950612715212413}
       _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
       - fieldName: Entity
         node: {fileID: 8427094240983526994}
-        reroutePoints: []
-      - fieldName: Owner
-        node: {fileID: 1651587073610879786}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -55,7 +52,7 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   vsFieldPorts:
   - isInput: 0
-    FieldName: Owner
+    FieldName: EnemyOwner
   Timing: 1
   ListenTarget: 0
 --- !u!114 &-6972218498765615475
@@ -133,7 +130,10 @@ MonoBehaviour:
       _node: {fileID: -6972218498765615475}
       _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Value
+        node: {fileID: 1651587073610879786}
+        reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 0
@@ -149,6 +149,39 @@ MonoBehaviour:
     _raw: 65536
   SearchNumber:
     _raw: 65536
+--- !u!114 &-1944845081462729435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992b34dd89b640b58e579826a876dad8, type: 3}
+  m_Name: Ent ID
+  m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.Nodes.EntIDNode
+  graph: {fileID: 11400000}
+  position: {x: -1000, y: -72}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -1944845081462729435}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Owner
+        node: {fileID: 1651587073610879786}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  guid: 13bac452edab65d47b3d8a0f3a518b10
+  fileId: -1944845081462729435
+  Target: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,14 +196,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Core.Runtime::Core.VSEngine.ActionGraph
   nodes:
   - {fileID: -7308950612715212413}
-  - {fileID: 368892357004088048}
-  - {fileID: -6972218498765615475}
   - {fileID: 6812943406892332562}
-  - {fileID: 8427094240983526994}
   - {fileID: 7289784098421448499}
   - {fileID: 1651587073610879786}
   - {fileID: 6049503730615594013}
   - {fileID: 3851893656156703805}
+  - {fileID: 8427094240983526994}
+  - {fileID: -6972218498765615475}
+  - {fileID: 368892357004088048}
+  - {fileID: -1944845081462729435}
   guid: 13bac452edab65d47b3d8a0f3a518b10
   fileId: 11400000
   localVariables: []
@@ -272,8 +306,8 @@ MonoBehaviour:
       _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Owner
-        node: {fileID: -7308950612715212413}
+      - fieldName: Value
+        node: {fileID: -1944845081462729435}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -284,7 +318,7 @@ MonoBehaviour:
       _typeQualifiedName: FixedPointy.Fix, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: MaxDistance
+      - fieldName: MinDistance
         node: {fileID: -6972218498765615475}
         reroutePoints: []
       _direction: 1
@@ -456,7 +490,7 @@ MonoBehaviour:
     - OriginPosition
     - TargetPositions
     - Targets
-    - Owner
+    - EnemyOwner
     values:
     - _fieldName: Continue
       _node: {fileID: 6812943406892332562}
@@ -502,7 +536,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 2
       _dynamic: 1
-    - _fieldName: Owner
+    - _fieldName: EnemyOwner
       _node: {fileID: 6812943406892332562}
       _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
@@ -526,7 +560,7 @@ MonoBehaviour:
   - isInput: 0
     FieldName: Targets
   - isInput: 0
-    FieldName: Owner
+    FieldName: EnemyOwner
   Timing: 1
   ListenTarget: 0
 --- !u!114 &7289784098421448499
@@ -588,7 +622,7 @@ MonoBehaviour:
       _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Owner
+      - fieldName: EnemyOwner
         node: {fileID: -7308950612715212413}
         reroutePoints: []
       _direction: 0

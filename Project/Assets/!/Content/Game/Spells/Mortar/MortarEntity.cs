@@ -16,7 +16,13 @@ namespace Game.Spells.Mortar
 								ISimulation, 
 								IWorldEntity
 	{
-		public MortarEntity(SpellConfig dataConfig) : base(dataConfig) { }
+		public MortarEntity(SpellConfig dataConfig, Vector3 origin, Vector3 targetPosition) : base(dataConfig)
+		{
+			ref MortarData mortarData = ref GetComponent<MortarData>();
+			mortarData.OriginPosition = origin;
+			mortarData.TargetPosition = targetPosition;
+			mortarData.TargetTags = (ulong) dataConfig.HitTags;
+		}
 	}
 
 
@@ -25,17 +31,19 @@ namespace Game.Spells.Mortar
 	{
 		public EntId ID { get; set; }
 		
+		public Fix Radius; 
+		public ulong TargetTags;
 		public Fix ElapsedTime;
 		public Fix TimeToImpact;
 
-		public Fix Radius; 
 		public Vector3 OriginPosition;
 		public Vector3 TargetPosition;
 
-		public ulong TargetTags;
 		
 		public void Init()
 		{
+			Radius = Fix.One;
+			TimeToImpact = Fix.One;
 			ElapsedTime = Fix.Zero;
 			TargetTags = (ulong)GameTag.None;
 		}
@@ -44,7 +52,8 @@ namespace Game.Spells.Mortar
 	public interface IMortar : Component<MortarData> { }
 	
 	
-	public sealed class MortarSystem : UpdateComponents<MortarData>
+	[OnCreateComponentProperties(Priority = SystemPriority.Early)]
+	public sealed class MortarSystem : UpdateComponents<MortarData>, OnCreateComponent<MortarData>
 	{
 		[Inject] private readonly BasicCompContainer<MortarData> MortarContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
@@ -52,8 +61,6 @@ namespace Game.Spells.Mortar
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameLogic GameLogic = null!;
 		[Inject] private readonly SpellsLogic SpellsLogic = null!;
-
-		
 		
 		public void UpdateComponents(float deltaTime)
 		{
@@ -80,6 +87,17 @@ namespace Game.Spells.Mortar
 			}
 		}
 
+		public void OnCreateComponent(EntId newComponentId)
+		{
+			Fix size = StatsSystem.GetStatValue(newComponentId, GameStatsContainer.Size);
+			Fix castingTime = StatsSystem.GetStatValue(newComponentId, GameStatsContainer.CastingTime);
+			ref MortarData mortarData = ref MortarContainer.GetComponent(newComponentId);
+			mortarData.TimeToImpact = castingTime;
+			mortarData.ElapsedTime = Fix.Zero;
+			mortarData.Radius = size;
+		}
+		
+		
 		public bool Active { get; set; } = true;
 		public SystemGroup Group { get; } = GameSystemsGroup.GAME_LOGIC_SYSTEM;
 	}

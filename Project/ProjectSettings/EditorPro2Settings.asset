@@ -17,63 +17,75 @@ MonoBehaviour:
   m_Categories:
   - m_Id: 40d403c64f3e4401bbb38e477c830ccb
     m_DisplayName: Enemies
-    m_Order: 1
+    m_Order: 3
     m_Icon: {fileID: 2800000, guid: 7359bccd67e0a314f9044424c488b2a4, type: 3}
     m_ParentId: 
     m_UseIcon: 1
   - m_Id: 16cf9bffe9714952b29e260fbeab4b3e
     m_DisplayName: Configs
-    m_Order: 8
+    m_Order: 10
     m_Icon: {fileID: 2800000, guid: 364f6bb9139a23c42943ef6eee6a68b8, type: 3}
     m_ParentId: 6d28978713534c8f88e778d6fd902e24
     m_UseIcon: 1
   - m_Id: e2979e85a668493fb52c4e44393e3bc2
     m_DisplayName: Spells
-    m_Order: 4
+    m_Order: 6
     m_Icon: {fileID: 2800000, guid: 32081fefdf91244d5903702039542124, type: 3}
     m_ParentId: 
     m_UseIcon: 1
   - m_Id: 00ead4908e454ab99b916641e4fefd74
     m_DisplayName: StatusEffects
-    m_Order: 5
+    m_Order: 7
     m_Icon: {fileID: 2800000, guid: eccaf3afae97c49a7ba3fafee763cce2, type: 3}
     m_ParentId: 
     m_UseIcon: 1
   - m_Id: 0e34afafafaf485793078ebb480d0c15
     m_DisplayName: Stats
-    m_Order: 10
+    m_Order: 12
     m_Icon: {fileID: 2800000, guid: c8ce6dfe18bd01344b2b41b47b4fd692, type: 3}
     m_ParentId: 6d28978713534c8f88e778d6fd902e24
     m_UseIcon: 1
   - m_Id: 788678bf0da141f182a0c7b001d0ef72
-    m_DisplayName: Abilities
-    m_Order: 3
+    m_DisplayName: Enemy Abilities
+    m_Order: 4
     m_Icon: {fileID: 2800000, guid: 9c3d9f96894c04184a4d6970a26408c1, type: 3}
-    m_ParentId: 
+    m_ParentId: 40d403c64f3e4401bbb38e477c830ccb
     m_UseIcon: 1
   - m_Id: c4a55d2efa004b9bba1893fa4940f1b8
     m_DisplayName: UI
-    m_Order: 7
+    m_Order: 9
     m_Icon: {fileID: 2800000, guid: 3a75bce1bca12e44eb4bf4603016a802, type: 3}
     m_ParentId: 
     m_UseIcon: 1
   - m_Id: 63cd575ddd7a4213acd3963209e99ea7
     m_DisplayName: Action Graphs
-    m_Order: 9
+    m_Order: 11
     m_Icon: {fileID: 2800000, guid: 444d626ca9b48134dbf59edb6b169110, type: 3}
     m_ParentId: 6d28978713534c8f88e778d6fd902e24
     m_UseIcon: 1
   - m_Id: 1276bcc1687546b7913b0493a532e21d
     m_DisplayName: Spawners
-    m_Order: 2
+    m_Order: 5
     m_Icon: {fileID: 2800000, guid: 2d434b50ee1d52c428111149c240cbb6, type: 3}
     m_ParentId: 40d403c64f3e4401bbb38e477c830ccb
     m_UseIcon: 1
   - m_Id: 6d28978713534c8f88e778d6fd902e24
     m_DisplayName: Game
-    m_Order: 6
+    m_Order: 8
     m_Icon: {fileID: 0}
     m_ParentId: 
+    m_UseIcon: 1
+  - m_Id: 98e6b87db669418e83e40c827db59f5d
+    m_DisplayName: Player
+    m_Order: 1
+    m_Icon: {fileID: 2800000, guid: ea955ff3d42aa624590a9cad0e760447, type: 3}
+    m_ParentId: 
+    m_UseIcon: 1
+  - m_Id: 1ff3b04bc3274bb5b387568d289d7c87
+    m_DisplayName: Player Abilities
+    m_Order: 2
+    m_Icon: {fileID: 2800000, guid: 8b9a4e37560344d4c968606a4b61f628, type: 3}
+    m_ParentId: 98e6b87db669418e83e40c827db59f5d
     m_UseIcon: 1
   m_Types:
   - m_AssemblyQualifiedName: AllIn1VfxToolkit.AllIn1ParticleHelperSO, AllIn1VfxAssmebly,
@@ -632,14 +644,6 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     m_DisplayName: Game Stats Container
     m_CategoryId: 0e34afafafaf485793078ebb480d0c15
-    m_Enabled: 0
-    m_AutoCategoryAssigned: 0
-    m_AutoCategoryGroupKey: 
-    m_Classification: 3
-  - m_AssemblyQualifiedName: Game.Spells.AbilityConfig, GameAssemblyDef, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_DisplayName: Ability Config
-    m_CategoryId: 788678bf0da141f182a0c7b001d0ef72
     m_Enabled: 1
     m_AutoCategoryAssigned: 0
     m_AutoCategoryGroupKey: 
@@ -8694,6 +8698,86 @@ MonoBehaviour:
     m_AutoCategoryAssigned: 0
     m_AutoCategoryGroupKey: 
     m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Math.Vector3MultiplicationNode,
+      Core.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Vector 3 Multiplication Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Math.Vector3OperationNode, Core.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Vector 3 Operation Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Stats.ChangeStatValueNode, Core.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Change Stat Value Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Stats.GetStatValueNode, Core.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Get Stat Value Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Stats.SetStatValueNode, Core.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Set Stat Value Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Vector2Node, Core.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Vector 2 Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Core.VSEngine.Nodes.Vector3Node, Core.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Vector 3 Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Game.StatusEffects.ApplyStatusEffectNode, GameAssemblyDef,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Apply Status Effect Node
+    m_CategoryId: other
+    m_Enabled: 0
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Game.Player.Abilities.PlayerAbilityConfig, GameAssemblyDef,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Player Ability Config
+    m_CategoryId: 1ff3b04bc3274bb5b387568d289d7c87
+    m_Enabled: 1
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
+  - m_AssemblyQualifiedName: Game.Enemies.EnemyAbilities.EnemyAbilityConfig, GameAssemblyDef,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_DisplayName: Enemy Ability Config
+    m_CategoryId: 788678bf0da141f182a0c7b001d0ef72
+    m_Enabled: 1
+    m_AutoCategoryAssigned: 0
+    m_AutoCategoryGroupKey: 
+    m_Classification: 3
   m_FavouriteGuids:
   - 09f2ae9300607124692d1b3694a21c2d
   - a93be49f962b5ef48adfb0c8c289564f
@@ -8705,12 +8789,12 @@ MonoBehaviour:
   m_OpenTabsEnabled: 1
   m_BrowserState:
     m_SearchText: 
-    m_CategoryId: 0e34afafafaf485793078ebb480d0c15
+    m_CategoryId: 788678bf0da141f182a0c7b001d0ef72
     m_View: 1
-    m_SortMode: 0
+    m_SortMode: 1
     m_AssetPaneWidth: 0
-    m_OpenAssetGuids: 
-    m_ActiveAssetGuid: 
+    m_OpenAssetGuids: 5b75da8cfa9b17b46aaa1ae09db2317e
+    m_ActiveAssetGuid: 5b75da8cfa9b17b46aaa1ae09db2317e
     m_AssetScrollX: 0
     m_AssetScrollY: 0
     m_CategoryScrollX: 0

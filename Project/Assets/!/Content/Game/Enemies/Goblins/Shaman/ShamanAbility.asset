@@ -15,7 +15,15 @@ MonoBehaviour:
   Id: b8-8OqESZTJ
   name: ShamanAbility
   _actionGraph:
-  - {fileID: 11400000, guid: 317ad2fe600a9ca4788eba5b6026dbe6, type: 2}
-  _statsOverride: []
+  - {fileID: 11400000, guid: 684bdd5febc1a954082f9678d2100823, type: 2}
+  _statsOverride:
+  - _statConfig: {fileID: 11400000, guid: 74cc24631456c8a49be488bb06e8b012, type: 2}
+    _value: 15
+    _overrideType: 0
+    _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 3c099960bc719ee468ff698a00597b93, type: 2}
+    _value: 4
+    _overrideType: 0
+    _depletedValueOverride: 0
   _Icon: {fileID: 0}
-  _ExtraLogicActions: 0100000002000000
+  _abilityType: 1

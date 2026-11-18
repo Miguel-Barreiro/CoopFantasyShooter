@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using Core.Events;
 using Core.Model;
-using Core.View;
 using Core.VSEngine;
 using FixedPointy;
-using Game.Enemies;
-using Game.Player;
-using Game.Player.Abilities;
 using Zenject;
 
 namespace Game.Spells
@@ -19,7 +15,7 @@ namespace Game.Spells
 		
 	}
 	
-	public sealed class OnSpellHitEvent : AbilityEvent<OnSpellHitEvent>, ILateEvent
+	public sealed class OnSpellHitEvent : SpellEvent<OnSpellHitEvent>, ILateEvent
 	{
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;

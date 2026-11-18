@@ -4,6 +4,7 @@ using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Game.BehaviourTree
@@ -59,8 +60,9 @@ namespace Game.BehaviourTree
 	public interface IBehaviourNode
 	{
 		public BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-										ref BehaviourAgentData agentData, float deltaTime);
-		public void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData);
+										ref BehaviourAgentData agentData, float deltaTime, 
+											BaseBehaviourNode.AgentMotion agentMotion);
+		public void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, BaseBehaviourNode.AgentMotion agentMotion);
 	}
 
 	public abstract class BaseBehaviourNode : IBehaviourNode
@@ -68,10 +70,16 @@ namespace Game.BehaviourTree
 		[Inject] protected readonly BehaviourTreeContainer BehaviourTreeContainer = null!;
 		[Inject] protected readonly BehaviourTreeSystem BehaviourTreeSystem = null!;
 
+		public struct AgentMotion
+		{
+			public NavMeshAgent NavMeshAgent;
+			public Transform Transform;
+		}
+		
 		public abstract BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-										ref BehaviourAgentData agentData, float deltaTime);
+										ref BehaviourAgentData agentData, float deltaTime, AgentMotion agentMotion);
 
-		public virtual void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		public virtual void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, AgentMotion agentMotion)
 		{
 			nodeNodeData.currentChild = 0;
 		}
@@ -94,19 +102,19 @@ namespace Game.BehaviourTree
 	public sealed class FirstChildNode : BaseBehaviourNode
 	{
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, AgentMotion agentMotion)
 		{
 			ref EntityComponentsHeader header = ref BehaviourTreeContainer.GetEntityComponentsHeader(entityId);
 			for (int i = 0; i < nodeData.childrenCount; i++)
 			{
 				ref BehaviourNodeData childNodeData = ref GetChild(ref header, nodeData.children[i]);
-				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime);
+				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime, agentMotion);
 				switch (status)
 				{
 					case BehaviourStatus.Running:
 						return BehaviourStatus.Running;
 					case BehaviourStatus.Success:
-						Reset(entityId, ref nodeData);
+						Reset(entityId, ref nodeData, agentMotion);
 						return BehaviourStatus.Success;
 					case BehaviourStatus.Failure:
 						continue;
@@ -115,7 +123,7 @@ namespace Game.BehaviourTree
 				}
 			}
 			
-			Reset(entityId, ref nodeData);
+			Reset(entityId, ref nodeData, agentMotion);
 			return BehaviourStatus.Failure;
 		}
 	}
@@ -130,20 +138,20 @@ namespace Game.BehaviourTree
 		public override BehaviourStatus Process(EntId entityId,
 												ref BehaviourNodeData nodeData, 
 												ref BehaviourAgentData agentData,
-												float deltaTime)
+												float deltaTime, AgentMotion agentMotion)
 		{
 			ref EntityComponentsHeader header = ref BehaviourTreeContainer.GetEntityComponentsHeader(entityId);
 			
 			for (int i = 0; i < nodeData.childrenCount; i++)
 			{
 				ref BehaviourNodeData childNodeData = ref GetChild(ref header, nodeData.children[i]);
-				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime);
+				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime, agentMotion);
 				switch (status)
 				{
 					case BehaviourStatus.Running:
 						return BehaviourStatus.Running;
 					case BehaviourStatus.Success:
-						Reset(entityId, ref nodeData);
+						Reset(entityId, ref nodeData, agentMotion);
 						return BehaviourStatus.Success;
 						break;
 					default:
@@ -152,7 +160,7 @@ namespace Game.BehaviourTree
 
 			}
 			
-			Reset(entityId, ref nodeData);
+			Reset(entityId, ref nodeData, agentMotion);
 			return BehaviourStatus.Failure;
 		}
 	}
@@ -161,7 +169,7 @@ namespace Game.BehaviourTree
 	public sealed class SequenceNode : BaseBehaviourNode
 	{
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, AgentMotion agentMotion)
 		{
 			ref EntityComponentsHeader header = ref BehaviourTreeContainer.GetEntityComponentsHeader(entityId);
 			
@@ -174,7 +182,7 @@ namespace Game.BehaviourTree
 					return BehaviourStatus.Failure;
 				}
 				ref BehaviourNodeData childNodeData = ref GetChild(ref header, childOrder);
-				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime);
+				BehaviourStatus status = BehaviourTreeSystem.ProcessNode(entityId, ref childNodeData, ref agentData, deltaTime, agentMotion);
 				switch (status)
 				{
 					case BehaviourStatus.Running:
@@ -183,12 +191,12 @@ namespace Game.BehaviourTree
 						nodeData.currentChild++;
 						break;
 					case BehaviourStatus.Failure:
-						Reset(entityId, ref nodeData);
+						Reset(entityId, ref nodeData, agentMotion);
 						return BehaviourStatus.Failure;
 				}
 			}
 
-			Reset(entityId, ref nodeData);
+			Reset(entityId, ref nodeData, agentMotion);
 			return BehaviourStatus.Success;
 		}
 	}

@@ -31,7 +31,8 @@ namespace Game.BehaviourTree
 		[Inject] private readonly EnemyAbilitySystem EnemyAbilitySystem = null!;
 
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			ref EnemyAbilityData abilityData = ref EnemyAbilityContainer.GetComponent(nodeData.AbilityID);
 
@@ -60,7 +61,7 @@ namespace Game.BehaviourTree
 						
 						ActivateEnemyAbilityEvent abilityEvent = EntityEventQueue.Execute<ActivateEnemyAbilityEvent>(abilityData.ID);
 						abilityEvent.SetTargets(ref abilityData, Vector3.zero);
-						abilityEvent.Owner = abilityData.OwnerID;
+						abilityEvent.EnemyOwner = abilityData.OwnerID;
 						
 						return BehaviourStatus.Success;
 					}
@@ -87,7 +88,8 @@ namespace Game.BehaviourTree
 		
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 
 			// foreach (EntId ability in agentData.Abilities)
@@ -155,9 +157,9 @@ namespace Game.BehaviourTree
 			return BehaviourStatus.Failure;
 		}
 
-		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, AgentMotion agentMotion)
 		{
-			base.Reset(entityId, ref nodeNodeData);
+			base.Reset(entityId, ref nodeNodeData, agentMotion);
 			nodeNodeData.Cooldown = 0f;
 		}
 	}
@@ -178,7 +180,8 @@ namespace Game.BehaviourTree
 		
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 			
 			
@@ -240,9 +243,9 @@ namespace Game.BehaviourTree
 			}
 		}
 
-		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, AgentMotion agentMotion)
 		{
-			base.Reset(entityId, ref nodeNodeData);
+			base.Reset(entityId, ref nodeNodeData, agentMotion);
 			nodeNodeData.Cooldown = 0f;
 		}
 	}
@@ -258,7 +261,8 @@ namespace Game.BehaviourTree
 
 		
 		public override BehaviourStatus Process(EntId entityId, ref BehaviourNodeData nodeData, 
-												ref BehaviourAgentData agentData, float deltaTime)
+												ref BehaviourAgentData agentData, float deltaTime, 
+													AgentMotion agentMotion)
 		{
 
 			if(agentData.Target == EntId.Invalid)
@@ -342,9 +346,9 @@ namespace Game.BehaviourTree
 			return attackFrameNorm + normalizedTime*(1f - attackFrameNorm);
 		}
 
-		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData)
+		public override void Reset(EntId entityId, ref BehaviourNodeData nodeNodeData, AgentMotion agentMotion)
 		{
-			base.Reset(entityId, ref nodeNodeData);
+			base.Reset(entityId, ref nodeNodeData, agentMotion);
 			
 			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(entityId);
 			EnemyView enemyView = viewAtributes.Get<EnemyView>();

@@ -45,12 +45,12 @@ namespace Game.Player.Abilities
 		public AbilityState State;
 
 		public PlayerAbilitySlot PlayerAbilitySlot;
-		public PlayerAbilityAction.AbilityType AbilityType;
+		public GameLogic.AbilityType AbilityType;
 		
 		public void Init()
 		{
 			State = AbilityState.Ready;
-			AbilityType = PlayerAbilityAction.AbilityType.Custom;
+			AbilityType = GameLogic.AbilityType.Custom;
 			PlayerAbilitySlot = PlayerAbilitySlot.None;
 		}
 	}

@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using Core.Model;
 using Core.View;
 using FixedPointy;
 using Game.StatusEffects;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 

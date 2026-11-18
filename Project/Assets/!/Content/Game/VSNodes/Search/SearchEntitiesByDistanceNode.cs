@@ -56,14 +56,16 @@ namespace Game.VSNodes.Search
 			}
 			
 			OperationResult<Fix> resMaxDistance = Resolve<Fix>(nameof(MaxDistance));
+			Fix valueMaxDistance;
 			if (resMaxDistance.IsFailure)
 			{
-				Debug.LogError($"Failed to resolve MaxDistance for {this.name} {name} in graph {graph.name}: {resMaxDistance.Exception}");
-				return false;
+				valueMaxDistance = Fix.MaxInteger;
+			} else
+			{
+				valueMaxDistance = resMaxDistance.Result;
 			}
-			Fix valueMaxDistance = resMaxDistance.Result;
+
 			Fix valueMinDistance;
-			
 			OperationResult<Fix> resMinDistance = Resolve<Fix>(nameof(MinDistance));
 			if (resMinDistance.IsFailure)
 			{

@@ -16,6 +16,7 @@ using Game.Player;
 using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
+using Game.Spells.Mortar;
 using Game.StatusEffects;
 using Global;
 using Unity.AI.Navigation;
@@ -88,8 +89,11 @@ namespace Scenes.Play
 
 			BindInstance(new PlayerAbilitiesSystem());
 			BindInstance(new BulletSystem());
-			BindInstance(new BulletViewSystem());
+			BindInstance(new MortarSystem());
 			BindInstance(new SpellsLogic());
+
+			BindInstance(new MortarViewSystem());
+			BindInstance(new BulletViewSystem());
 			
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance( new GameSetupSystem());

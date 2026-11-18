@@ -1,0 +1,45 @@
+OVDF v1.1
+Game.Spells.SpellConfig, GameAssemblyDef
+MetaGuid:57463640d33b4b60bbbfd2bdd501fed3
+
+# $5a44HruVoNC9Bc3KGDfVBY
+Position: $PU1obaSbaEzsTjMcT4vus2:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $MvzPoS1svRpR5GVJvu3Aka
+Position: $5a44HruVoNC9Bc3KGDfVBY:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $PweFfB2BhBgQZXhnbD6yZz
+Position: $5a44HruVoNC9Bc3KGDfVBY:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $TMVLBuZdqyLtzdAf1PrmJV
+Position: $root:23
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $6y8HyFunK1PiBJNYJthPA1
+Position: $root:24
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# $PU1obaSbaEzsTjMcT4vus2
+Position: $root:5
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
+# _HitTags
+Position: $MvzPoS1svRpR5GVJvu3Aka:0
+
+# _Icon
+Position: $root:2
+
+# _SpellType
+Position: $PweFfB2BhBgQZXhnbD6yZz:0
+
+# _SpellPrefab
+Position: $root:3
+
+# _actionGraph
+Position: $TMVLBuZdqyLtzdAf1PrmJV:0
+
+# _statsOverride
+Position: $6y8HyFunK1PiBJNYJthPA1:0

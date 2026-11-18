@@ -41,6 +41,14 @@ namespace Game
 
 		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
 
+		
+		public enum AbilityType
+		{
+			Custom =         0,
+			Ammo =           1,
+			Charge =         2, 
+		}
+
 
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
 		{
@@ -85,12 +93,12 @@ namespace Game
 			}
 			void AddGoblinShamanBehaviourTree()
 			{
-				ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget, out _);
-				findTargetNode.Cooldown = 0f;
+				// ref BehaviourNodeData findTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindTarget, out _);
+				// findTargetNode.Cooldown = 0f;
 				// ref BehaviourNodeData moveToTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveToTarget);
 				ref BehaviourNodeData moveAwayFromTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.MoveAwayFromTarget, out _);
-				ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget, out _);
-				findSupportTargetNode.Cooldown = 0f;
+				// ref BehaviourNodeData findSupportTargetNode = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FindSupportTarget, out _);
+				// findSupportTargetNode.Cooldown = 0f;
 				
 				// ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out abilitiesParent);
 				//
@@ -163,7 +171,7 @@ namespace Game
 
 		public EntId SpawnMortar(EntId ownerAbilityID, SpellConfig spellConfig, Vector3 originPosition, Vector3 targetPosition)
 		{
-			EntId mortarId = new MortarEntity(spellConfig).ID;
+			EntId mortarId = new MortarEntity(spellConfig, originPosition, targetPosition).ID;
 
 			EntityViewAtributes view = AddView(mortarId, spellConfig.SpellPrefab.gameObject, targetPosition, Quaternion.identity);
 			
