@@ -8789,12 +8789,12 @@ MonoBehaviour:
   m_OpenTabsEnabled: 1
   m_BrowserState:
     m_SearchText: 
-    m_CategoryId: 788678bf0da141f182a0c7b001d0ef72
+    m_CategoryId: e2979e85a668493fb52c4e44393e3bc2
     m_View: 1
     m_SortMode: 1
     m_AssetPaneWidth: 0
-    m_OpenAssetGuids: 5b75da8cfa9b17b46aaa1ae09db2317e
-    m_ActiveAssetGuid: 5b75da8cfa9b17b46aaa1ae09db2317e
+    m_OpenAssetGuids: f134f422fbfae1a4da9397dbb8d1f88b
+    m_ActiveAssetGuid: f134f422fbfae1a4da9397dbb8d1f88b
     m_AssetScrollX: 0
     m_AssetScrollY: 0
     m_CategoryScrollX: 0

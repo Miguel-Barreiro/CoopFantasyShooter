@@ -56,7 +56,7 @@ namespace Game.Player.Abilities
 		public Vector3 TargetPosition = Vector2.negativeInfinity;
 		
 		[VSField()]
-		public EntId Owner = EntId.Invalid;
+		public EntId CasterOwner = EntId.Invalid;
 		
 		[VSField()]
 		public uint InstanceNumber = 0;

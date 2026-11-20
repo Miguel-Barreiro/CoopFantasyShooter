@@ -15,31 +15,55 @@ Position: $5a44HruVoNC9Bc3KGDfVBY:1
 + [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
 
 # $TMVLBuZdqyLtzdAf1PrmJV
-Position: $root:23
+Position: $root:21
 + [Sirenix.OdinInspector.TitleGroupAttribute]
+	GroupName = "Action Graphs"
 
 # $6y8HyFunK1PiBJNYJthPA1
-Position: $root:24
+Position: $root:22
 + [Sirenix.OdinInspector.TitleGroupAttribute]
 
 # $PU1obaSbaEzsTjMcT4vus2
-Position: $root:5
+Position: $root:3
 + [Sirenix.OdinInspector.TitleGroupAttribute]
+	GroupName = "Tags"
+
+# $AoVAk3rv1FZbvUPDAitgfj
+Position: $root:2
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+	GroupName = "Prefabs"
+
+# $QVWVwVUcvdtVu2sUtYPrMR
+Position: $root:0
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+	GroupName = "Data"
 
 # _HitTags
 Position: $MvzPoS1svRpR5GVJvu3Aka:0
 
 # _Icon
-Position: $root:2
+Position: $QVWVwVUcvdtVu2sUtYPrMR:2
 
 # _SpellType
 Position: $PweFfB2BhBgQZXhnbD6yZz:0
 
 # _SpellPrefab
-Position: $root:3
+Position: $AoVAk3rv1FZbvUPDAitgfj:0
 
 # _actionGraph
 Position: $TMVLBuZdqyLtzdAf1PrmJV:0
 
 # _statsOverride
 Position: $6y8HyFunK1PiBJNYJthPA1:0
+
+# _ImpactVFXPrefab
+Position: $AoVAk3rv1FZbvUPDAitgfj:2
+
+# _OriginVFXPrefab
+Position: $AoVAk3rv1FZbvUPDAitgfj:1
+
+# name
+Position: $QVWVwVUcvdtVu2sUtYPrMR:1
+
+# Id
+Position: $QVWVwVUcvdtVu2sUtYPrMR:0

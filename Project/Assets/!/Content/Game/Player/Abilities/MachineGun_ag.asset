@@ -38,18 +38,18 @@ MonoBehaviour:
   position: {x: 312, y: -120}
   ports:
     keys:
-    - Owner
+    - AbilityOwner
     - Continue
     - Enter
     - Direction
     - OriginPosition
     values:
-    - _fieldName: Owner
+    - _fieldName: AbilityOwner
       _node: {fileID: 1420225625056776417}
       _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Owner
+      - fieldName: EntityID
         node: {fileID: 8185532268612385790}
         reroutePoints: []
       _direction: 0
@@ -132,11 +132,12 @@ MonoBehaviour:
   ports:
     keys:
     - Continue
-    - Owner
     - TargetPosition
     - Direction
     - OriginPosition
     - InstanceNumber
+    - EntityID
+    - CasterOwner
     values:
     - _fieldName: Continue
       _node: {fileID: 8185532268612385790}
@@ -150,18 +151,6 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 2
       _dynamic: 0
-    - _fieldName: Owner
-      _node: {fileID: 8185532268612385790}
-      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: Owner
-        node: {fileID: 1420225625056776417}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 2
-      _dynamic: 1
     - _fieldName: TargetPosition
       _node: {fileID: 8185532268612385790}
       _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -204,6 +193,27 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 2
       _dynamic: 1
+    - _fieldName: EntityID
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: AbilityOwner
+        node: {fileID: 1420225625056776417}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: CasterOwner
+      _node: {fileID: 8185532268612385790}
+      _typeQualifiedName: Core.Model.EntId, Core.Runtime, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
   guid: bb47eac27bcaf5c45a3d0ec9c356ab85
   fileId: 8185532268612385790
   active: 1
@@ -219,8 +229,10 @@ MonoBehaviour:
   - isInput: 0
     FieldName: TargetPosition
   - isInput: 0
-    FieldName: Owner
+    FieldName: CasterOwner
   - isInput: 0
     FieldName: InstanceNumber
+  - isInput: 0
+    FieldName: EntityID
   Timing: 1
   ListenTarget: 0

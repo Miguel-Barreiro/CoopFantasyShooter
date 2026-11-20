@@ -20,6 +20,13 @@ MonoBehaviour:
     - 9eb57938f2184364d9bcb38dca8853ff
     - 3c4cd900a8cf846468d9c1186d697e92
     - b3aacf670f4808b47b282a3e22e52c44
+    - 7f10efc5458aa44a2928a72c38807544
+    - 4ddc7e718d482f24e97383a8a9e62e44
+    - cd06d5eba39379a449ddb6b0822646e5
+    - d8b4ae11b081aac498a808719ef35379
+    - e5e25af3b5f34a7c9c8ff99726462c10
+    - 222c8753b0d64db99fed8a7df67c5a82
+    - 284034918f9be324ea746ef44278909d
     values:
     - iconNameOrGuid: 
       colorIndex: 8
@@ -45,4 +52,32 @@ MonoBehaviour:
       colorIndex: 2
       isIconRecursive: 1
       isColorRecursive: 1
+    - iconNameOrGuid: Light Icon
+      colorIndex: 1
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Light Icon
+      colorIndex: 1
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Light Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: BoxCollider Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: BoxCollider Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: BoxCollider Icon
+      colorIndex: 0
+      isIconRecursive: 1
+      isColorRecursive: 0
+    - iconNameOrGuid: Prefab Icon
+      colorIndex: 8
+      isIconRecursive: 0
+      isColorRecursive: 0
   bookmarks: []

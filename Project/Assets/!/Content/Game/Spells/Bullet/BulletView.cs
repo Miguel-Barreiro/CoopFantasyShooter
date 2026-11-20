@@ -1,10 +1,4 @@
-using System;
-using Core.Events;
-using Core.Model;
-using Core.View;
-using Game.Enemies;
 using UnityEngine;
-using Zenject;
 
 namespace Game.Spells.Bullet
 {
@@ -37,4 +31,5 @@ namespace Game.Spells.Bullet
 			Rigidbody.angularVelocity = Vector3.zero;
 		}
 	}
+	
 }

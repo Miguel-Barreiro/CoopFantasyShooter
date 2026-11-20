@@ -46,10 +46,10 @@ namespace Game.Player.Abilities
 			for (uint i = 0; i < castingMultiplier; i++)
 			{
 				ActivateAbilityEvent abilityEvent = EntityEventQueue.Execute<ActivateAbilityEvent>(abilityID);
+				abilityEvent.CasterOwner = playerID;
 				abilityEvent.OriginPosition = position;
 				abilityEvent.Direction = direction;
 				abilityEvent.TargetPosition = Vector3.negativeInfinity;
-				abilityEvent.Owner = playerID;
 				abilityEvent.InstanceNumber = i;
 			}
 		}

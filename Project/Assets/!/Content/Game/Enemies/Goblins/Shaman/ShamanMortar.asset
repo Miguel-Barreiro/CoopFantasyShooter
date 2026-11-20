@@ -21,7 +21,7 @@ MonoBehaviour:
     _overrideType: 0
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: 393be984e0c92c349a1f3d39cbac9d6e, type: 2}
-    _value: 5
+    _value: 3
     _overrideType: 0
     _depletedValueOverride: 0
   - _statConfig: {fileID: 11400000, guid: 7cf02bf1282dfb74e9a2b95d7d4e0211, type: 2}
@@ -32,3 +32,5 @@ MonoBehaviour:
   _SpellType: 1
   _HitTags: 1
   _SpellPrefab: {fileID: 6549870928995793020, guid: e4b662e4db245b54881df0e52184ce03, type: 3}
+  _ImpactVFXPrefab: {fileID: 7343112225938488954, guid: 240c830bfe588ad4f9925288b65d7a18, type: 3}
+  _OriginVFXPrefab: {fileID: 0}

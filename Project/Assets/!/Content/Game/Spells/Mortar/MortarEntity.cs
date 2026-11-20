@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Core.Events;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
@@ -21,7 +22,9 @@ namespace Game.Spells.Mortar
 			ref MortarData mortarData = ref GetComponent<MortarData>();
 			mortarData.OriginPosition = origin;
 			mortarData.TargetPosition = targetPosition;
+			mortarData.TargetPosition.y = 0f;
 			mortarData.TargetTags = (ulong) dataConfig.HitTags;
+			mortarData.DataConfig = dataConfig;
 		}
 	}
 
@@ -39,6 +42,7 @@ namespace Game.Spells.Mortar
 		public Vector3 OriginPosition;
 		public Vector3 TargetPosition;
 
+		public SpellConfig DataConfig;
 		
 		public void Init()
 		{
@@ -76,13 +80,12 @@ namespace Game.Spells.Mortar
 					Vector3 position = componentData.TargetPosition;
 					float radius = (float) componentData.Radius;
 					
+					EntityEventQueue.Execute<OnMortarImpactEvent>(mortarID);
+					
 					SpellsLogic.HitSpellInCirle(mortarID, position, Vector3.zero, 
 												componentData.TargetTags, EntId.Invalid, 
 												radius);
-					
 					EntitiesContainer.DestroyEntity(mortarID);
-					// GameLogic.SpawnExplosion(mortarID, componentData.TargetPosition, radius, damage);
-					// MortarContainer.Remove(mortarID);
 				}
 			}
 		}

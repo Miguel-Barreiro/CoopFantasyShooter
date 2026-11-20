@@ -59,14 +59,6 @@ MonoBehaviour:
     customIcons: []
     enabled: 1
   - builtinIcons:
-    - AudioClip Icon
-    - AudioMixerController Icon
-    - AudioMixerGroup Icon
-    - AudioEchoFilter Icon
-    - AudioSource Icon
-    customIcons: []
-    enabled: 1
-  - builtinIcons:
     - TextAsset Icon
     - AssemblyDefinitionAsset Icon
     - TerrainData Icon
@@ -76,5 +68,24 @@ MonoBehaviour:
     - Font Icon
     - RawImage Icon
     - Settings Icon
+    customIcons: []
+    enabled: 1
+  - builtinIcons:
+    - AudioClip Icon
+    - AudioMixerController Icon
+    - AudioMixerGroup Icon
+    - AudioEchoFilter Icon
+    - AudioSource Icon
+    customIcons: []
+    enabled: 1
+  - builtinIcons: []
+    customIcons:
+    - sv_icon_dot15_pix16_gizmo
+    - sv_icon_dot14_pix16_gizmo
+    - BoxCollider Icon
+    - Prefab Icon
+    - redLight
+    enabled: 1
+  - builtinIcons: []
     customIcons: []
     enabled: 1

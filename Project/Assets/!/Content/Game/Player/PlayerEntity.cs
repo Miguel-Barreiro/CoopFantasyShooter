@@ -152,13 +152,12 @@ namespace Game.Player
 					continue;
 				}
 				
-				Fix time = deltaTime;
 				Fix speedValue = StatsSystem.GetStatValue(playerDataID, GameStatsContainer.Speed);
-				Fix speed = speedValue * playerData.MoveValue * time * SPEED_MULT;
+				Fix speed = speedValue * playerData.MoveValue * deltaTime * SPEED_MULT;
 
 				//check if the player is moving backwards, and if so, apply a speed multiplier
 				float dot = Vector3.Dot(playerData.MoveDirection, playerData.LookDirection);
-				if(dot <= 0f)
+				if(dot <= 0.3f)
 					speed *= GameplayConfig.PlayerAttributes.BackwardSpeedMultiplier;
 
 

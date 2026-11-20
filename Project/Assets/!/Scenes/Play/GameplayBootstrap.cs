@@ -18,6 +18,7 @@ using Game.Spells;
 using Game.Spells.Bullet;
 using Game.Spells.Mortar;
 using Game.StatusEffects;
+using Game.VFX;
 using Global;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -32,7 +33,8 @@ namespace Scenes.Play
 		[SerializeField] private Camera Camera;
 		[SerializeField] private GameplayConfig GameplayConfig;
 		[SerializeField] private NavMeshSurface NavMeshSurface;
-		
+		[SerializeField] private CameraFollowView CameraFollowView;
+
 		
 		private GameplayInstaller _installer;
 
@@ -42,7 +44,8 @@ namespace Scenes.Play
 				_installer = new GameplayInstaller(Container, 
 													Camera,
 													GameplayConfig,
-													NavMeshSurface);
+													NavMeshSurface,
+													CameraFollowView);
 
 			return _installer;
 		}
@@ -54,16 +57,20 @@ namespace Scenes.Play
 		private readonly Camera Camera;
 		private readonly GameplayConfig GameplayConfig;
 		private readonly NavMeshSurface NavMeshSurface;
+		private readonly CameraFollowView CameraFollowView;
+		
 		public GameplayInstaller(DiContainer container,
 								// LocalMultiplayerInputManager localMultiplayerInputManager, 
-								Camera camera, GameplayConfig gameplayConfig, NavMeshSurface navMeshSurface) 
+								Camera camera, GameplayConfig gameplayConfig, NavMeshSurface navMeshSurface, CameraFollowView cameraFollowView) 
 			: base(container)
 		{
 			// LocalMultiplayerInputManager = localMultiplayerInputManager;
 			Camera = camera;
 			GameplayConfig = gameplayConfig;
 			NavMeshSurface = navMeshSurface;
+			CameraFollowView = cameraFollowView;
 		}
+
 
 
 		public override void SetupConfigurations()
@@ -76,6 +83,7 @@ namespace Scenes.Play
 			BindInstance(Camera);
 			ProCamera2D proCamera2D = Camera.GetComponent<ProCamera2D>();
 			BindInstance(proCamera2D);
+			BindInstance(CameraFollowView);
 
 			BindInstance(new StartGameSystem());
 			
@@ -92,8 +100,11 @@ namespace Scenes.Play
 			BindInstance(new MortarSystem());
 			BindInstance(new SpellsLogic());
 
+			BindInstance(new CameraFollowTargetSystem());
 			BindInstance(new MortarViewSystem());
 			BindInstance(new BulletViewSystem());
+			BindInstance(new VFXSystem());
+			
 			
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance( new GameSetupSystem());

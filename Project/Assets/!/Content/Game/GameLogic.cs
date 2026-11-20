@@ -25,7 +25,6 @@ namespace Game
 	{
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
-		[Inject] private readonly ProCamera2D ProCamera2D = null!;
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly IEntityHierarchySystem IEntityHierarchySystem = null!;
@@ -40,6 +39,8 @@ namespace Game
 		[Inject] private readonly StatusEffectSystem StatusEffectSystem = null!;
 
 		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
+
+		[Inject] private readonly CameraFollowView CameraFollowView = null!;
 
 		
 		public enum AbilityType
@@ -217,12 +218,12 @@ namespace Game
 
 			foreach (PlayerAbilityConfig playerAbility in playerAttributes.PlayerAbilities)
 				AddPlayerAbility(playerAbility, playerId);
-			
-			
-			EntityViewAtributes view = AddView(playerId, playerAttributes.PlayerPrefab.gameObject);
+
+			Vector3 spawnPosition = CameraFollowView.transform.position;
+			EntityViewAtributes view = AddView(playerId, playerAttributes.PlayerPrefab.gameObject, spawnPosition, Quaternion.identity);
+
 			PlayerView playerView = view.Get<PlayerView>();
 			playerView.SetSize(playerAttributes.Size);
-			ProCamera2D.AddCameraTarget(view.GameObject.transform);
 
 			OverrideDefaultStats(playerId, playerAttributes.PlayerStats);
 			

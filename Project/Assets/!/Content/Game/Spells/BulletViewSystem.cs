@@ -1,15 +1,17 @@
+using Core.Events;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
 using Core.View;
 using Game.Components;
 using Game.Spells.Bullet;
+using Game.VFX;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Spells
 {
-	public sealed class BulletViewSystem : UpdateComponents<BulletData>
+	public sealed class BulletViewSystem : UpdateComponents<BulletData>, OnCreateComponent<BulletData>
 	{
 		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldContainer = null!;
 		[Inject] private readonly BasicCompContainer<BulletData> BulletContainer = null!;
@@ -34,8 +36,38 @@ namespace Game.Spells
 			}
 			
 		}
-		
-		
+
+
+		public void OnCreateComponent(EntId newComponentId)
+		{
+			ref BulletData bulletData = ref BulletContainer.GetComponent(newComponentId);
+			
+			EntityEventQueue.AddEntityEventListener<OnSpellHitEvent>(newComponentId, OnSpellHit);
+			EntityEventQueue.AddEntityEventListener<OnSpellHitObstacleEvent>(newComponentId, OnSpellHitObstacle);
+			if(bulletData.DataConfig.OriginVFXPrefab == null)
+				return;
+			
+			ref WorldEntityData worldEntityData = ref WorldContainer.GetComponent(newComponentId);
+			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.OriginVFXPrefab.gameObject, 
+													worldEntityData.Position, Quaternion.identity);
+		}
+
+		private void OnSpellHit(OnSpellHitEvent entityEvent){ CreateSpellHitVFX(entityEvent.EntityID); }
+		private void OnSpellHitObstacle(OnSpellHitObstacleEvent entityEvent) { CreateSpellHitVFX(entityEvent.EntityID); }
+
+		private void CreateSpellHitVFX(EntId bulletID )
+		{
+			ref BulletData bulletData = ref BulletContainer.GetComponent(bulletID);
+			if(bulletData.DataConfig.ImpactVFXPrefab == null)
+				return;
+			
+			ref WorldEntityData worldEntityData = ref WorldContainer.GetComponent(bulletID);
+			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.ImpactVFXPrefab.gameObject, 
+												worldEntityData.Position, Quaternion.identity);
+		}
+
+
+
 		public bool Active { get; set; } = true;
 		public SystemGroup Group { get; } = GameSystemsGroup.GAME_VIEW_SYSTEM;
 	}

@@ -20,7 +20,13 @@ MonoBehaviour:
     _value: 70
     _overrideType: 0
     _depletedValueOverride: 0
+  - _statConfig: {fileID: 11400000, guid: 9c4d282d01227a645bff00f0ba65ca40, type: 2}
+    _value: 10
+    _overrideType: 0
+    _depletedValueOverride: 0
   _Icon: {fileID: 0}
   _SpellType: 0
   _HitTags: 3
   _SpellPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}
+  _ImpactVFXPrefab: {fileID: 7343112225938488954, guid: 240c830bfe588ad4f9925288b65d7a18, type: 3}
+  _OriginVFXPrefab: {fileID: 0}

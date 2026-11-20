@@ -14,7 +14,17 @@ namespace Game.Spells
 		[Inject] protected readonly BasicCompContainer<SpellData> SpellContainer = null!;
 		
 	}
-	
+
+	public sealed class OnSpellHitObstacleEvent : SpellEvent<OnSpellHitObstacleEvent>, ILateEvent
+	{
+		public override void Execute()
+		{
+			EntitiesContainer.DestroyEntity(EntityID);
+		}
+	}
+
+
+
 	public sealed class OnSpellHitEvent : SpellEvent<OnSpellHitEvent>, ILateEvent
 	{
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
@@ -46,6 +56,24 @@ namespace Game.Spells
 			else
 				StatsSystem.ChangeDepletedValue(EntityID, GameStatsContainer.PierceTimes, -1);
 			
+		}
+	}
+	
+	
+	public sealed class OnMortarImpactEvent : SpellEvent<OnMortarImpactEvent>
+	{
+		// [Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		// [Inject] private readonly StatsSystem StatsSystem = null!;
+		// [Inject] private readonly EntitiesContainer EntitiesContainer = null!;
+
+		public override void Execute()
+		{
+			// Fix pierceTimes = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.PierceTimes);
+			// if(pierceTimes <= 0)
+			// 	EntitiesContainer.DestroyEntity(EntityID);
+			// else
+			// 	StatsSystem.ChangeDepletedValue(EntityID, GameStatsContainer.PierceTimes, -1);
+			//
 		}
 	}
 }

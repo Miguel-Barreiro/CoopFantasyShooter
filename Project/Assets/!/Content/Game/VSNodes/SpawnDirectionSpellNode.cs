@@ -33,11 +33,11 @@ namespace Game.VSNodes
 
 		
 		[Input(ShowBackingValue.Never, ConnectionType.Override), SerializeField] 
-		private EntId Owner;
+		private EntId AbilityOwner;
 		
 		protected override void Action()
 		{
-			OperationResult<EntId> operationResult = Resolve<EntId>(nameof(Owner));
+			OperationResult<EntId> operationResult = Resolve<EntId>(nameof(AbilityOwner));
 			if (Check(!operationResult.IsSuccess, $"Failed to resolve Owner for SpawnSpellNode {name} in graph {graph.name}:"))
 				return;
 			

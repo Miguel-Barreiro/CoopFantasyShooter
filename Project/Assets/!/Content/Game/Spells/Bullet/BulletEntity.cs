@@ -23,6 +23,7 @@ namespace Game.Spells.Bullet
 			ref BulletData bulletData = ref GetComponent<BulletData>();
 			bulletData.CasterID = casterID;
 			bulletData.TargetTags = EntitiesContainer.ToMask(dataConfig.HitTags);
+			bulletData.DataConfig = dataConfig;
 		}
 	}
 
@@ -33,6 +34,7 @@ namespace Game.Spells.Bullet
 		
 		public ulong TargetTags;
 		public EntId CasterID;
+		public SpellConfig DataConfig;
 
 		public void Init()
 		{
@@ -70,25 +72,12 @@ namespace Game.Spells.Bullet
 				
 				worldEntityData.Position += worldEntityData.Velocity * deltaTime;
 				worldEntityData.Direction = worldEntityData.Velocity.normalized;
-				
-
-				// EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(bulletID);
-				// // Vector3 position = viewAtributes!.GameObject!.transform.position;
-				// if(worldEntityData.Position.magnitude > 2000f)
-				// {
-				// 	EntitiesContainer.DestroyEntity(bulletID);
-				// 	continue;
-				// }
-				
-				
-				// Rigidbody rigidbody = viewAtributes.Get<Rigidbody>();
-				// Vector3 velocity = rigidbody.linearVelocity;
 
 				//TODO: Add bullet size as a stat
 				SpellsLogic.HitSpellInCirle(bulletID, worldEntityData.Position, worldEntityData.Velocity * deltaTime,
-											componentData.TargetTags, componentData.CasterID, 0.15f );
-
+											componentData.TargetTags, componentData.CasterID, 0.3f );
 				
+
 				Fix newTimeToLive = StatsSystem.ChangeDepletedValue(bulletID, GameStatsContainer.TimeToLive, -deltaTime);
 				if(newTimeToLive <= Fix.Zero)
 					EntitiesContainer.DestroyEntity(bulletID);

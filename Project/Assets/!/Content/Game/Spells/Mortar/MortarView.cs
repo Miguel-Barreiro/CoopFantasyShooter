@@ -11,10 +11,15 @@ namespace Game.Spells.Mortar
 	{
 		[SerializeField] private CircleRegion TargetCircle;
 
+
 		public void UpdateView(Fix deltaTime, Fix fillProgress, Fix radius)
         {
             TargetCircle.FillProgress = (float) fillProgress;
 			TargetCircle.Radius = (float) radius;
+		}
+		
+		public void ActivateEffect()
+		{
 		}
 
 		public override void ActivateGameObject()

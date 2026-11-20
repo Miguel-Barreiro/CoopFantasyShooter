@@ -40,7 +40,7 @@ namespace Global
 		[SerializeField] private StatConfig _defaultVSTimerStat;
 		public StatConfig DefaultVSTimerStat => _defaultVSTimerStat;
 
-
+		
 
 		[SerializeField] public EnemiesAttributes EnemiesAttributes = new EnemiesAttributes();
 		[SerializeField] public EnviromentAttributes EnviromentAttributes = new EnviromentAttributes();
