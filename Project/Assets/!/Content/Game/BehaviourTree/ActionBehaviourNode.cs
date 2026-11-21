@@ -60,7 +60,7 @@ namespace Game.BehaviourTree
 						StatsSystem.ResetDepletedValueToMax(abilityData.ID, GameStatsContainer.Cooldown);
 						
 						ActivateEnemyAbilityEvent abilityEvent = EntityEventQueue.Execute<ActivateEnemyAbilityEvent>(abilityData.ID);
-						abilityEvent.SetTargets(ref abilityData, Vector3.zero);
+						abilityEvent.SetTargets(ref abilityData, agentData.Position);
 						abilityEvent.EnemyOwner = abilityData.OwnerID;
 						
 						return BehaviourStatus.Success;

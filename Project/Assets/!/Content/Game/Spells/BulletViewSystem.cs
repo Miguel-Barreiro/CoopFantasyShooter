@@ -17,6 +17,9 @@ namespace Game.Spells
 		[Inject] private readonly BasicCompContainer<BulletData> BulletContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
 
+		[Inject] private readonly BasicCompContainer<VFXData> VFXContainer = null!;
+
+
 		
 		public void UpdateComponents(float deltaTime)
 		{
@@ -44,11 +47,11 @@ namespace Game.Spells
 			
 			EntityEventQueue.AddEntityEventListener<OnSpellHitEvent>(newComponentId, OnSpellHit);
 			EntityEventQueue.AddEntityEventListener<OnSpellHitObstacleEvent>(newComponentId, OnSpellHitObstacle);
-			if(bulletData.DataConfig.OriginVFXPrefab == null)
+			if(bulletData.DataConfig.OriginVFX == null)
 				return;
 			
 			ref WorldEntityData worldEntityData = ref WorldContainer.GetComponent(newComponentId);
-			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.OriginVFXPrefab.gameObject, 
+			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.OriginVFX, 
 													worldEntityData.Position, Quaternion.identity);
 		}
 
@@ -58,12 +61,13 @@ namespace Game.Spells
 		private void CreateSpellHitVFX(EntId bulletID )
 		{
 			ref BulletData bulletData = ref BulletContainer.GetComponent(bulletID);
-			if(bulletData.DataConfig.ImpactVFXPrefab == null)
+			if(bulletData.DataConfig.ImpactVFX == null)
 				return;
 			
 			ref WorldEntityData worldEntityData = ref WorldContainer.GetComponent(bulletID);
-			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.ImpactVFXPrefab.gameObject, 
+			VFXEntity originVFX = new VFXEntity(bulletData.DataConfig.ImpactVFX, 
 												worldEntityData.Position, Quaternion.identity);
+
 		}
 
 

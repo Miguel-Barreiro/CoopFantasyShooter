@@ -28,5 +28,5 @@ MonoBehaviour:
   _SpellType: 0
   _HitTags: 3
   _SpellPrefab: {fileID: 4445551662242658549, guid: 2033c2a6eb5575a4e97e5568f0e26e31, type: 3}
-  _ImpactVFXPrefab: {fileID: 7343112225938488954, guid: 240c830bfe588ad4f9925288b65d7a18, type: 3}
-  _OriginVFXPrefab: {fileID: 0}
+  _ImpactVFX: {fileID: 11400000, guid: 90cd4faf3a7c0374aac5a3889f80c163, type: 2}
+  _OriginVFX: {fileID: 0}

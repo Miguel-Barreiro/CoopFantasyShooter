@@ -3,6 +3,7 @@ using Core.Events;
 using Core.Model;
 using Core.VSEngine;
 using FixedPointy;
+using UnityEngine;
 using Zenject;
 
 namespace Game.Spells
@@ -47,6 +48,9 @@ namespace Game.Spells
 				Fix damage = StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Damage);
 				StatsSystem.ChangeDepletedValue(targetID, GameStatsContainer.Health, -damage);
 
+				Debug.Log($"Spell {EntityID} dealt {damage} damage to {targetID}");
+				
+				
 				OnEntityHitEvent onEntityHitEvent = EntityEventQueue.Execute<OnEntityHitEvent>(targetID);
 				onEntityHitEvent.ExecuterID = EntityID;
 				

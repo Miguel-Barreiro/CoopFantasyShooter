@@ -1,6 +1,5 @@
 using Core.Events;
 using Core.Model;
-using Core.View;
 using Game.Components;
 using Game.Enemies.EnenmySpawners;
 using Game.Events;
@@ -8,7 +7,6 @@ using Game.Logic;
 using Game.Player;
 using Global;
 using UnityEngine;
-using UnityEngine.AI;
 using Zenject;
 
 namespace Game.Enemies
@@ -86,6 +84,18 @@ namespace Game.Enemies
 
 				}
 			}
+
+		}
+	}
+	
+	
+	public sealed class EnemyDeathEvent : EntityEvent<EnemyDeathEvent>
+	{
+		[Inject] private readonly BasicCompContainer<DeadBodyData> DeadBodyContainer = null!;		
+		public override void Execute()
+		{
+			ref DeadBodyData componentData = ref DeadBodyContainer.GetComponent(EntityID);
+			componentData.Enabled = true;
 
 		}
 	}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Com.LuisPedroFonseca.ProCamera2D;
+using Core.Events;
 using Core.Model;
 using Core.Model.Stats;
 using Core.Systems;
@@ -75,8 +76,8 @@ namespace Game
 
 			
 			
-			foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
-				AddEnemyAbility(abilityConfig, enemyId);
+			// foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
+			// 	AddEnemyAbility(abilityConfig, enemyId);
 			
 			// enemyView.TriggerSpawning();
 			
@@ -121,10 +122,11 @@ namespace Game
 						break;
 				}
 
-				ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, NodeType.FirstChild, out uint abilitiesParent);
-				
+				ref BehaviourNodeData abilitiesParentData = ref BehaviourTreeContainer.AddNode(enemyId, 
+																								NodeType.FirstChild, 
+																								out uint abilitiesParentOrder);
 				foreach (EnemyAbilityConfig abilityConfig in enemyConfig.Abilities)
-					AddEnemyAbility(abilityConfig, enemyId, abilitiesParent);
+					AddEnemyAbility(abilityConfig, enemyId, abilitiesParentOrder);
 
 			}
 		}
@@ -336,14 +338,9 @@ namespace Game
 			ref BehaviourAgentData agentData = ref BehaviourAgentContainer.GetComponent(enemyID);
 			agentData.Enable = false;
 			
-
-			ref DeadBodyData deadBodyData = ref DeadBodyContainer.GetComponent(enemyID);
-			deadBodyData.Enabled = true;
 			
-			EntityViewAtributes? entityViewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(enemyID);
-			EnemyView? enemyView = entityViewAtributes?.Get<EnemyView>();
-			if(enemyView != null)
-				enemyView.SetDead();
+			EnemyDeathEvent enemyDeathEvent = EntityEventQueue.Execute<EnemyDeathEvent>(enemyID);
+
 			
 			// EntitiesContainer.DestroyEntity(enemyID);
 			

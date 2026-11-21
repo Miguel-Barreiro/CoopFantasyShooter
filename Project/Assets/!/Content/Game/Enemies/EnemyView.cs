@@ -101,7 +101,10 @@ namespace Game.Enemies
 			Animator.SetBool(IS_DEAD_ANIM, false);
 			SetAttack(Vector3.zero, false, 0f);
 			SetSupport(EntId.Invalid, false);
-
+			
+			Collider.enabled = true;
+			Collider.isTrigger = false;
+			
 			NavMeshAgent.enabled = true;
 			if (NavMeshAgent.isOnNavMesh)
 			{
@@ -115,6 +118,9 @@ namespace Game.Enemies
 			NavMeshAgent.enabled = false;
 			Collider.enabled = false;
 			gameObject.SetActive(false);
+			
+			Collider.enabled = false;
+			Collider.isTrigger = true;
 		}
 
 
@@ -145,6 +151,8 @@ namespace Game.Enemies
 		{
 			NavMeshAgent.enabled = false;
 			UI.gameObject.SetActive(false);
+			Collider.enabled = false;
+			Collider.isTrigger = true;
 		}
 
 		private void OnDrawGizmos()

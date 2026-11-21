@@ -16,4 +16,3 @@ MonoBehaviour:
   name: LowLevelGoblin_spawn
   _Enemies:
   - {fileID: 11400000, guid: 3e65120c96769454aacc331669e04eec, type: 2}
-  - {fileID: 11400000, guid: 3e65120c96769454aacc331669e04eec, type: 2}

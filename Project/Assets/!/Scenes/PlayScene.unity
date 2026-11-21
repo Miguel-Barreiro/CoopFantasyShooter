@@ -21452,6 +21452,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2949370897753341253, guid: 802f2eefdfe59f146947d8c144a51930, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2949370897753341253, guid: 802f2eefdfe59f146947d8c144a51930, type: 3}
       propertyPath: m_NavMeshData
       value: 
       objectReference: {fileID: 23800000, guid: 513ff3fec7234e04f96c2e1ae773fcaf, type: 2}
@@ -26490,6 +26494,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3491760397626378316, guid: 40e932b76624a574998a1dc7435e33af, type: 3}
   m_PrefabInstance: {fileID: 5484035735659568037}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5810056382991627813
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.369
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 211543028368459493, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4473969560024650646, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
+      propertyPath: m_Name
+      value: Fire Mortar
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e548e1847ee09b6449abbc1ce0c587dc, type: 3}
 --- !u!1001 &6397772625340032721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26698,3 +26759,4 @@ SceneRoots:
   - {fileID: 1285370826}
   - {fileID: 283872999}
   - {fileID: 1828099667}
+  - {fileID: 5810056382991627813}

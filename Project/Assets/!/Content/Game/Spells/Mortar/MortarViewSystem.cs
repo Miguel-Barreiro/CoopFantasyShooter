@@ -14,6 +14,7 @@ namespace Game.Spells.Mortar
 	{
 		[Inject] private readonly BasicCompContainer<MortarData> MortarContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] private readonly BasicCompContainer<VFXData> VFXContainer = null!;
 
 		
 		public void UpdateComponents(float deltaTime)
@@ -38,11 +39,16 @@ namespace Game.Spells.Mortar
 			EntId mortarID = newComponentId;
 			ref MortarData componentData = ref MortarContainer.GetComponent(mortarID);
 	
-			if(componentData.DataConfig.OriginVFXPrefab == null)
+			if(componentData.DataConfig.OriginVFX == null)
 				return;
 
-			VFXEntity impactVFX = new VFXEntity(componentData.DataConfig.OriginVFXPrefab.gameObject, 
+			VFXEntity impactVFX = new VFXEntity(componentData.DataConfig.OriginVFX, 
 												componentData.OriginPosition, Quaternion.identity);
+			
+			ref VFXData vfxData = ref VFXContainer.GetComponent(impactVFX.ID);
+			vfxData.Target = componentData.TargetPosition;
+			vfxData.Duration = (float) componentData.TimeToImpact;
+
 		}
 
 		private void OnMortarImpact(OnMortarImpactEvent entityEvent)
@@ -50,11 +56,12 @@ namespace Game.Spells.Mortar
 			EntId mortarID = entityEvent.EntityID;
 			ref MortarData componentData = ref MortarContainer.GetComponent(mortarID);
 			
-			if(componentData.DataConfig.ImpactVFXPrefab == null)
+			if(componentData.DataConfig.ImpactVFX == null)
 				return;
 			
-			VFXEntity impactVFX = new VFXEntity(componentData.DataConfig.ImpactVFXPrefab.gameObject, 
+			VFXEntity impactVFX = new VFXEntity(componentData.DataConfig.ImpactVFX, 
 												componentData.TargetPosition, Quaternion.identity);
+			
 		}
 
 		public bool Active { get; set; } = true;

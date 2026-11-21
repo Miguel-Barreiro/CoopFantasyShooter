@@ -50,7 +50,9 @@ namespace Game.Spells
 						}
 						EntId viewEntityID = view.EntityID;
 
-						if (EntitiesContainer.HasAnyTag(viewEntityID, targetTags) && viewEntityID != ignoredEntity)
+						if (EntitiesContainer.HasAnyTag(viewEntityID, targetTags) && 
+								viewEntityID != ignoredEntity && 
+									!hitEntities.Contains(viewEntityID))
 						{
 							hitEntities.Add(viewEntityID);
 						}
@@ -95,7 +97,8 @@ namespace Game.Spells
 						}
 						
 						if (EntitiesContainer.HasAnyTag(view.EntityID, targetTags) &&
-							view.EntityID != ignoredEntity)
+								view.EntityID != ignoredEntity &&
+									!hitEntities.Contains(view.EntityID))
 						{
 							hitEntities.Add(view.EntityID);
 						}

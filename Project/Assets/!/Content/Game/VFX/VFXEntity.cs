@@ -14,13 +14,18 @@ namespace Game.VFX
 	
 	public sealed class VFXEntity : Entity, IWorldEntity, ISimulation, IVFX
 	{
-		public VFXEntity(GameObject vfxPrefab, Vector3 position, Quaternion rotation)
+		public VFXEntity(VFXConfig dataConfig, Vector3 origin, Quaternion rotation)
 		{
-			ViewEntitiesContainer viewEntitiesContainer = GetSystem<ViewEntitiesContainer>();
+			
+			GameObject vfxPrefab = dataConfig.Prefab.gameObject;
 
-			EntityViewAtributes? view = viewEntitiesContainer.Spawn(vfxPrefab, ID, position, rotation);
-			VFXView? vfxView = view!.Get<VFXView>();
-			vfxView!.Play();
+			ref VFXData vfxData = ref GetComponent<VFXData>();
+			vfxData.DataConfig = dataConfig;
+			vfxData.Origin = origin;
+			vfxData.Target = origin;
+			vfxData.Duration = dataConfig.Duration;
+			vfxData.ElapsedTime = 0f;
+			
 		}
 	}
 
@@ -28,6 +33,12 @@ namespace Game.VFX
 	public struct VFXData : IComponentData
 	{
 		public EntId ID { get; set; }
+
+		public Vector3 Origin;
+		public Vector3 Target;
+		public float Duration;
+		public float ElapsedTime;
+		public VFXConfig DataConfig;
 		
 
 		public void Init() { }
@@ -38,7 +49,7 @@ namespace Game.VFX
 	
 	
 
-	public sealed class VFXSystem : UpdateComponents<VFXData>
+	public sealed class VFXSystem : UpdateComponents<VFXData>, OnCreateComponent<VFXData>
 	{
 		[Inject] private readonly BasicCompContainer<VFXData> VFXContainer = null!;
 		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
@@ -66,7 +77,7 @@ namespace Game.VFX
 					continue;
 				}
 				
-				bool isAlive = vfxView.UpdateView(deltaTime);
+				bool isAlive = vfxView.UpdateView(deltaTime, ref vfxData);
 				if(!isAlive)
 				{
 					EntitiesContainer.DestroyEntity(vfxData.ID);
@@ -74,6 +85,16 @@ namespace Game.VFX
 			}
 		}
 
+		public void OnCreateComponent(EntId newComponentId)
+		{
+			ref VFXData vfxData = ref VFXContainer.GetComponent(newComponentId);
+			
+			EntityViewAtributes? view = ViewEntitiesContainer.Spawn(vfxData.DataConfig.Prefab.gameObject, vfxData.ID, 
+																	vfxData.Origin, 
+																	Quaternion.identity);
+			VFXView? vfxView = view!.Get<VFXView>();
+			vfxView!.Play();
+		}
 		public bool Active { get; set; } = true;
 		public SystemGroup Group { get; } = GameSystemsGroup.GAME_VIEW_SYSTEM;
 	}

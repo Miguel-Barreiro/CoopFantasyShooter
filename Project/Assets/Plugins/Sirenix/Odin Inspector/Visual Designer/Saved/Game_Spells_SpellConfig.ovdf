@@ -38,6 +38,10 @@ Position: $root:0
 + [Sirenix.OdinInspector.TitleGroupAttribute]
 	GroupName = "Data"
 
+# $JwpSnRuf8XDV7hLMCwnX9y
+Position: $root:1
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+
 # _HitTags
 Position: $MvzPoS1svRpR5GVJvu3Aka:0
 
@@ -67,3 +71,9 @@ Position: $QVWVwVUcvdtVu2sUtYPrMR:1
 
 # Id
 Position: $QVWVwVUcvdtVu2sUtYPrMR:0
+
+# _ImpactVFX
+Position: $JwpSnRuf8XDV7hLMCwnX9y:1
+
+# _OriginVFX
+Position: $JwpSnRuf8XDV7hLMCwnX9y:0

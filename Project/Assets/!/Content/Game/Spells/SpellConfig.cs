@@ -16,12 +16,12 @@ namespace Game.Spells
 		public SpellView SpellPrefab => _SpellPrefab;
 
 
-		[SerializeField] private VFXView _ImpactVFXPrefab;
-		public VFXView ImpactVFXPrefab => _ImpactVFXPrefab;
+		[SerializeField] private VFXConfig _ImpactVFX;
+		public VFXConfig ImpactVFX => _ImpactVFX;
 		
 
-		[SerializeField] private VFXView _OriginVFXPrefab;
-		public VFXView OriginVFXPrefab => _OriginVFXPrefab;
+		[SerializeField] private VFXConfig _OriginVFX;
+		public VFXConfig OriginVFX => _OriginVFX;
 		
 	}
 	

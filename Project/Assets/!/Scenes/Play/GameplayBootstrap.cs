@@ -100,13 +100,10 @@ namespace Scenes.Play
 			BindInstance(new MortarSystem());
 			BindInstance(new SpellsLogic());
 
-			BindInstance(new CameraFollowTargetSystem());
-			BindInstance(new MortarViewSystem());
-			BindInstance(new BulletViewSystem());
-			BindInstance(new VFXSystem());
 			
-			
+			BindInstance(new DeadBodySystem());
 			BindInstance(new EnemySpawnerSystem());
+			BindInstance(new EnemyAbilitySystem());
 			BindInstance( new GameSetupSystem());
 			
 			BindInstance(new EnemySystem());
@@ -118,9 +115,13 @@ namespace Scenes.Play
 			
 			// BindInstance(LocalMultiplayerInputManager);
 			
-			
+
+			//View Systems
+			BindInstance(new CameraFollowTargetSystem());
+			BindInstance(new MortarViewSystem());
+			BindInstance(new BulletViewSystem());
+			BindInstance(new VFXSystem());
 			BindInstance(new DeadBodyViewSystem());
-			BindInstance(new EnemyAbilitySystem());
 			
 
 			BindInstance(NavMeshSurface);

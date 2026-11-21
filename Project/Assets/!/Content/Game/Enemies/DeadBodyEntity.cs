@@ -1,5 +1,6 @@
 #nullable enable
 using System.Runtime.InteropServices;
+using Core.Events;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
@@ -36,15 +37,10 @@ namespace Game.Enemies
 
 	public interface IDeadBody : Component<DeadBodyData> { }
 	
-	
-	
-	public sealed class DeadBodyViewSystem : UpdateComponents<DeadBodyData>
+	public sealed class DeadBodySystem : UpdateComponents<DeadBodyData>, OnCreateComponent<DeadBodyData>
 	{
-		[Inject] private readonly EntitiesContainer EntitiesContainer = null!;
 		[Inject] private readonly BasicCompContainer<DeadBodyData> DeadBodyContainer = null!;
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
-
-
+		
 		public void UpdateComponents(float deltaTime)
 		{
 			uint topIndex = DeadBodyContainer.TopEmptyIndex;
@@ -56,14 +52,29 @@ namespace Game.Enemies
 				
 				componentData.timeToDisappear -= deltaTime;
 				
-				// if (componentData.timeToDisappear <= 0f)
-					// EntitiesContainer.DestroyEntity(componentData.ID);
+				if (componentData.timeToDisappear <= 0f)
+					EntitiesContainer.DestroyEntity(componentData.ID);
 				
 			}
 		}
-		
-		
+
+		public void OnCreateComponent(EntId newComponentId)
+		{
+			EntityEventQueue.AddEntityEventListener<EnemyDeathEvent>(newComponentId, OnEnemyDeath);
+		}
+
+		private void OnEnemyDeath(EnemyDeathEvent entityEvent)
+		{
+			ref DeadBodyData componentData = ref DeadBodyContainer.GetComponent(entityEvent.EntityID);
+			componentData.Enabled = true;
+		}
+
 		public bool Active { get; set; } = true;
-		public SystemGroup Group { get; } = GameSystemsGroup.GAME_VIEW_SYSTEM;
+		public SystemGroup Group { get; } = GameSystemsGroup.GAME_LOGIC_SYSTEM;
 	}
+	
+	
+	
+	
+	
 }
