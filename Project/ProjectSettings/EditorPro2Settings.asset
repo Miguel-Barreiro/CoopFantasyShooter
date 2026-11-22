@@ -8800,7 +8800,7 @@ MonoBehaviour:
     m_CategoryScrollX: 0
     m_CategoryScrollY: 0
     m_InspectorScrollX: 0
-    m_InspectorScrollY: 14
+    m_InspectorScrollY: 0
     m_TabScrollX: 0
     m_CollapsedCategoryIds: 
   m_HasShownInitialWindow: 1

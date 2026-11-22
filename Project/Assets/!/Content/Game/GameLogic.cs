@@ -44,14 +44,6 @@ namespace Game
 		[Inject] private readonly CameraFollowView CameraFollowView = null!;
 
 		
-		public enum AbilityType
-		{
-			Custom =         0,
-			Ammo =           1,
-			Charge =         2, 
-		}
-
-
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
 		{
 			//TODO: we need to spawn enemies as premade clumps with potential positions premade.

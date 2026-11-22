@@ -15,6 +15,10 @@ namespace Game
 		public StatConfig CastingTime => _CastingTime;
 
 
+		[SerializeField] private StatConfig _Duration;
+		public StatConfig Duration => _Duration;
+
+
 		[SerializeField] private StatConfig _Cooldown;
 		public StatConfig Cooldown => _Cooldown;
 		

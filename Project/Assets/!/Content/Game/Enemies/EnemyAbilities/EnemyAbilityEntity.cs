@@ -11,7 +11,7 @@ using Game.Player.Abilities;
 using Game.Spells;
 using UnityEngine;
 using Zenject;
-using static Game.Enemies.EnemyAbilities.AbilityTargetType;
+using static Game.Enemies.EnemyAbilities.EnemyAbilityTargetType;
 
 namespace Game.Enemies.EnemyAbilities
 {
@@ -36,7 +36,7 @@ namespace Game.Enemies.EnemyAbilities
 		
 	}
 
-	public enum AbilityTargetType
+	public enum EnemyAbilityTargetType
 	{
 		AlwaysValid                 = 0,
 		AlivePlayer                 = 1,
@@ -44,13 +44,19 @@ namespace Game.Enemies.EnemyAbilities
 		AliveEnemy                  = 3,
 		DeadEnemy                   = 4,
 	}
-	
+
+	public enum EnemyAbilityType
+	{
+		Custom = 0,
+		Ammo = 1,
+	}
+
 	[StructLayout(LayoutKind.Auto)]
 	public struct EnemyAbilityData : IComponentData
 	{
 		private const int MAX_TARGETS = 5;
 		public EntId ID { get; set; }
-		public GameLogic.AbilityType AbilityType;
+		public EnemyAbilityType AbilityType;
 		public EntId OwnerID;
 		
 		public AbilityState State;
@@ -58,7 +64,7 @@ namespace Game.Enemies.EnemyAbilities
 
 		#region Targets
 
-		public AbilityTargetType TargetType;
+		public EnemyAbilityTargetType TargetType;
 		public float FindTargetCooldown;
 		public float FindTargetCooldownMax;
 		
@@ -75,7 +81,7 @@ namespace Game.Enemies.EnemyAbilities
 
 		public void Init()
 		{
-			AbilityType = GameLogic.AbilityType.Ammo;
+			AbilityType = EnemyAbilityType.Ammo;
 			TargetSet = false;
 			State = AbilityState.Ready;
 			TargetCount = 0;
@@ -169,7 +175,7 @@ namespace Game.Enemies.EnemyAbilities
 
 
 		
-		private readonly Dictionary<AbilityTargetType, AblilityTargetType> TargetTypeHandlers = new()
+		private readonly Dictionary<EnemyAbilityTargetType, AblilityTargetType> TargetTypeHandlers = new()
 		{
 			{ AlwaysValid, new AlwaysValidTargetType() },
 			{ AlivePlayer, new AlivePlayerTargetType() },
@@ -221,7 +227,7 @@ namespace Game.Enemies.EnemyAbilities
 
 				switch (abilityData.AbilityType)
 				{
-					case GameLogic.AbilityType.Ammo:
+					case EnemyAbilityType.Ammo:
 						AmmoAbilityUpdate(ref abilityData);
 						break;
 				}

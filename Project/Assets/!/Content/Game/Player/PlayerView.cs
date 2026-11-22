@@ -23,6 +23,7 @@ namespace Game.Player
 		public Animator Animator { get => _animator; }
 		[SerializeField] private Animator _animator = null!;
 
+		[SerializeField] private bool _debug = false;
 
 		[Inject] private readonly Camera Camera = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
@@ -53,6 +54,9 @@ namespace Game.Player
 		
 		public void UpdateView(float deltaTime, ref PlayerData playerData)
 		{
+			if(_debug)
+				return;
+			
 			if(StatsSystem.GetStatDepletedValue(EntityID, GameStatsContainer.Health) <= 0f)
 			{
 				_animator.SetTrigger(DIE_ANIMATION);

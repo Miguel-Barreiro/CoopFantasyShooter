@@ -11,9 +11,18 @@ namespace Game.Player.Abilities
 {
 	public abstract class PlayerAbilityAction
 	{
-		public const int NUMBER_ABILITY_ACTION_TYPES = 3;
 		
-	
+		public const int NUMBER_ABILITY_ACTION_TYPES = 3;
+
+		public enum PlayerAbilityType
+		{
+			Custom =          0,
+			Ammo =            1,
+			OnGoing =         2
+		}
+
+		
+		
 		[Inject] protected readonly StatsSystem StatsSystem = null!;
 		[Inject] protected readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
@@ -23,8 +32,9 @@ namespace Game.Player.Abilities
 
 
 		public abstract void Init(ref PlayerAbilityData abilityData);
-		public abstract void Update(ref PlayerAbilityData abilityData, Fix deltaTime);
 		public abstract bool TryActivate(ref PlayerAbilityData abilityData);
+		public abstract void Update(ref PlayerAbilityData abilityData, Fix deltaTime);
+		public abstract void EndActivation(ref PlayerAbilityData abilityData);
 		
 		protected void NormalActivate(ref PlayerAbilityData abilityData)
 		{
@@ -54,8 +64,37 @@ namespace Game.Player.Abilities
 			}
 		}
 	}
-	
-	
+
+
+	internal sealed class OnGoingAbility : PlayerAbilityAction
+	{
+		public override void Init(ref PlayerAbilityData abilityData)
+		{
+			throw new System.NotImplementedException();
+		}
+		public override void Update(ref PlayerAbilityData abilityData, Fix deltaTime)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override void EndActivation(ref PlayerAbilityData abilityData)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override bool TryActivate(ref PlayerAbilityData abilityData)
+		{
+			if(abilityData.State != AbilityState.Ready)
+				return false;
+			
+			EntId abilityID = abilityData.ID;
+			
+		
+			return true;
+		}
+		
+	}
+
 	internal sealed class AmmoPlayerAbility : PlayerAbilityAction
 	{
 		public override bool TryActivate(ref PlayerAbilityData abilityData)
@@ -141,46 +180,10 @@ namespace Game.Player.Abilities
 						
 			}
 		}
+
+		public override void EndActivation(ref PlayerAbilityData abilityData) { }
 	}
 	
-	internal sealed class ChargePlayerAbility : PlayerAbilityAction
-	{
-		public override void Init(ref PlayerAbilityData abilityData)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public override void Update(ref PlayerAbilityData abilityData, Fix deltaTime)
-		{
-			
-		}
-
-		public override bool TryActivate(ref PlayerAbilityData abilityData)
-		{
-			// EntId abilityDataID = abilityData.ID;
-			// Fix castingInstances = StatsSystem.ChangeDepletedValue(abilityDataID, GameStatsContainer.CastingMultiplier, -1);
-			// if (castingInstances < 0)
-			// {
-			// 	ResetAbility(ref abilityData);
-			// 	return false;
-			// }
-			//
-			// if (castingInstances == 0)
-			// 	ResetAbility(ref abilityData);
-			//
-			// return true;
-			//
-			// void ResetAbility(ref PlayerAbilityData abilityData)
-			// {
-			// 	StatsSystem.ResetDepletedValueToMax(abilityDataID, GameStatsContainer.Cooldown);
-			// 	StatsSystem.ResetDepletedValueToMax(abilityDataID, GameStatsContainer.CastingMultiplier);
-			// 	StatsSystem.ResetDepletedValueToMin(abilityDataID, GameStatsContainer.CastingTime);
-			// 	abilityData.State = AbilityState.Recover;
-			// 	EntityEventQueue.Execute<OnAbilityResetCooldownEvent>(abilityDataID);
-			// }
-			return false; 
-		}
-	}
 
 	internal sealed class CustomPlayerAbility : PlayerAbilityAction
 	{
@@ -190,20 +193,14 @@ namespace Game.Player.Abilities
 		
 		public override bool TryActivate(ref PlayerAbilityData abilityData)
 		{
-
 			return false;
 		}
 
-		public override void Init(ref PlayerAbilityData abilityData)
-		{
-			
-		}
+		public override void Init(ref PlayerAbilityData abilityData) { }
 
-		public override void Update(ref PlayerAbilityData abilityData, Fix deltaTime)
-		{
-			
-			
-		}
+		public override void Update(ref PlayerAbilityData abilityData, Fix deltaTime) { }
+
+		public override void EndActivation(ref PlayerAbilityData abilityData) { }
 	}
 
 	

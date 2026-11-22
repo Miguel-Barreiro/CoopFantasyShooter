@@ -1,13 +1,9 @@
 using System.Runtime.InteropServices;
-using Core.Events;
 using Core.Initialization;
 using Core.Model;
 using Core.Model.ModelSystems;
 using Core.Systems;
-using FixedPointy;
 using Game.Logic;
-using Game.Spells;
-using UnityEngine;
 using Zenject;
 
 namespace Game.Player.Abilities
@@ -27,7 +23,7 @@ namespace Game.Player.Abilities
 			
 			ref PlayerAbilityData playerAbilityData = ref GetComponent<PlayerAbilityData>();
 			playerAbilityData.playerID = ownerID;
-			playerAbilityData.AbilityType = dataConfig.AbilityType;
+			playerAbilityData.PlayerAbilityType = dataConfig.PlayerAbilityType;
 			playerAbilityData.PlayerAbilitySlot = dataConfig.InputSlot;
 
 		}
@@ -45,12 +41,12 @@ namespace Game.Player.Abilities
 		public AbilityState State;
 
 		public PlayerAbilitySlot PlayerAbilitySlot;
-		public GameLogic.AbilityType AbilityType;
+		public PlayerAbilityAction.PlayerAbilityType PlayerAbilityType;
 		
 		public void Init()
 		{
 			State = AbilityState.Ready;
-			AbilityType = GameLogic.AbilityType.Custom;
+			PlayerAbilityType = PlayerAbilityAction.PlayerAbilityType.Custom;
 			PlayerAbilitySlot = PlayerAbilitySlot.None;
 		}
 	}
@@ -59,7 +55,8 @@ namespace Game.Player.Abilities
 	{
 		Ready,
 		Cast, 
-		Recover
+		Recover, 
+		OnGoing
 	}
 	
 	public interface IPlayerAbility : ISimulation, Component<PlayerAbilityData>, IHierarchyEntity { }
@@ -82,8 +79,8 @@ namespace Game.Player.Abilities
 		private readonly PlayerAbilityAction[] AbilityActions = new PlayerAbilityAction[PlayerAbilityAction.NUMBER_ABILITY_ACTION_TYPES]
 		{
 			new CustomPlayerAbility(),
-			new AmmoPlayerAbility(),
-			new ChargePlayerAbility()
+			new AmmoPlayerAbility(), 
+			new OnGoingAbility()
 		};
 
 		
@@ -97,7 +94,7 @@ namespace Game.Player.Abilities
 		public void TryActivate(EntId spellID)
 		{
 			ref PlayerAbilityData spellData = ref AbilityContainer.GetComponent(spellID);
-			AbilityActions[(int)spellData.AbilityType].TryActivate(ref spellData);
+			AbilityActions[(int)spellData.PlayerAbilityType].TryActivate(ref spellData);
 		}
 
 
@@ -107,7 +104,7 @@ namespace Game.Player.Abilities
 			for (int i = 0; i < topIndex; i++)
 			{
 				ref PlayerAbilityData playerAbilityData = ref AbilityContainer.Components[i];
-				AbilityActions[(int)playerAbilityData.AbilityType].Update(ref playerAbilityData, deltaTime);
+				AbilityActions[(int)playerAbilityData.PlayerAbilityType].Update(ref playerAbilityData, deltaTime);
 			}
 
 		}
@@ -116,7 +113,7 @@ namespace Game.Player.Abilities
 		public void OnCreateComponent(EntId newComponentId)
 		{
 			ref PlayerAbilityData playerAbilityData = ref AbilityContainer.GetComponent(newComponentId);
-			AbilityActions[(int)playerAbilityData.AbilityType].Init(ref playerAbilityData);
+			AbilityActions[(int)playerAbilityData.PlayerAbilityType].Init(ref playerAbilityData);
 			
 		}
 		public bool Active { get; set; } = true;
