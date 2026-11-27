@@ -84,7 +84,10 @@ namespace Scenes.Play
 			BindInstance(proCamera2D);
 			BindInstance(CameraFollowView);
 
+			//Initialization
+			BindInstance(new GameSetupSystem());
 			BindInstance(new StartGameSystem());
+			
 			
 			BindInstance(new WorldEntitySystem());
 			BindInstance(new StatusEffectSystem());
