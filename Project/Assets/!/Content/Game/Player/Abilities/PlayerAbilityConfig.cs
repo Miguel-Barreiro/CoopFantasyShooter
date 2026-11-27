@@ -11,10 +11,15 @@ namespace Game.Player.Abilities
 
 		[SerializeField] private PlayerAbilitySlot _InputSlot;
 		public PlayerAbilitySlot InputSlot => _InputSlot;
-		
-		
+
+
+		[SerializeField] private PlayerStateModifierType _PlayerStateModifierType;
+		public PlayerStateModifierType PlayerStateModifierType => _PlayerStateModifierType;
+
 		
 	}
+	
+	
 	
 
 

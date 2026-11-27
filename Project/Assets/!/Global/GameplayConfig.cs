@@ -35,11 +35,6 @@ namespace Global
 
 		[SerializeField][Range(1, 100)] private uint _maxAbilitiesPerEntity = 10;
 		public uint MaxAbilities => _maxAbilitiesPerEntity * (MaxPlayers + MaxEnemies + MINOR_EXTRA);
-
-
-		[SerializeField] private StatConfig _defaultVSTimerStat;
-		public StatConfig DefaultVSTimerStat => _defaultVSTimerStat;
-
 		
 
 		[SerializeField] public EnemiesAttributes EnemiesAttributes = new EnemiesAttributes();
@@ -79,24 +74,19 @@ namespace Global
 	[Serializable]
 	public class BasicSpellsAttributes
 	{
-		[SerializeField]
-		private BulletView _BulletPrefab;
-		public BulletView BulletPrefab => _BulletPrefab;
 		
-		[SerializeField] private float _BulletSize = 0.1f;
-		public float BulletSize => _BulletSize;
+		// [SerializeField] private float _BulletSize = 0.1f;
+		// public float BulletSize => _BulletSize;
 		
-		[SerializeField] private float _BulletSpeed = 500f;
-		public float BulletSpeed => _BulletSpeed;
+		// [SerializeField] private float _BulletSpeed = 500f;
+		// public float BulletSpeed => _BulletSpeed;
 
 		// [SerializeField] private PlayerAbilityConfig _bulletAbilityConfig = null!;
 		// public PlayerAbilityConfig BulletPlayerAbilityConfig => _bulletAbilityConfig;
 		
-		
-		[SerializeField] private SpellConfig _bulletSpellConfig = null!;
-		public SpellConfig BulletSpellConfig => _bulletSpellConfig;
-
-		
+		// [SerializeField] private SpellConfig _bulletSpellConfig = null!;
+		// public SpellConfig BulletSpellConfig => _bulletSpellConfig;
+		//
 	}
 
 	[Serializable]

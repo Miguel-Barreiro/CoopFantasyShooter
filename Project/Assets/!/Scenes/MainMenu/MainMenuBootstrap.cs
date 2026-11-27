@@ -39,7 +39,6 @@ namespace Scenes.MainMenu
 			BindInstance(mainMenuMessenger);
 			RegisterUIScreenDefinition(MenusConfig.MainMenuUI, mainMenuMessenger);
 			BindInstance(new MainMenuController());
-			
 		}
 
 		protected override void AddDebugOptions()

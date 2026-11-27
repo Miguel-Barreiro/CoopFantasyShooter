@@ -1,8 +1,10 @@
 using Core.Initialization;
 using Core.Model.ModelSystems;
 using Core.View.UI;
+using Core.VSEngine.Systems;
 using Core.Zenject.Source.Main;
 using Game;
+using Game.Logic;
 using UnityEngine;
 using Zenject;
 
@@ -60,6 +62,9 @@ namespace Global.Logic
             // BouncyCoreStatsContainer bouncyCoreStatsContainer = GetSystem<BouncyCoreStatsContainer>();
             // TimerSystem timerSystem = GetSystem<TimerSystem>();
             // timerSystem.SetGlobalTimerScalerStat(bouncyCoreStatsContainer.SlowMotionScale);
+
+            VSTimersSystem vsTimersSystem = GetSystem<VSTimersSystem>();
+            vsTimersSystem.SetDefaultTimerStat(_gameConfig.DefaultVSTimerStat);
         }
 
         protected override void InstallSystems()
@@ -67,8 +72,13 @@ namespace Global.Logic
             BindInstance<GameStatsContainer>(_gameStatsContainer);
             BindInstance<GameConfig>(_gameConfig);
             BindInstance<MenusConfig>(_menusConfig);
-
             
+            
+            
+            GameObject localMultiplayerInputManagerObj = InstantiatePrefabAndBind(_gameConfig.LocalMultiplayerInputManagerPrefab);
+            GameObject.DontDestroyOnLoad(localMultiplayerInputManagerObj);
+            
+            // LocalMultiplayerInputManager localMultiplayerInputManager = localMultiplayerInputManagerObj.GetComponent<LocalMultiplayerInputManager>();
             
 //             PreConfigGameplayOptionsSystem preConfigGameplayOptionsSystem = new PreConfigGameplayOptionsSystem();
 //             BindInstance(preConfigGameplayOptionsSystem);

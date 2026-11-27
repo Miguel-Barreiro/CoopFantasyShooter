@@ -10,7 +10,6 @@ using Game.BehaviourTree;
 using Game.Components;
 using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
-using Game.Input;
 using Game.Logic;
 using Game.Player;
 using Game.Player.Abilities;
@@ -93,28 +92,31 @@ namespace Scenes.Play
 			
 			BindInstance(new PlayerSystem());
 			BindInstance(new PlayerViewSystem());
-			BindInstance(new GameLogic());
 
 			BindInstance(new PlayerAbilitiesSystem());
 			BindInstance(new BulletSystem());
 			BindInstance(new MortarSystem());
-			BindInstance(new SpellsLogic());
 
 			
 			BindInstance(new DeadBodySystem());
 			BindInstance(new EnemySpawnerSystem());
 			BindInstance(new EnemyAbilitySystem());
-			BindInstance( new GameSetupSystem());
+
 			
 			BindInstance(new EnemySystem());
 			BindInstance(new EnemyViewSystem());
 			BindInstance(new BehaviourNodesContainer());
 			BindInstance(new BehaviourTreeSystem());
 			
-			// InstantiatePrefabAndBind(GameplayConfig.EnviromentAttributes.NavMeshPrefab);
-			
 			// BindInstance(LocalMultiplayerInputManager);
 			
+			
+			//LOGIC SYSTEMS
+			BindInstance(new SpellsLogic());
+			BindInstance(new PlayerLogic());
+			BindInstance(new GameLogic());
+			
+			BindInstance(new GameInputSystem());
 
 			//View Systems
 			BindInstance(new CameraFollowTargetSystem());

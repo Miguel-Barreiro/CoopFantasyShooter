@@ -1,175 +1,20 @@
 using Core.Events;
 using Core.Initialization;
 using Core.Model;
-using Core.View;
 using FixedPointy;
 using Game.Player;
-using Game.Player.Abilities;
-using Game.Spells;
-using Global;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Events
 {
-	public sealed class RecoverPlayerInputEvent : Event<RecoverPlayerInputEvent>, IEarlyEvent
-	{
-		[Inject] private readonly GameLogic GameLogic = null!;
-		// [Inject] private readonly BasicCompContainer<GameData> GameContainer = null!;
-		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-
-		
-		
-		public int PlayerNumber = -1;
-		
-		public override void Execute()
-		{
-			if(PlayerNumber < 0)
-			{
-				return;
-			}
-			
-			// ref GameData gameData = ref GameContainer.Components[0];
-
-			uint topIndex = PlayerContainer.TopEmptyIndex;
-			for (int i = 0; i < topIndex; i++)
-			{
-				ref PlayerData playerData = ref PlayerContainer.Components[i];
-				if(playerData.PlayerNumber == PlayerNumber)
-				{
-					Debug.Log($"Player {PlayerNumber} already exists, skipping recovery.");
-					return;
-				}
-			}
-
-			GameLogic.AddPlayer(PlayerNumber);
-		}
-	}
-	
-	
-	public sealed class UseMainAbilityPlayerEvent : Event<UseMainAbilityPlayerEvent>
-	{
-		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly PlayerAbilitiesSystem PlayerAbilitiesSystem = null!;
-		[Inject] private readonly BasicCompContainer<PlayerAbilityData> AbilityContainer = null!;
-		[Inject] private readonly StatsSystem StatsSystem = null!;
-		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
-
-		public int PlayerNumber = -1;
-		
-		public override void Execute()
-		{
-			if(PlayerNumber < 0)
-				return;
-
-			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
-			if(playerId == EntId.Invalid)
-			{
-				Debug.Log($"Player {PlayerNumber} not found, cannot use main ability.");
-				return;
-			}
-
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			EntId mainAbilityID = playerData.AbilityIDs[(int)PlayerAbilitySlot.Main];
-			if( mainAbilityID == EntId.Invalid)
-			{
-				Debug.Log($"Player {PlayerNumber} does not have a main ability, cannot use it.");
-				return;
-			}
-			
-			PlayerAbilitiesSystem.TryActivate(mainAbilityID);
-		}
-		
-	}
-	
-	
-	public sealed class RotatePlayerEvent : Event<RotatePlayerEvent>
-	{
-		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-
-		public int PlayerNumber = -1;
-		public Vector2 NewLookDirection { get; set; } = Vector2.zero;
-		
-		public override void Execute()
-		{
-			if(PlayerNumber < 0)
-				return;
-
-			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
-			if(playerId == EntId.Invalid)
-			{
-				Debug.Log($"Player {PlayerNumber} not found, cannot rotate.");
-				return;
-			}
-			
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-			playerData.LookDirection = new Vector3(NewLookDirection.x, 0f, NewLookDirection.y).normalized;
-			
-			// Debug.Log($"Input ROTATE (player{PlayerNumber} [{playerId}]) with value {RotationValue}");
-		}
-
-	}
-	
-	public sealed class MovePlayerEvent : Event<MovePlayerEvent>
-	{
-		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-
-		public int PlayerNumber = -1;
-		public Vector2 Direction = Vector2.zero;
-		public float MoveValue = 0f;
-
-		public override void Execute()
-		{
-			if(PlayerNumber < 0)
-				return;
-
-			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
-			if(playerId == EntId.Invalid)
-			{
-				Debug.Log($"Player {PlayerNumber} not found, cannot move.");
-				return;
-			}
-			
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(playerId);
-
-			playerData.MoveDirection = new Vector3(Direction.x, 0f, Direction.y).normalized;
-			playerData.MoveValue = MoveValue;
-			
-			// Debug.Log($"Input MOVE (player{PlayerNumber} [{playerId}]) with direction {Direction}");
-		}
-	}
-	
-	public sealed class ResetPlayerPositionEvent : Event<ResetPlayerPositionEvent>
-	{
-		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
-		[Inject] private readonly GameConfig GameConfig = null!;
-
-		public int PlayerNumber = -1;
-		
-		public override void Execute()
-		{
-			if(PlayerNumber < 0)
-				return;
-
-			EntId playerId = PlayerContainer.GetPlayerId(PlayerNumber);
-			if(playerId == EntId.Invalid)
-			{
-				Debug.Log($"Player {PlayerNumber} not found, cannot reset position.");
-				return;
-			}
-			
-			EntityViewAtributes viewAtributes = ViewEntitiesContainer.GetEntityViewAtributes(playerId);
-			Rigidbody rigidbody = viewAtributes!.Get<Rigidbody>();
-			rigidbody.position = Vector3.zero;
-			Debug.Log($"Resetting Player {PlayerNumber}");
-		}
-	}
 	
 	public sealed class HitPlayerEvent : EntityEvent<HitPlayerEvent>
 	{
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
+		[Inject] private readonly GameLogic GameLogic = null!;
+
 		
 		// [Inject] private readonly PlayerContainer PlayerContainer = null!;
 		// [Inject] private readonly GameLogic GameLogic = null!;
@@ -185,12 +30,14 @@ namespace Game.Events
 	public sealed class OnAllPlayersDeadEvent : Event<OnAllPlayersDeadEvent>
 	{
 		[Inject] private readonly ScenesController ScenesController = null!;
-		
+		[Inject] private readonly GameLogic GameLogic = null!;
+
 		public override void Execute()
 		{
-			Debug.Log("All players are dead. Switching to main menu.");
+			Debug.Log("All players are dead. Switching to end game scene.");
 			// ScenesController.SwitchScene(SceneNames.MAIN_MENU);
-			EventQueue.Trigger<GoFromGameToMainEvent>();
+			
+			// EventQueue.Trigger<GoFromGameToMainEvent>();
 		}
 	}
 	
@@ -202,9 +49,7 @@ namespace Game.Events
 
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
-
-
-
+		
 
 		public override void Execute()
 		{

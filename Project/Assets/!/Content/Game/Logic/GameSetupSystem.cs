@@ -12,13 +12,10 @@ namespace Game.Logic
 
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
-
-
+		
 		[Inject] private readonly GameplayConfig GameplayConfig = null!;
 
 		[Inject] private readonly VSTimersSystem VSTimersSystem = null!;
-
-
 
 		public void StartSystem()
 		{
@@ -37,7 +34,6 @@ namespace Game.Logic
 		public void Initialize()
 		{
 			Random.InitState(Mathf.CeilToInt(Time.time * 100f));
-			VSTimersSystem.SetDefaultTimerStat(GameplayConfig.DefaultVSTimerStat);
 		}
 	}
 }

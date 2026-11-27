@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Com.LuisPedroFonseca.ProCamera2D;
 using Core.Events;
 using Core.Model;
 using Core.Model.Stats;
@@ -10,8 +9,8 @@ using Game.BehaviourTree;
 using Game.Components;
 using Game.Enemies;
 using Game.Enemies.EnemyAbilities;
+using Game.Logic;
 using Game.Player;
-using Game.Player.Abilities;
 using Game.Spells;
 using Game.Spells.Bullet;
 using Game.Spells.Mortar;
@@ -22,14 +21,67 @@ using Zenject;
 
 namespace Game
 {
-	public sealed class GameLogic
+
+	public abstract class BaseGameLogic
 	{
-		[Inject] private readonly GameplayConfig GameplayConfig = null!;
-		[Inject] private readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] protected readonly GameplayConfig GameplayConfig = null!;
+		[Inject] protected readonly ViewEntitiesContainer ViewEntitiesContainer = null!;
+		[Inject] protected readonly StatsSystem StatsSystem = null!;
+		[Inject] protected readonly GameStatsContainer GameStatsContainer = null!;
+
+		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab, Vector3 position, Quaternion rotation)
+		{
+			return ViewEntitiesContainer.Spawn(prefab, entityId, position, rotation);
+		}
+		
+		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab)
+		{
+			return ViewEntitiesContainer.Spawn(prefab, entityId);
+		}
+
+
+		public void OverrideDefaultStats(EntId newEntityID, IReadOnlyCollection<StatOverride> statOverrides)
+		{
+			foreach (StatOverride statOverride in statOverrides)
+			{
+				switch (statOverride.OverrideType)
+				{
+					case OverrideType.Override:
+						StatsSystem.SetBaseValue(newEntityID, statOverride.StatConfig,statOverride.Value);
+						break;
+					case OverrideType.Additive:
+						StatsSystem.AddModifier(newEntityID, newEntityID, 
+												statOverride.StatConfig,statOverride.Value, 
+												StatModifierType.Additive);
+						
+						break;
+					case OverrideType.Multiplicative:
+						StatsSystem.AddModifier(newEntityID, newEntityID, 
+												statOverride.StatConfig,statOverride.Value, 
+												StatModifierType.Multiplicative);
+						break;
+					
+				}
+
+				switch (statOverride.depletedValueOverride)
+				{
+					case DepletedValueOverrideType.MaxValue:
+						StatsSystem.ResetDepletedValueToMax(newEntityID, statOverride.StatConfig);
+						break;
+					case DepletedValueOverrideType.MinValue:
+						StatsSystem.ResetDepletedValueToMin(newEntityID, statOverride.StatConfig);
+						break;
+				}
+			}
+		}
+		
+	}
+
+	public sealed class GameLogic : BaseGameLogic
+	{
 		[Inject] private readonly PlayerContainer PlayerContainer = null!;
-		[Inject] private readonly StatsSystem StatsSystem = null!;
+		
 		[Inject] private readonly IEntityHierarchySystem IEntityHierarchySystem = null!;
-		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 
 		[Inject] private readonly BasicCompContainer<BehaviourAgentData> BehaviourAgentContainer = null!;
 		[Inject] private readonly BehaviourTreeContainer BehaviourTreeContainer = null!;
@@ -40,10 +92,9 @@ namespace Game
 		[Inject] private readonly StatusEffectSystem StatusEffectSystem = null!;
 
 		[Inject] private readonly BasicCompContainer<WorldEntityData> WorldEntityContainer = null!;
-
-		[Inject] private readonly CameraFollowView CameraFollowView = null!;
-
+		[Inject] private readonly BasicCompContainer<GameData> GameContainer = null!;
 		
+
 		public EntId SpawnEnemy(Vector2 position, EnemyConfig enemyConfig)
 		{
 			//TODO: we need to spawn enemies as premade clumps with potential positions premade.
@@ -186,7 +237,7 @@ namespace Game
 
 			ref WorldEntityData worldEntityData = ref WorldEntityContainer.GetComponent(bulletId);
 			
-			EntityViewAtributes view = AddView(bulletId, GameplayConfig.BasicSpellsAttributes.BulletPrefab.gameObject, position, Quaternion.LookRotation(direction.normalized));
+			EntityViewAtributes view = AddView(bulletId, spellConfig.SpellPrefab.gameObject, position, Quaternion.LookRotation(direction.normalized));
 			
 			Fix damage = StatsSystem.GetStatValue(ownerAbilityID, GameStatsContainer.Damage);
 			StatsSystem.SetBaseValue(bulletId, GameStatsContainer.Damage, damage);
@@ -203,70 +254,6 @@ namespace Game
 			
 			return bulletId;
 		}
-
-
-		public EntId AddPlayer(int newPlayerNumber)
-		{
-			PlayerAttributes playerAttributes = GameplayConfig.PlayerAttributes;
-			EntId playerId = new PlayerEntity(newPlayerNumber, playerAttributes.Size).ID;
-
-			foreach (PlayerAbilityConfig playerAbility in playerAttributes.PlayerAbilities)
-				AddPlayerAbility(playerAbility, playerId);
-
-			Vector3 spawnPosition = CameraFollowView.transform.position;
-			EntityViewAtributes view = AddView(playerId, playerAttributes.PlayerPrefab.gameObject, spawnPosition, Quaternion.identity);
-
-			PlayerView playerView = view.Get<PlayerView>();
-			playerView.SetSize(playerAttributes.Size);
-
-			OverrideDefaultStats(playerId, playerAttributes.PlayerStats);
-			
-			return playerId;
-		}
-
-		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab, Vector3 position, Quaternion rotation)
-		{
-			return ViewEntitiesContainer.Spawn(prefab, entityId, position, rotation);
-		}
-		
-		protected EntityViewAtributes AddView(EntId entityId, GameObject prefab)
-		{
-			return ViewEntitiesContainer.Spawn(prefab, entityId);
-		}
-
-		public EntId AddPlayerAbility(PlayerAbilityConfig playerAbilityConfig, EntId entityID)
-		{
-			ref PlayerData playerData = ref PlayerContainer.GetComponent(entityID);
-			EntId newAbilityEntityID;
-			if(playerAbilityConfig.InputSlot != PlayerAbilitySlot.None)
-			{
-				int abilityIndex = (int)playerAbilityConfig.InputSlot;
-				if (abilityIndex >= playerData.AbilityIDs.Length)
-				{
-					Debug.LogError($"Player {entityID} does not have enough ability slots for ability type {playerAbilityConfig.InputSlot}. " +
-								   $"Max ability slots: {playerData.AbilityIDs.Length}, Ability type index: {abilityIndex}");
-					return EntId.Invalid;
-				}
-				if (playerData.AbilityIDs[abilityIndex] != EntId.Invalid)
-				{
-					Debug.LogError("Ability slot already occupied! We are going to overwrite the existing ability");
-					EntitiesContainer.DestroyEntity(playerData.AbilityIDs[abilityIndex]);
-				}
-				PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, playerAbilityConfig);
-				newAbilityEntityID = playerAbilityEntity.ID;
-				playerData.AbilityIDs[abilityIndex] = newAbilityEntityID;
-			} else
-			{
-				PlayerAbilityEntity playerAbilityEntity = new PlayerAbilityEntity(entityID, playerAbilityConfig);
-				newAbilityEntityID = playerAbilityEntity.ID;
-			}
-			
-			OverrideDefaultStats(newAbilityEntityID, playerAbilityConfig.StatsOverride);
-
-			return newAbilityEntityID;
-		}
-
-		
 		
 		
 		public EntId AddEnemyAbility(EnemyAbilityConfig enemyAbilityConfig, EntId entityID, uint parentNodeOrder = 0)
@@ -286,40 +273,7 @@ namespace Game
 
 
 
-		public void OverrideDefaultStats(EntId newEntityID, IReadOnlyCollection<StatOverride> statOverrides)
-		{
-			foreach (StatOverride statOverride in statOverrides)
-			{
-				switch (statOverride.OverrideType)
-				{
-					case OverrideType.Override:
-						StatsSystem.SetBaseValue(newEntityID, statOverride.StatConfig,statOverride.Value);
-						break;
-					case OverrideType.Additive:
-						StatsSystem.AddModifier(newEntityID, newEntityID, 
-												statOverride.StatConfig,statOverride.Value, 
-												StatModifierType.Additive);
-						
-						break;
-					case OverrideType.Multiplicative:
-						StatsSystem.AddModifier(newEntityID, newEntityID, 
-												statOverride.StatConfig,statOverride.Value, 
-												StatModifierType.Multiplicative);
-						break;
-					
-				}
-
-				switch (statOverride.depletedValueOverride)
-				{
-					case DepletedValueOverrideType.MaxValue:
-						StatsSystem.ResetDepletedValueToMax(newEntityID, statOverride.StatConfig);
-						break;
-					case DepletedValueOverrideType.MinValue:
-						StatsSystem.ResetDepletedValueToMin(newEntityID, statOverride.StatConfig);
-						break;
-				}
-			}
-		}
+		
 
 		public void KillEnemy(EntId enemyID)
 		{
@@ -347,8 +301,8 @@ namespace Game
 			
 			return statusEffectEntity.ID;
 		}
-		
-		
 
+
+		
 	}
 }

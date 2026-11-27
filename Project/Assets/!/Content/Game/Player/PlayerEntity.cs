@@ -60,6 +60,8 @@ namespace Game.Player
 		public EntId[] AbilityIDs;
 
 		
+		public PlayerState State;
+		
 		
 		// Movement
 		public Vector3 MoveDirection;
@@ -68,6 +70,7 @@ namespace Game.Player
 
 		public void Init()
 		{
+			State = PlayerState.Default;
 			PlayerNumber = -1;
 			MoveDirection = Vector2.zero;
 			MoveValue = 0f;
@@ -77,6 +80,15 @@ namespace Game.Player
 			for (int i = 0; i < AbilityIDs.Length; i++)
 				AbilityIDs[i] = EntId.Invalid;
 		}
+	}
+	
+	public enum PlayerState
+	{
+		Default, 
+		Casting, 
+		Down,
+		Fall,
+		Jump
 	}
 
 	public interface IPlayer : IStatusEffectOwner,
@@ -131,11 +143,14 @@ namespace Game.Player
 		[Inject] private readonly GameStatsContainer GameStatsContainer = null!;
 		[Inject] private readonly StatsSystem StatsSystem = null!;
 		[Inject] private readonly EventQueue EventQueue = null!;
+		[Inject] private readonly GameLogic GameLogic = null!;
+
 
 		private readonly Fix SPEED_MULT = Fix.One * 300f;
 
 		public void UpdateComponents(float deltaTime)
 		{
+			
 			bool allPlayersDead = true;
 			
 			uint topIndex = PlayerContainer.TopEmptyIndex;

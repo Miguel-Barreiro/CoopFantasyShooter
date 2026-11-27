@@ -42,9 +42,11 @@ namespace Game.Player.Abilities
 
 		public PlayerAbilitySlot PlayerAbilitySlot;
 		public PlayerAbilityAction.PlayerAbilityType PlayerAbilityType;
+		public PlayerStateModifierType PlayerStateModifierType;
 		
 		public void Init()
 		{
+			PlayerStateModifierType = PlayerStateModifierType.NoChange;
 			State = AbilityState.Ready;
 			PlayerAbilityType = PlayerAbilityAction.PlayerAbilityType.Custom;
 			PlayerAbilitySlot = PlayerAbilitySlot.None;
@@ -58,7 +60,13 @@ namespace Game.Player.Abilities
 		Recover, 
 		OnGoing
 	}
-	
+
+	public enum PlayerStateModifierType : int
+	{
+		NoChange = 0, 
+		
+	}
+
 	public interface IPlayerAbility : ISimulation, Component<PlayerAbilityData>, IHierarchyEntity { }
 
 
@@ -91,10 +99,10 @@ namespace Game.Player.Abilities
 		}
 
 
-		public void TryActivate(EntId spellID)
+		public bool TryActivate(EntId spellID)
 		{
 			ref PlayerAbilityData spellData = ref AbilityContainer.GetComponent(spellID);
-			AbilityActions[(int)spellData.PlayerAbilityType].TryActivate(ref spellData);
+			return AbilityActions[(int)spellData.PlayerAbilityType].TryActivate(ref spellData);
 		}
 
 

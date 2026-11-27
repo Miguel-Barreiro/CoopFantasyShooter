@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-using Game.Input;
+using Input;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
